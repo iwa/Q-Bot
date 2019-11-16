@@ -1,4 +1,4 @@
-# QumuBot
+# Q-Bot
 
 Discord Bot for Qumu's Discord Server
 
@@ -7,4 +7,4 @@ Discord Bot for Qumu's Discord Server
 - Use Node.js
 - Install these dependencies
 
-`npm i discord.js lowdb node-opus ytdl-core better-youtube-api node-fetch anilist-node puppeteer crypto-js`
+`npm i discord.js mongodb node-opus ytdl-core better-youtube-api node-fetch anilist-node puppeteer crypto-js`
