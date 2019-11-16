@@ -1,0 +1,9 @@
+keys.json
+db.json
+settings.json
+.DS_Store
+node_modules/
+logs/
+draft.txt
+.save/
+image/
