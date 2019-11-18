@@ -1,6 +1,11 @@
-# Q-Bot
+![](https://iwa.sh/img/q-bot_logo.png)
 
-Discord Bot for Qumu's Discord Server
+## About
+
+**Q-Bot is entirely developed and handled by iwa**
+
+- Language used : JavaScript, with NodeJS
+- Library used : discord.js
 
 ## Requirements
 
