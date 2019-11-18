@@ -140,6 +140,12 @@ bot.on('message', async msg => {
             } else
                 return profile(msg, author_id);
 
+        // Memes
+
+        case "sonicsays":
+            if(msg.channel.id != '606165780215889960' && author_id != master)return;
+        return sonicSays(msg, cont);
+
         // Music
 
         case "play":
