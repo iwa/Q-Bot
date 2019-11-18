@@ -5,6 +5,8 @@ const mongo = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
 const dbName = 'Q-Bot';
 
+const help = require('./js/help')
+
 const fs = require('fs')
 const fetch = require('node-fetch');
 const puppeteer = require('puppeteer');
@@ -112,6 +114,16 @@ bot.on('message', async msg => {
 
     if(!msg.content.startsWith(prefix))return;
     if(isSleeping === 1 && admin.indexOf(author_id) == -1)return;
+
+    // cmd Basic
+
+    switch (req) {
+
+        case "help":
+        case "commands":
+            return help.action(msg, cont, author, author_id, isMod, master, error);
+
+    }
 
 });
 
