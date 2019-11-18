@@ -120,9 +120,27 @@ bot.on('message', async msg => {
 
     switch (req) {
 
-        case "help":
-        case "commands":
-            return help.action(msg, cont, author, author_id, isMod, master, error);
+        // Profile
+
+        case "profile":
+            if(cont.length > 2)return;
+
+            if(cont.length == 2) {
+
+                if(msg.mentions.everyone)return;
+
+                var mention = msg.mentions.users.first()
+
+                if(!mention)return;
+
+                if(mention.id == msg.author.id || mention.id == bot.user.id)return;
+
+                return profile(msg, mention.id);
+
+            } else
+                return profile(msg, author_id);
+
+        // Music
 
         case "play":
             return music.play(msg, yt, cont, author_id, error);
@@ -153,6 +171,12 @@ bot.on('message', async msg => {
         case "np":
         case "nowplaying":
             return music.np(msg, bot);
+
+        // Utilities
+
+        case "help":
+        case "commands":
+            return help.action(msg, cont, author, author_id, isMod, master, error);
 
     }
 
