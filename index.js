@@ -6,6 +6,7 @@ const url = 'mongodb://localhost:27017/';
 const dbName = 'Q-Bot';
 
 const help = require('./js/help')
+const music = require('./js/music')
 
 const fs = require('fs')
 const fetch = require('node-fetch');
@@ -122,6 +123,36 @@ bot.on('message', async msg => {
         case "help":
         case "commands":
             return help.action(msg, cont, author, author_id, isMod, master, error);
+
+        case "play":
+            return music.play(msg, yt, cont, author_id, error);
+
+        case "remove":
+            return music.remove(msg, cont);
+
+        case "queue":
+        case "q":
+            return music.list(msg, cont);
+
+        case "skip":
+            return music.skip(msg, bot);
+
+        case "clear":
+            return music.clear(msg);
+
+        case "stop":
+        case "quit":
+        case "leave":
+            return music.stop(msg);
+
+        case "loop":
+        case "repeat":
+            return music.loop(msg);
+
+        case "playing":
+        case "np":
+        case "nowplaying":
+            return music.np(msg, bot);
 
     }
 
