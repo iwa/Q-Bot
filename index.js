@@ -261,6 +261,11 @@ function randomInt(max) {
     return Math.floor(Math.random() * Math.floor(max) + 1);
 }
 
+function isMod(id) {
+    if(msg.member.roles.find(val => val.id == config.modRole) > -1) { return true }
+    else { return false }
+}
+
 async function levelCheck(msg, xp) {
     switch(xp) {
         case 250:
