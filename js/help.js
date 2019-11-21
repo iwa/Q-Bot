@@ -50,7 +50,7 @@ let member = {
 
 module.exports = class help {
 
-    static async action (msg, cont, author, author_id, isMod, master, error) {
+    static async action (msg, cont, author, author_id, isMod, master) {
 
         if(cont.length == 2) {
             var what;
@@ -184,7 +184,7 @@ module.exports = class help {
                 msg.author.send("`Syntax : ( ) is needed parameter, [ ] is optional parameter`")
                 return await msg.author.send(what)
             } catch(ex) {
-                return error.no(9, msg)
+                return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
             }
         } else
             sendHelp(msg, author_id, isMod, master, error);
@@ -194,7 +194,7 @@ module.exports = class help {
 
 }
 
-async function sendHelp(msg, author_id, isMod, master, error) {
+async function sendHelp(msg, author_id, isMod, master) {
     if (author_id == master)
         try {
             await msg.author.send(member)
@@ -202,7 +202,7 @@ async function sendHelp(msg, author_id, isMod, master, error) {
             await msg.author.send(admin)
         } catch(ex) {
             console.log(ex)
-            return error.no(9, msg)
+            return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
     else if (isMod(author_id) == true)
         try {
@@ -210,13 +210,13 @@ async function sendHelp(msg, author_id, isMod, master, error) {
             await msg.author.send(mod)
         } catch(ex) {
             console.log(ex)
-            return error.no(9, msg)
+            return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
     else
         try {
             await msg.author.send(member)
         } catch(ex) {
             console.log(ex)
-            return error.no(9, msg)
+            return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
 }
