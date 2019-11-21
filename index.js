@@ -88,33 +88,28 @@ bot.on('message', async msg => {
     var author = msg.author.tag
     var author_id = msg.author.id
 
-    if(msg.channel.type == "text") {
+    if(msg.channel.type != "text")return;
 
-        if(req == "letmein")return letmein.action(msg);
+    if(req == "letmein")return letmein.action(msg);
+    if(!msg.content.startsWith(prefix)) {
 
-        if(!msg.content.startsWith(prefix)) {
+        if(msg.channel.id == '608630294261530624')return;
 
-            if(msg.channel.id == '608630294261530624')return;
+        var mongod = await mongo.connect(url, connOptions);
+        var db = mongod.db(dbName);
 
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
+        var user = await db.collection('user').findOne({ '_id': { $eq: author_id } });
 
-            var user = await db.collection('user').findOne({ '_id': { $eq: author_id } });
-
-            if(!user)
-                await db.collection('user').insertOne({ _id: author_id, exp: 1, cooldown: 0, pat: 0, hug: 0, boop: 0, birthday: null, fc: null });
-            else if(user.cooldown == 0) {
-                await db.collection('user').updateOne({ _id: author_id }, { $inc: { exp: 1, cooldown: 1 }});
-                levelCheck(msg, user.exp);
-            }
-
-            return setTimeout(async () => { await db.collection('user').updateOne({ _id: author_id }, { $set: { cooldown: 0 }}); mongod.close(); }, 5000)
-
+        if(!user)
+            await db.collection('user').insertOne({ _id: author_id, exp: 1, cooldown: 0, pat: 0, hug: 0, boop:0, birthday: null, fc: null });
+        else if(user.cooldown == 0) {
+            await db.collection('user').updateOne({ _id: author_id }, { $inc: { exp: 1, cooldown: 1 }});
+            levelCheck(msg, user.exp);
         }
 
+        return setTimeout(async () => { await db.collection('user').updateOne({ _id: author_id }, { $set: {cooldown: 0 }}); mongod.close(); }, 5000)
     }
 
-    if(!msg.content.startsWith(prefix))return;
     if(isSleeping === 1 && admin.indexOf(author_id) == -1)return;
 
     // cmd Basic
@@ -200,7 +195,7 @@ bot.on('message', async msg => {
 
         case "help":
         case "commands":
-            return help.action(msg, cont, author, author_id, isMod, master);
+            return help.action(msg, cont, author, isMod, admin);
 
     }
 
@@ -279,7 +274,7 @@ function randomInt(max) {
     return Math.floor(Math.random() * Math.floor(max) + 1);
 }
 
-function isMod(id) {
+function isMod(msg) {
     if(msg.member.roles.find(val => val.id == config.modRole) > -1) { return true }
     else { return false }
 }

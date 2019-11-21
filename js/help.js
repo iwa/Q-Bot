@@ -50,7 +50,7 @@ let member = {
 
 module.exports = class help {
 
-    static async action (msg, cont, author, author_id, isMod, master) {
+    static async action (msg, cont, author, isMod, admin) {
 
         if(cont.length == 2) {
             var what;
@@ -187,15 +187,15 @@ module.exports = class help {
                 return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
             }
         } else
-            sendHelp(msg, author_id, isMod, master, error);
+            sendHelp(msg, isMod, admin);
 
         console.log("[" + new Date().toLocaleTimeString() + "] Help sent to " + author)
     }
 
 }
 
-async function sendHelp(msg, author_id, isMod, master) {
-    if (author_id == master)
+async function sendHelp(msg, isMod, adminList) {
+    if (adminList.indexOf(msg.author.id) > -1)
         try {
             await msg.author.send(member)
             await msg.author.send(mod)
@@ -204,7 +204,7 @@ async function sendHelp(msg, author_id, isMod, master) {
             console.log(ex)
             return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
-    else if (isMod(author_id) == true)
+    else if (isMod(msg) == true)
         try {
             await msg.author.send(member)
             await msg.author.send(mod)
