@@ -167,7 +167,7 @@ bot.on('message', async msg => {
         // Music
 
         case "play":
-            return music.play(msg, yt, cont, author_id, error);
+            return music.play(msg, yt, cont, author_id);
 
         case "remove":
             return music.remove(msg, cont);
@@ -200,7 +200,7 @@ bot.on('message', async msg => {
 
         case "help":
         case "commands":
-            return help.action(msg, cont, author, author_id, isMod, master, error);
+            return help.action(msg, cont, author, author_id, isMod, master);
 
     }
 
@@ -433,7 +433,7 @@ async function profile(msg, id) {
 
     mongod.close();
 
-    if(!user)return error.no(12, msg);
+    if(!user)return msg.channel.send(":x: > **The user you entered isn't registered in the database yet**");
 
     msg.channel.startTyping();
 
@@ -548,7 +548,7 @@ async function osuUser(msg, cont) {
     }
 
     if (data == undefined)
-        return error.no(19, msg)
+        return msg.channel.send(":x: > **The user you entered doesn't exist !**")
 
     var playedTime = (data.total_seconds_played/3600);
 

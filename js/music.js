@@ -18,7 +18,7 @@ var loop = 0, volume = 1;
 
 module.exports = class music {
 
-    static async play (msg, yt, cont, author_id, error) {
+    static async play (msg, yt, cont, author_id) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -28,7 +28,7 @@ module.exports = class music {
 
         if(voiceChannel == null)return;
 
-        if(!voiceChannel.members.find(val => val.id == author_id)) { return error.no(6, msg) }
+        if(!voiceChannel.members.find(val => val.id == author_id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
 
         let video_url = cont[1].split('&')
 
@@ -44,11 +44,11 @@ module.exports = class music {
 
             if(collected.first() == undefined) {
                 reply.delete()
-                return error.no(10, msg)
+                return msg.channel.send(":x: > **You didn't choose anything, request cancelled...**")
             }
             if(collected.find(val => val.emoji.name == '✅') && collected.find(val => val.emoji.name == '❌')) {
                 reply.delete()
-                return error.no(11, msg)
+                return msg.channel.send(":x: > **You must choose only one of both reactions !**")
             }
 
             var emote = collected.first().emoji.name
@@ -83,7 +83,7 @@ module.exports = class music {
             if(!voiceChannel.connection) {
                 try {
                     const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel, Discord, error);
+                    playSong(msg, voiceConnection, voiceChannel, Discord);
                 }
                 catch(ex) {
                     console.error(ex)
@@ -105,7 +105,7 @@ module.exports = class music {
                 length.push(data.length_seconds)
             } else {
                 msg.channel.stopTyping()
-                return error.no(8, msg)
+                return msg.channel.send(":x: > **This video is already in the queue !**")
             }
 
             if(voiceChannel.connection) {
@@ -122,7 +122,7 @@ module.exports = class music {
                 msg.channel.stopTyping()
                 try {
                     const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel, Discord, error);
+                    playSong(msg, voiceConnection, voiceChannel, Discord);
                 }
                 catch(ex) {
                     console.error(ex)
@@ -142,7 +142,7 @@ module.exports = class music {
 
             if(voiceChannel == null)return;
 
-            if(!voiceChannel.members.find(val => val.id == author_id)) { return error.no(6, msg) }
+            if(!voiceChannel.members.find(val => val.id == author_id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
 
             msg.channel.startTyping();
 
@@ -153,7 +153,7 @@ module.exports = class music {
                 length.push(data.length_seconds)
             } else {
                 msg.channel.stopTyping()
-                return error.no(8, msg)
+                return msg.channel.send(":x: > **This video is already in the queue !**")
             }
 
             if(voiceChannel.connection) {
@@ -170,7 +170,7 @@ module.exports = class music {
                 msg.channel.stopTyping()
                 try {
                     const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel, Discord, error);
+                    playSong(msg, voiceConnection, voiceChannel, Discord);
                 }
                 catch(ex) {
                     console.error(ex)
@@ -402,12 +402,12 @@ module.exports = class music {
 }
 
 
-async function playSong (msg, voiceConnection, voiceChannel, error) {
+async function playSong (msg, voiceConnection, voiceChannel) {
 
     const video = YoutubeStream(queue[0], {filter: "audioonly", quality: "highestaudio"});
 
     video.on('error', () => {
-        return error.no(7, msg)
+        return msg.channel.send(":x: > **There was an unexpected error with the video, please retry later**")
     })
 
     voiceConnection.then(connection => {
@@ -446,7 +446,7 @@ async function playSong (msg, voiceConnection, voiceChannel, error) {
             } else {
                 skipReq = 0;
                 skippers = [];
-                playSong(msg, voiceConnection, voiceChannel, error)
+                playSong(msg, voiceConnection, voiceChannel)
             }
         }).on('error', console.error);
 
