@@ -6,6 +6,7 @@ const url = 'mongodb://localhost:27017/';
 const dbName = 'Q-Bot';
 
 const help = require('./js/help')
+const wholesome = require('./js/wholesome')
 const music = require('./js/music')
 
 const fs = require('fs')
@@ -139,6 +140,23 @@ bot.on('message', async msg => {
 
             } else
                 return profile(msg, author_id);
+
+        // Wholesome
+
+        case "pat":
+            var mongod = await mongo.connect(url, connOptions);
+            var db = mongod.db(dbName);
+        return wholesome.pat(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+
+        case "hug":
+            var mongod = await mongo.connect(url, connOptions);
+            var db = mongod.db(dbName);
+        return wholesome.hug(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+
+        case "boop":
+            var mongod = await mongo.connect(url, connOptions);
+            var db = mongod.db(dbName);
+        return wholesome.boop(msg, cont, randomInt, author, author_id, mongod, db, Discord);
 
         // Memes
 
