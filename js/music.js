@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const YoutubeStream = require('ytdl-core')
 const fs = require('fs')
 
-let config = JSON.parse(fs.readFileSync('./settings.json', 'utf-8'))
+let config = JSON.parse(fs.readFileSync('./config.json', 'utf-8'))
 
 let TC = config.musicTC;
 let VC = config.musicVC;
