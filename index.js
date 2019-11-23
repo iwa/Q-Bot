@@ -24,6 +24,7 @@ const osuKey = config.osu_key
 let prefix = "?";
 let admin = ['125325519054045184', '214740144538910721'];
 var isSleeping = 0;
+var cooldown = [];
 let connOptions = {
     'useUnifiedTopology': true,
     'authSource': "admin"/*,
@@ -101,13 +102,29 @@ bot.on('message', async msg => {
         var user = await db.collection('user').findOne({ '_id': { $eq: author_id } });
 
         if(!user)
-            await db.collection('user').insertOne({ _id: author_id, exp: 1, cooldown: 0, pat: 0, hug: 0, boop:0, birthday: null, fc: null });
-        else if(user.cooldown == 0) {
-            await db.collection('user').updateOne({ _id: author_id }, { $inc: { exp: 1, cooldown: 1 }});
+            await db.collection('user').insertOne({ _id: author_id, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0, birthday: null, fc: null });
+        else if(!cooldown[author_id]){
+            await db.collection('user').updateOne({ _id: author_id }, { $inc: { exp: 1 }});
             levelCheck(msg, user.exp);
+            cooldown[author_id] = 1;
+            return setTimeout(async () => { delete cooldown[author_id] }, 5000)
+        } else
+            cooldown[author_id]++;
+
+        mongod.close();
+
+        if(cooldown[author_id] == 3)
+            return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
+        else if(cooldown[author_id] == 6) {
+            await mention.addRole('636254696880734238')
+            var msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
+            setTimeout(async () => {
+                await msgReply.delete()
+                return mention.removeRole('636254696880734238')
+            }, 1200000);
         }
 
-        return setTimeout(async () => { await db.collection('user').updateOne({ _id: author_id }, { $set: {cooldown: 0 }}); mongod.close(); }, 5000)
+        return;
     }
 
     if(isSleeping === 1 && admin.indexOf(author_id) == -1)return;
