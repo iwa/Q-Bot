@@ -6,6 +6,7 @@ const url = 'mongodb://localhost:27017/';
 const dbName = 'Q-Bot';
 
 const help = require('./js/help')
+const staff = require('./js/staff')
 const wholesome = require('./js/wholesome')
 const music = require('./js/music')
 
@@ -132,6 +133,42 @@ bot.on('message', async msg => {
     }
 
     if(isSleeping === 1 && admin.indexOf(author_id) == -1)return;
+
+    // cmd Admin
+
+    if(admin.indexOf(author_id) > -1) {
+        switch (req) {
+
+            case "sleep":
+                if(isSleeping == 0) {
+                    isSleeping = 1;
+                    bot.user.setStatus("dnd")
+                    bot.user.setActivity("being updated...", {type : 0})
+                        .then(msg.react("✅") , console.log("[" + new Date().toLocaleTimeString() + "] Sleeping enabled"))
+                        .catch(console.error);
+                    return msg.channel.send("Sleeping Mode On !")
+                } else {
+                    isSleeping = 0;
+                    bot.user.setStatus("online")
+                    bot.user.setActivity("Qumu's Remixes | ?help", {type : 2})
+                        .then(msg.react("✅") , console.log("[" + new Date().toLocaleTimeString() + "] Sleeping disabled"))
+                        .catch(console.error);
+                    return msg.channel.send("Sleeping Mode Off !")
+                };
+
+        }
+    }
+
+    // cmd Mods
+
+    if(isMod(msg) === true || admin.indexOf(author_id) > -1) {
+        switch (req) {
+
+            case "bulk" :
+                return staff.bulk(msg, cont, author);
+
+        }
+    }
 
     // cmd Basic
 
