@@ -167,6 +167,12 @@ bot.on('message', async msg => {
             case "bulk" :
                 return staff.bulk(msg, cont, author);
 
+            case "forceskip":
+                return music.forceskip(msg, bot, Discord);
+
+            case "mute":
+                return staff.mute(msg, cont, author_id, admin, config.modRole, Discord, bot);
+
         }
     }
 
