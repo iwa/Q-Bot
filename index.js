@@ -95,6 +95,10 @@ bot.on('message', async msg => {
     if(!msg.content.startsWith(prefix)) {
 
         if(msg.channel.id == '608630294261530624')return;
+        if(msg.channel.id == config.suggestionTC) {
+            await msg.react('✅');
+            return await msg.react('❌');
+        }
 
         var mongod = await mongo.connect(url, connOptions);
         var db = mongod.db(dbName);
