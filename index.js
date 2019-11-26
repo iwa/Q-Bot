@@ -7,6 +7,7 @@ const dbName = 'Q-Bot';
 
 const help = require('./js/help')
 const staff = require('./js/staff')
+const profile = require('./js/profile')
 const wholesome = require('./js/wholesome')
 const music = require('./js/music')
 
@@ -156,6 +157,16 @@ bot.on('message', async msg => {
                     return msg.channel.send("Sleeping Mode Off !")
                 };
 
+            case "resetbirthday":
+                var mongod = await mongo.connect(url, connOptions);
+                var db = mongod.db(dbName);
+            return profile.resetbd(msg, cont, mongod, db, author_id, Discord, bot);
+
+            case "resetfc":
+                var mongod = await mongo.connect(url, connOptions);
+                var db = mongod.db(dbName);
+            return profile.resetfc(msg, cont, mongod, db, author_id, Discord, bot);
+
         }
     }
 
@@ -195,10 +206,20 @@ bot.on('message', async msg => {
 
                 if(mention.id == msg.author.id || mention.id == bot.user.id)return;
 
-                return profile(msg, mention.id);
+                return profileImg(msg, mention.id);
 
             } else
-                return profile(msg, author_id);
+                return profileImg(msg, author_id);
+
+        case "setbirthday":
+            var mongod = await mongo.connect(url, connOptions);
+            var db = mongod.db(dbName);
+        return profile.setbd(msg, cont, mongod, db, author_id, Discord);
+
+        case "setfc":
+            var mongod = await mongo.connect(url, connOptions);
+            var db = mongod.db(dbName);
+        return profile.setfc(msg, cont, mongod, db, author_id, Discord);
 
         // Wholesome
 
@@ -474,7 +495,7 @@ async function imageLvl(msg, level) {
 
 }
 
-async function profile(msg, id) {
+async function profileImg(msg, id) {
 
     if(msg.channel.type !== "dm") {
         msg.delete().catch(console.error);
