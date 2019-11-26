@@ -497,10 +497,6 @@ async function imageLvl(msg, level) {
 
 async function profileImg(msg, id) {
 
-    if(msg.channel.type !== "dm") {
-        msg.delete().catch(console.error);
-    }
-
     var mongod = await mongo.connect(url, connOptions);
     var db = mongod.db(dbName);
 
