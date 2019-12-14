@@ -187,7 +187,7 @@ bot.on('message', async msg => {
         }
     }
 
-    // cmd Basic
+    // cmd Member
 
     switch (req) {
 
@@ -220,6 +220,12 @@ bot.on('message', async msg => {
             var mongod = await mongo.connect(url, connOptions);
             var db = mongod.db(dbName);
         return profile.setfc(msg, cont, mongod, db, author_id, Discord);
+
+        case "becomefan":
+            return profile.joinFan(msg);
+
+        case "leavefan":
+            return profile.leaveFan(msg);
 
         // Wholesome
 

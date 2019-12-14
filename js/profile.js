@@ -132,4 +132,34 @@ module.exports = class profile {
         }
     }
 
+    static async joinFan (msg) {
+
+        if(await msg.channel.type != "text")return;
+        if(await msg.guild.id != "225359327525994497")return;
+        if(await msg.channel.id != "611349541685559316")return;
+
+        if(await msg.member.roles.find(val => val.id == '613317566261231638')) {
+            return msg.reply("you're already a Q-Bot fan !")
+        } else {
+            console.log("[" + new Date().toLocaleTimeString() + "] Fans join : " + msg.author.tag)
+            return msg.member.addRole('613317566261231638').then(msg.reply("you'll be notified of every updates !"))
+        }
+
+    }
+
+    static async leaveFan (msg) {
+
+        if(await msg.channel.type != "text")return;
+        if(await msg.guild.id != "225359327525994497")return;
+        if(await msg.channel.id != "611349541685559316")return;
+
+        if(await msg.member.roles.find(val => val.id == '613317566261231638')) {
+            console.log("[" + new Date().toLocaleTimeString() + "] Fans leave : " + msg.author.tag)
+            return msg.member.removeRole('613317566261231638').then(msg.reply("you'll not be notified anymore."))
+        } else {
+            return msg.reply("you're already not a Q-Bot fan !")
+        }
+
+    }
+
 }
