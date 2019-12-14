@@ -139,7 +139,7 @@ bot.on('message', async msg => {
 
     // cmd Admin
 
-    if(admin.indexOf(author_id) > -1) {
+    if(admin.indexOf(author_id) == 0) {
         switch (req) {
 
             case "sleep":
