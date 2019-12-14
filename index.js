@@ -9,6 +9,7 @@ const help = require('./js/help')
 const staff = require('./js/staff')
 const profile = require('./js/profile')
 const wholesome = require('./js/wholesome')
+const games = require('./js/games')
 const music = require('./js/music')
 
 const fs = require('fs')
@@ -243,6 +244,18 @@ bot.on('message', async msg => {
             var mongod = await mongo.connect(url, connOptions);
             var db = mongod.db(dbName);
         return wholesome.boop(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+
+        // Games
+
+        case "flip":
+            return games.flipCoin(msg, randomInt, Discord);
+
+        case "rps":
+            return games.rps(msg, cont, randomInt, Discord, error);
+
+        case "8ball":
+        case "8b":
+            return games.ball(msg, cont, Discord);
 
         // Memes
 
