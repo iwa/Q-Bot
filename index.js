@@ -3,7 +3,7 @@ const bot = new Discord.Client()
 
 const mongo = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
-const dbName = 'Q-Bot';
+const dbName = 'qbot';
 
 const help = require('./js/help')
 const staff = require('./js/staff')
