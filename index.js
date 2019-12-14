@@ -11,6 +11,7 @@ const profile = require('./js/profile')
 const wholesome = require('./js/wholesome')
 const games = require('./js/games')
 const music = require('./js/music')
+const utilities = require('./js/utilities')
 
 const fs = require('fs')
 const fetch = require('node-fetch');
@@ -300,6 +301,22 @@ bot.on('message', async msg => {
         case "help":
         case "commands":
             return help.action(msg, cont, author, isMod, admin);
+
+        case "info":
+            var iwa = await bot.fetchUser(admin[0]);
+        return utilities.info(msg, iwa.avatarURL);
+
+        case "ping":
+            return utilities.ping(msg, author, bot);
+
+        case "pong":
+            return utilities.pong(msg, author, bot);
+
+        case "leaderboard":
+        case "lead":
+            var mongod = await mongo.connect(url, connOptions);
+            var db = mongod.db(dbName);
+        return utilities.leaderboard(msg, cont, author, Discord, mongod, db, bot);
 
     }
 
