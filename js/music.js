@@ -409,8 +409,12 @@ module.exports = class music {
         var timeString = date.toISOString().substr(11, 8)
         const embed = new Discord.RichEmbed();
         embed.setColor('GREEN')
-        embed.setTitle("**Now Playing :**")
-        embed.setDescription("[" + title[0] + "](" + queue[0] + ")")
+        embed.setTitle("**:cd: Now Playing :**")
+
+        var desc = "[" + title[0] + "](" + queue[0] + ")";
+        if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable it";
+        embed.setDescription(desc)
+
         embed.setFooter("Length : " + timeString)
         msg.channel.send(embed)
 
