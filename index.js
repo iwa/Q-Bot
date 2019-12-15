@@ -28,7 +28,7 @@ const osuKey = config.osu_key
 let prefix = "?";
 let admin = ['125325519054045184', '214740144538910721'];
 var isSleeping = 0, lastComboColor;
-var cooldown = [];
+var cooldown = [], cooldownXP = [];
 let connOptions = {
     'useUnifiedTopology': true,
     'authSource': "admin"/*,
@@ -92,6 +92,23 @@ bot.on('message', async msg => {
     var author = msg.author.tag
     var author_id = msg.author.id
 
+    if(!cooldown[author_id]) {
+        cooldown[author_id] = 1;
+        return setTimeout(async () => { delete cooldown[author_id] }, 2500)
+    } else
+        cooldown[author_id]++;
+
+    if(cooldown[author_id] == 4)
+        return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
+    else if(cooldown[author_id] == 6) {
+        await msg.member.addRole('636254696880734238')
+        var msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
+        setTimeout(async () => {
+            await msgReply.delete()
+            return msg.member.removeRole('636254696880734238')
+        }, 1200000);
+    }
+
     if(!msg.content.startsWith(prefix)) {
 
         if(msg.channel.id == '608630294261530624')return;
@@ -107,28 +124,14 @@ bot.on('message', async msg => {
 
         if(!user)
             await db.collection('user').insertOne({ _id: author_id, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0, birthday: null, fc: null });
-        else if(!cooldown[author_id]){
+        else if(!cooldownXP[author_id]) {
             await db.collection('user').updateOne({ _id: author_id }, { $inc: { exp: 1 }});
             levelCheck(msg, user.exp);
-            cooldown[author_id] = 1;
-            return setTimeout(async () => { delete cooldown[author_id] }, 5000)
-        } else
-            cooldown[author_id]++;
-
-        mongod.close();
-
-        if(cooldown[author_id] == 3)
-            return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
-        else if(cooldown[author_id] == 6) {
-            await mention.addRole('636254696880734238')
-            var msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
-            setTimeout(async () => {
-                await msgReply.delete()
-                return mention.removeRole('636254696880734238')
-            }, 1200000);
+            cooldownXP[author_id] = 1;
+            return setTimeout(async () => { delete cooldownXP[author_id] }, 5000)
         }
 
-        return;
+        return mongod.close();
     }
 
     var plainCont = msg.content.replace(/\s\s+/g, ' ');
