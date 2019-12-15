@@ -34,11 +34,11 @@ module.exports = class music {
 
         if(video_url[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 
-            const playlist = await yt.getPlaylistByUrl(video_url[0])
+            const playlist = await yt.getPlaylistByUrl(video_url[0]).catch(console.error)
 
             var reply = await msg.channel.send("Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
-            reply.react('✅')
-            setTimeout(() => reply.react('❌'), 50)
+            await reply.react('✅');
+            await reply.react('❌');
 
             var collected = await reply.awaitReactions((_reaction, user) => user.id == author_id, { time: 10000 })
 
@@ -63,21 +63,28 @@ module.exports = class music {
             embed.setColor('LUMINOUS_VIVID_PINK')
             msg.channel.send(embed)
 
-            const videos = await playlist.fetchVideos()
+            const videos = await playlist.fetchVideos();
+            var errors = 0;
 
             for(const video of Object.values(videos)) {
                 const url = video.url
+                var error = false;
                 if(queue.indexOf(url) == -1) {
-                    queue.push(url)
-                    var data = await YoutubeStream.getInfo(url)
-                    title.push(Discord.escapeMarkdown(data.title))
-                    length.push(data.length_seconds)
+                    var data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
+                    if(!error) {
+                        queue.push(url)
+                        title.push(Discord.escapeMarkdown(data.title))
+                        length.push(data.length_seconds)
+                    }
                 }
             }
 
             const embedDone = new Discord.RichEmbed();
             embedDone.setTitle("**Done !**")
             embedDone.setColor('LUMINOUS_VIVID_PINK')
+
+            if(errors > 0) embedDone.setDescription("Some videos are unavailable yet :(");
+
             msg.channel.send(embedDone)
 
             if(!voiceChannel.connection) {
@@ -97,15 +104,23 @@ module.exports = class music {
         if(YoutubeStream.validateURL(video_url[0])) {
 
             msg.channel.startTyping()
+            var error = false;
 
             if(queue.indexOf(video_url[0]) == -1) {
-                queue.push(video_url[0])
-                var data = await YoutubeStream.getInfo(video_url[0])
-                title.push(Discord.escapeMarkdown(data.title))
-                length.push(data.length_seconds)
+                var data = await YoutubeStream.getInfo(video_url[0]).catch(() => { error = true; })
+                if(!error) {
+                    queue.push(video_url[0])
+                    title.push(Discord.escapeMarkdown(data.title))
+                    length.push(data.length_seconds)
+                }
             } else {
                 msg.channel.stopTyping()
                 return msg.channel.send(":x: > **This video is already in the queue !**")
+            }
+
+            if(error) {
+                msg.channel.stopTyping()
+                return msg.channel.send(":x: > **This video is unavailable.**")
             }
 
             if(voiceChannel.connection) {
@@ -138,22 +153,24 @@ module.exports = class music {
 
             if(!YoutubeStream.validateURL(video))return;
 
-            let voiceChannel = msg.guild.channels.find(val => val.id == VC)
-
-            if(voiceChannel == null)return;
-
-            if(!voiceChannel.members.find(val => val.id == author_id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
-
             msg.channel.startTyping();
+            var error = false;
 
             if(queue.indexOf(video) == -1) {
-                queue.push(video)
-                var data = await YoutubeStream.getInfo(video)
-                title.push(Discord.escapeMarkdown(data.title))
-                length.push(data.length_seconds)
+                var data = await YoutubeStream.getInfo(video).catch(() => { error = true; })
+                if(!error) {
+                    queue.push(video)
+                    title.push(Discord.escapeMarkdown(data.title))
+                    length.push(data.length_seconds)
+                }
             } else {
                 msg.channel.stopTyping()
                 return msg.channel.send(":x: > **This video is already in the queue !**")
+            }
+
+            if(error) {
+                msg.channel.stopTyping()
+                return msg.channel.send(":x: > **This video is unavailable.**")
             }
 
             if(voiceChannel.connection) {
