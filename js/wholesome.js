@@ -2,7 +2,7 @@ let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so
 
 var lastGifPat, lastGifHug, lastGifBoop, lastGifSlap;
 
-let countPat = 32, countHug = 30, countBoop = 8, countSlap;
+let countPat = 46, countHug = 47, countBoop = 15, countSlap = 9;
 
 module.exports = class wholesome {
 
