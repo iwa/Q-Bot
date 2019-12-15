@@ -234,9 +234,9 @@ module.exports = class music {
         embed.setColor('GREEN')
 
         if(queue.length <= 1)
-            embed.setTitle("**The queue is empty**")
+            embed.setTitle("**:cd: The queue is empty**")
         else {
-            embed.setTitle("**Here's the queue**")
+            embed.setTitle("**:cd: Here's the queue**")
 
             queue.forEach(async (item, index, _array) => {
 
@@ -251,6 +251,8 @@ module.exports = class music {
             })
 
         }
+
+        if (queue.length > 10) embed.setFooter("and " + (queue.length - 10) + " more...")
         msg.channel.stopTyping(true);
         msg.channel.send(embed);
 
@@ -435,7 +437,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
             var timeString = date.toISOString().substr(11, 8)
             const embed = new Discord.RichEmbed();
             embed.setColor('GREEN')
-            embed.setTitle("**Now Playing :**")
+            embed.setTitle("**:cd: Now Playing :**")
             embed.setDescription("[" + title[0] + "](" + queue[0] + ")")
             embed.setFooter("Length : " + timeString)
 
