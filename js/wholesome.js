@@ -199,13 +199,6 @@ module.exports = class wholesome {
             const embed = new Discord.RichEmbed();
             embed.setColor('#F2DEB0')
 
-            if(mention.id == '606458989575667732') {
-                setTimeout(() => {
-                    r-1;
-                    msg.channel.send(reply[r])
-                }, 2000)
-            }
-
             if(msg.channel.type != "dm") {
                 msg.delete().catch(console.error)
             }
@@ -220,7 +213,7 @@ module.exports = class wholesome {
 
             mongod.close();
 
-            embed.setFooter('you have given ' + (user.slap + 1) + ' boops')
+            embed.setFooter('you have given ' + (user.slap + 1) + ' slaps')
 
             return msg.channel.send(embed)
             .then(console.log("[" + new Date().toLocaleTimeString() + "] Slap by " + author), msg.channel.stopTyping(true))
