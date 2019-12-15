@@ -432,20 +432,22 @@ async function playSong (msg, voiceConnection, voiceChannel) {
     voiceConnection.then(connection => {
 
         connection.playStream(video, {volume : volume, bitrate : 96000}).on('start', () => {
-            var date = new Date(null)
-            date.setSeconds(length[0])
-            var timeString = date.toISOString().substr(11, 8)
-            const embed = new Discord.RichEmbed();
-            embed.setColor('GREEN')
-            embed.setTitle("**:cd: Now Playing :**")
-            embed.setDescription("[" + title[0] + "](" + queue[0] + ")")
-            embed.setFooter("Length : " + timeString)
+            if(loop == 0) {
+                var date = new Date(null)
+                date.setSeconds(length[0])
+                var timeString = date.toISOString().substr(11, 8)
+                const embed = new Discord.RichEmbed();
+                embed.setColor('GREEN')
+                embed.setTitle("**:cd: Now Playing :**")
+                embed.setDescription("[" + title[0] + "](" + queue[0] + ")")
+                embed.setFooter("Length : " + timeString)
 
-            msg.channel.send(embed)
-            console.log("[" + new Date().toLocaleTimeString() + "] Playing " + title[0])
+                msg.channel.send(embed)
+                console.log("[" + new Date().toLocaleTimeString() + "] Playing " + title[0])
+            }
         }).on('end', () => {
 
-            if (loop == 0) {
+            if(loop == 0) {
                 queue.shift()
                 title.shift()
                 length.shift()
