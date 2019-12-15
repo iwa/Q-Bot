@@ -87,39 +87,11 @@ bot.on('ready', async () => {
 bot.on('message', async msg => {
 
     if(msg.author.bot)return;
+    if(msg.channel.type != "text")return;
 
-    var cont = msg.content.split(' ')
-    var req = cont[0].substring(1).toLowerCase()
     var author = msg.author.tag
     var author_id = msg.author.id
 
-    if(msg.channel.type != "text")return;
-
-    if(req == "letmein") {
-        if(msg.guild.id != "225359327525994497")return;
-        if(msg.channel.id != "608630294261530624")return;
-
-        var mongod = await mongo.connect(url, connOptions);
-        var db = mongod.db(dbName);
-
-        var user = await db.collection('user').findOne({ '_id': { $eq: author_id } });
-
-        mongod.close();
-
-        if(user) {
-            var lvl = whichLevel(user.exp);
-            if(lvl != 0) await msg.member.addRole(levels[lvl]);
-        }
-
-        return await msg.member.addRole('606862164392673290').then(() => {
-            msg.delete().catch(console.error)
-            try {
-                msg.member.send({"embed": { "description": "I'm Q-Bot, a unique bot created for this server.\n\nYou can use me with the prefix `?`\nand see all my commands by doing `?help`", "color": 2543500, "author": { "name": "Welcome to Qumu's Discord Server, " + msg.author.username + " !", "icon_url": msg.author.avatarURL}}});
-            } catch (err) {
-                console.log(err)
-            }
-        }).catch(console.error)
-    }
     if(!msg.content.startsWith(prefix)) {
 
         if(msg.channel.id == '608630294261530624')return;
@@ -157,6 +129,36 @@ bot.on('message', async msg => {
         }
 
         return;
+    }
+
+    var plainCont = msg.content.replace(/\s\s+/g, ' ');
+    var cont = plainCont.split(' ')
+    var req = cont[0].substring(1).toLowerCase()
+
+    if(req == "letmein") {
+        if(msg.guild.id != "225359327525994497")return;
+        if(msg.channel.id != "608630294261530624")return;
+
+        var mongod = await mongo.connect(url, connOptions);
+        var db = mongod.db(dbName);
+
+        var user = await db.collection('user').findOne({ '_id': { $eq: author_id } });
+
+        mongod.close();
+
+        if(user) {
+            var lvl = whichLevel(user.exp);
+            if(lvl != 0) await msg.member.addRole(levels[lvl]);
+        }
+
+        return await msg.member.addRole('606862164392673290').then(() => {
+            msg.delete().catch(console.error)
+            try {
+                msg.member.send({"embed": { "description": "I'm Q-Bot, a unique bot created for this server.\n\nYou can use me with the prefix `?`\nand see all my commands by doing `?help`", "color": 2543500, "author": { "name": "Welcome to Qumu's Discord Server, " + msg.author.username + " !", "icon_url": msg.author.avatarURL}}});
+            } catch (err) {
+                console.log(err)
+            }
+        }).catch(console.error)
     }
 
     if(isSleeping === 1 && admin.indexOf(author_id) == -1)return;
