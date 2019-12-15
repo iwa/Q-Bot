@@ -540,7 +540,7 @@ async function imageLvl(msg, level) {
     const page = await browser.newPage();
 
     await page.setViewport({width: 808, height: 208, deviceScaleFactor: 2})
-    await page.setContent(contentLvl, {waitUntil: 'load'});
+    await page.setContent(contentLvl, {waitUntil: 'networkidle0'});
 
     var name = Crypto.SHA1(msg.author.tag).toString()
 
@@ -637,7 +637,7 @@ async function profileImg(msg, id) {
     const page = await browser.newPage();
 
     await page.setViewport({width: 508, height: 428, deviceScaleFactor: 2})
-    await page.setContent(contentProfile, {waitUntil: 'load'});
+    await page.setContent(contentProfile, {waitUntil: 'networkidle0'});
 
     var name = Crypto.SHA1('prof' + msg.author.tag).toString()
 
@@ -697,7 +697,7 @@ async function sonicSays(msg, cont) {
         const page = await browser.newPage();
 
         await page.setViewport({width: 385, height: 209, deviceScaleFactor: 2})
-        await page.setContent(contentSS, {waitUntil: 'load'});
+        await page.setContent(contentSS, {waitUntil: 'networkidle0'});
 
         var name = Crypto.SHA1('sonic' + msg.author.tag).toString()
 
