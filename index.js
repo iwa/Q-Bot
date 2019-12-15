@@ -94,7 +94,7 @@ bot.on('message', async msg => {
 
     if(!cooldown[author_id]) {
         cooldown[author_id] = 1;
-        return setTimeout(async () => { delete cooldown[author_id] }, 2500)
+        setTimeout(async () => { delete cooldown[author_id] }, 2500)
     } else
         cooldown[author_id]++;
 
