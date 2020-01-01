@@ -2,6 +2,22 @@ let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not"]
 
 module.exports = class games {
 
+    static roll (msg, cont, randomInt, author) {
+
+        if(cont.length !== 1) {
+            cont.shift()
+            var x = cont[0]
+            msg.channel.send({"embed": { "title": "**" + randomInt(x) + "**" }})
+              .then(console.log("[" + new Date().toLocaleTimeString() + "] Roll (" + x + ") : " + author))
+              .catch(console.error);
+        } else {
+            msg.channel.send({"embed": { "title": "**" + randomInt(100) + "**" }})
+              .then(console.log("[" + new Date().toLocaleTimeString() + "] Roll (100) : " + author))
+              .catch(console.error);
+        }
+
+    }
+
     static flipCoin (msg, randomInt, Discord) {
 
         var n = randomInt(2);
