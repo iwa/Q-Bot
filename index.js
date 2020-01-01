@@ -279,6 +279,9 @@ bot.on('message', async msg => {
 
         // Games
 
+        case "roll":
+            return games.roll(msg, cont, randomInt, author);
+
         case "flip":
             return games.flipCoin(msg, randomInt, Discord);
 
