@@ -65,7 +65,7 @@ module.exports = class games {
 
     }
 
-    static async action (msg, cont, Discord) {
+    static async ball (msg, cont, Discord) {
 
         if(await msg.channel.type != "text")return;
         if(cont.length < 2)return;
