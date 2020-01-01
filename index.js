@@ -84,6 +84,8 @@ bot.on('ready', async () => {
 });
 
 
+// Message Event
+
 bot.on('message', async msg => {
 
     if(msg.author.bot)return;
@@ -349,6 +351,36 @@ bot.on('message', async msg => {
 
     }
 
+});
+
+
+// Reactions Event
+
+bot.on('messageReactionAdd', async reaction => {
+    if(reaction.message.guild.id !== config.guildID)return;
+    if(reaction.emoji.name !== '⭐')return;
+    if(reaction.users.find(val => val.id == bot.user.id))return;
+    if(reaction.count >= 6) {
+        var msg = reaction.message;
+        var channel = bot.channels.find(val => val.id == config.starboardTC);
+
+        await msg.react(reaction.emoji.name);
+        await channel.send({
+            "embed": {
+              "description": "```" + msg.content + "```[message link✉️](" + msg.url + ")",
+              "color": 14212956,
+              "timestamp": msg.createdTimestamp,
+              "footer": {
+                "text": "New starboard entry ⭐️"
+              },
+              "author": {
+                "name": msg.author.username,
+                "icon_url": msg.author.avatarURL
+              }
+            }
+          });
+        return console.log("[" + new Date().toLocaleTimeString() + "] info: new message into starboard (author: " + msg.author.tag + ")");
+    }
 });
 
 
