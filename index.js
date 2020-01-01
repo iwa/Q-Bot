@@ -402,7 +402,8 @@ setInterval(async () => {
                 embed.setTitle("**Happy Birthday, " + userInfo.username + " ! 🎉🎉**")
                 embed.setFooter("Born on : " + today)
                 embed.setColor('#FFFF72')
-                channel.send("<@" + user.id + ">,")
+                embed.setThumbnail(userInfo.avatarURL)
+                channel.send("<@" + user.id + ">")
                 channel.send(embed)
             });
         }
