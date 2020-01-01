@@ -204,6 +204,12 @@ async function join (msg, game) {
                 return msg.member.addRole('614445572199546880').then(msg.reply("you joined Mario Maker!"))
             } break;
 
+        case "pokemon":
+        case "pokémon":
+            if(! await msg.member.roles.find(val => val.id == '662017803804475393')) {
+                return msg.member.addRole('662017803804475393').then(msg.reply("you joined Pokémon!"))
+            } break;
+
         default:
             return msg.reply("the game you entered doesn't exist yet")
 
@@ -235,6 +241,12 @@ async function leave (msg, game) {
         case "mario maker":
             if(await msg.member.roles.find(val => val.id == '614445572199546880')) {
                 return msg.member.removeRole('614445572199546880').then(msg.reply("you leaved Mario Maker!"))
+            } break;
+
+        case "pokemon":
+        case "pokémon":
+            if(await msg.member.roles.find(val => val.id == '662017803804475393')) {
+                return msg.member.removeRole('662017803804475393').then(msg.reply("you leaved Pokémon!"))
             } break;
 
         default:
