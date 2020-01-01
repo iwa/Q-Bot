@@ -1,7 +1,7 @@
 let admin = {
     "embed": {
       "title": "**❯ Admin**",
-      "description": "`link` `sleep` `stats` `del` `mod` `resetbirthday` `resetfc`",
+      "description": "`?sleep`\n`?resetbirthday (UID)`\n`?resetfc (UID)`",
       "color": 13632027
     }
   }
@@ -9,7 +9,7 @@ let admin = {
 let mod = {
     "embed": {
       "title": "**⚔️ Mods**",
-      "description": "`?forceskip`\n`?say (msg)`\n`?mute (mention someone) (length in minutes)`",
+      "description": "`?forceskip`\n`?bulk (amount of messages to delete)`\n`?mute (mention someone) (length in minutes)`",
       "color": 4886754
     }
   }
@@ -22,11 +22,11 @@ let member = {
       "fields": [
         {
             "name": "**👤 Profile**",
-            "value": "`id` `profile` `setbirthday` `setfc` `becomefan` `leavefan`"
+            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan`"
         },
         {
-            "name": "**💕 Wholesome**",
-            "value": "`patpat` `pat` `hug` `boop`"
+            "name": "**💕 Actions**",
+            "value": "`pat` `hug` `boop` `slap`"
         },
         {
             "name": "**🕹 Games**",
@@ -213,10 +213,5 @@ async function sendHelp(msg, isMod, adminList) {
             return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
     else
-        try {
-            await msg.author.send(member)
-        } catch(ex) {
-            console.log(ex)
-            return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
-        }
+        await msg.channel.send(member)
 }
