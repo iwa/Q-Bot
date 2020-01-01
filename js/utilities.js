@@ -182,32 +182,32 @@ async function join (msg, game) {
         case "mariokart":
         case "mario kart":
             if(! await msg.member.roles.find(val => val.id == '614445539693559820')) {
-                return msg.member.addRole('614445539693559820').then(msg.reply("you joined Mario Kart!"))
+                return msg.member.addRole('614445539693559820').then(msg.reply("you joined Mario Kart role !"))
             } break;
 
         case "smashbros":
         case "smash bros":
         case "smash":
             if(! await msg.member.roles.find(val => val.id == '614445571045982228')) {
-                return msg.member.addRole('614445571045982228').then(msg.reply("you joined Smash Bros!"))
+                return msg.member.addRole('614445571045982228').then(msg.reply("you joined Smash Bros role !"))
             } break;
 
         case "splatoon":
         case "sploon":
             if(! await msg.member.roles.find(val => val.id == '614445571276668930')) {
-                return msg.member.addRole('614445571276668930').then(msg.reply("you joined Splatoon!"))
+                return msg.member.addRole('614445571276668930').then(msg.reply("you joined Splatoon role !"))
             } break;
 
         case "mariomaker":
         case "mario maker":
             if(! await msg.member.roles.find(val => val.id == '614445572199546880')) {
-                return msg.member.addRole('614445572199546880').then(msg.reply("you joined Mario Maker!"))
+                return msg.member.addRole('614445572199546880').then(msg.reply("you joined Mario Maker role !"))
             } break;
 
         case "pokemon":
         case "pokémon":
             if(! await msg.member.roles.find(val => val.id == '662017803804475393')) {
-                return msg.member.addRole('662017803804475393').then(msg.reply("you joined Pokémon!"))
+                return msg.member.addRole('662017803804475393').then(msg.reply("you joined Pokémon role !"))
             } break;
 
         default:
@@ -221,32 +221,32 @@ async function leave (msg, game) {
         case "mariokart":
         case "mario kart":
             if(await msg.member.roles.find(val => val.id == '614445539693559820')) {
-                return msg.member.removeRole('614445539693559820').then(msg.reply("you leaved Mario Kart!"))
+                return msg.member.removeRole('614445539693559820').then(msg.reply("you leaved Mario Kart role !"))
             } break;
 
         case "smashbros":
         case "smash bros":
         case "smash":
             if(await msg.member.roles.find(val => val.id == '614445571045982228')) {
-                return msg.member.removeRole('614445571045982228').then(msg.reply("you leaved Smash Bros!"))
+                return msg.member.removeRole('614445571045982228').then(msg.reply("you leaved Smash Bros role !"))
             } break;
 
         case "splatoon":
         case "sploon":
             if(await msg.member.roles.find(val => val.id == '614445571276668930')) {
-                return msg.member.removeRole('614445571276668930').then(msg.reply("you leaved Splatoon!"))
+                return msg.member.removeRole('614445571276668930').then(msg.reply("you leaved Splatoon role !"))
             } break;
 
         case "mariomaker":
         case "mario maker":
             if(await msg.member.roles.find(val => val.id == '614445572199546880')) {
-                return msg.member.removeRole('614445572199546880').then(msg.reply("you leaved Mario Maker!"))
+                return msg.member.removeRole('614445572199546880').then(msg.reply("you leaved Mario Maker role !"))
             } break;
 
         case "pokemon":
         case "pokémon":
             if(await msg.member.roles.find(val => val.id == '662017803804475393')) {
-                return msg.member.removeRole('662017803804475393').then(msg.reply("you leaved Pokémon!"))
+                return msg.member.removeRole('662017803804475393').then(msg.reply("you leaved Pokémon role !"))
             } break;
 
         default:
