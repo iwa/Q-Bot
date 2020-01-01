@@ -50,7 +50,7 @@ let member = {
 
 module.exports = class help {
 
-    static async action (msg, cont, author, isMod, admin) {
+    static async action (msg, cont, author, isMod, adminList) {
 
         if(cont.length == 2) {
             var what;
@@ -187,7 +187,7 @@ module.exports = class help {
                 return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
             }
         } else
-            sendHelp(msg, isMod, admin);
+            sendHelp(msg, isMod, adminList);
 
         console.log("[" + new Date().toLocaleTimeString() + "] Help sent to " + author)
     }
