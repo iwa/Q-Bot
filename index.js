@@ -575,7 +575,7 @@ async function profileImg(msg, id) {
 
     mongod.close();
 
-    if(!user)return msg.channel.send(":x: > **The user you entered isn't registered in the database yet**");
+    if(!user)return msg.channel.send(":x: > **You aren't / The user you mentionned isn't registered into the database, you / they need to talk once in a channel to have your / their profile initialized**");
 
     msg.channel.startTyping();
 
