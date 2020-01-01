@@ -4,7 +4,7 @@ var lastGifPat, lastGifHug, lastGifBoop, lastGifSlap;
 
 let countPat = 46, countHug = 47, countBoop = 15, countSlap = 9;
 
-module.exports = class wholesome {
+module.exports = class actions {
 
     static async pat (msg, cont, randomInt, author, author_id, mongod, db, Discord) {
 
