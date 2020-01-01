@@ -180,12 +180,9 @@ module.exports = class help {
                 break;
 
             }
-            try {
-                msg.author.send("`Syntax : ( ) is needed parameter, [ ] is optional parameter`")
-                return await msg.author.send(what)
-            } catch(ex) {
-                return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
-            }
+
+            await msg.channel.send("`Syntax : ( ) is needed parameter, [ ] is optional parameter`")
+            return await msg.channel.send(what)
         } else
             sendHelp(msg, isMod, adminList);
 
