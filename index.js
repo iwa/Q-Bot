@@ -8,7 +8,7 @@ const dbName = 'qbot';
 const help = require('./js/help')
 const staff = require('./js/staff')
 const profile = require('./js/profile')
-const wholesome = require('./js/wholesome')
+const actions = require('./js/actions')
 const games = require('./js/games')
 const music = require('./js/music')
 const utilities = require('./js/utilities')
@@ -258,22 +258,22 @@ bot.on('message', async msg => {
         case "leavefan":
             return profile.leaveFan(msg);
 
-        // Wholesome
+        // Actions
 
         case "pat":
             var mongod = await mongo.connect(url, connOptions);
             var db = mongod.db(dbName);
-        return wholesome.pat(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+        return actions.pat(msg, cont, randomInt, author, author_id, mongod, db, Discord);
 
         case "hug":
             var mongod = await mongo.connect(url, connOptions);
             var db = mongod.db(dbName);
-        return wholesome.hug(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+        return actions.hug(msg, cont, randomInt, author, author_id, mongod, db, Discord);
 
         case "boop":
             var mongod = await mongo.connect(url, connOptions);
             var db = mongod.db(dbName);
-        return wholesome.boop(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+        return actions.boop(msg, cont, randomInt, author, author_id, mongod, db, Discord);
 
         // Games
 
