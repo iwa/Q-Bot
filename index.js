@@ -277,6 +277,11 @@ bot.on('message', async msg => {
             var db = mongod.db(dbName);
         return actions.boop(msg, cont, randomInt, author, author_id, mongod, db, Discord);
 
+        case "slap":
+            var mongod = await mongo.connect(url, connOptions);
+            var db = mongod.db(dbName);
+        return actions.slap(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+
         // Games
 
         case "roll":
