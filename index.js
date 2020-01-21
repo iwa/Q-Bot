@@ -749,36 +749,3 @@ async function sonicSays(msg, cont) {
         }
     }
 }
-
-async function osuUser(msg, cont) {
-
-    if(cont.length != 2 || cont.length < 2)return;
-    let mode = 0, type = 'string'
-
-    let url = `https://osu.ppy.sh/api/get_user?k=${osuKey}&u=${cont[1]}&m=${mode}&type=${type}`
-    var response = await fetch(url);
-    var [data] = await response.json();
-
-    if ([data] === []) {
-        console.error("The specified user isn't a valid user!")
-    }
-
-    if (data == undefined)
-        return msg.channel.send(":x: > **The user you entered doesn't exist !**")
-
-    var playedTime = (data.total_seconds_played/3600);
-
-    const embed = new Discord.RichEmbed();
-    embed.setTitle("**" + data.username + "**")
-    embed.setDescription('__level :__ ' + data.level +
-        '\n__pp :__ ' + data.pp_raw +
-        '\n__pp worldwide rank :__ ' + data.pp_rank +
-        '\n__total plays :__ ' + data.playcount +
-        '\n__accuracy :__ ' + data.accuracy.substr(0,7) +
-        '\n__country :__ ' + data.country +
-        '\n__time played :__ ' + Math.trunc(playedTime) + 'h')
-    embed.setThumbnail('http://a.ppy.sh/' + data.user_id)
-    embed.setColor('#fd79a8')
-    msg.channel.send(embed)
-
-}

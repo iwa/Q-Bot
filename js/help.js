@@ -42,7 +42,7 @@ let member = {
         },
         {
             "name": "**🛠 Utility**",
-            "value": "`ping` `pong` `help` `commands` `info` `leaderboard` `lead` `role` `anime` `manga` `osu`"
+            "value": "`ping` `pong` `help` `commands` `info` `leaderboard` `lead` `role` `anime` `manga`"
         },
       ]
     }
