@@ -1,9 +1,11 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
 
-const mongo = require('mongodb').MongoClient;
-const url = 'mongodb://localhost:27017/';
-const dbName = 'qbot';
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+
+const adapter = new FileSync('src/db.json');
+const db = low(adapter);
 
 const help = require('./js/help')
 const staff = require('./js/staff')
@@ -28,14 +30,7 @@ let prefix = "?";
 let admin = ['125325519054045184', '214740144538910721'];
 var isSleeping = 0, lastComboColor;
 var cooldown = [], cooldownXP = [];
-let connOptions = {
-    'useUnifiedTopology': true,
-    'authSource': "admin"/*,
-    'auth': {
-        'user': "qbot",
-        'password': config.mongoPwd
-    }*/
-};
+
 let levels = {
     1 : '611979452414427138',
     2 : '611979473352392714',
