@@ -16,7 +16,6 @@ const utilities = require('./js/utilities')
 const fs = require('fs')
 const fetch = require('node-fetch');
 const puppeteer = require('puppeteer');
-const Crypto = require('crypto-js');
 
 let config = JSON.parse(fs.readFileSync('./config.json', 'utf-8'))
 
@@ -159,7 +158,7 @@ bot.on('message', async msg => {
         return await msg.member.addRole('606862164392673290').then(() => {
             msg.delete().catch(console.error)
             try {
-                msg.member.send({"embed": { "description": "I'm Q-Bot, a unique bot created for this server.\n\nYou can use me with the prefix `?`\nand see all my commands by doing `?help`", "color": 2543500, "author": { "name": "Welcome to Qumu's Discord Server, " + msg.author.username + " !", "icon_url": msg.author.avatarURL}}});
+                msg.member.send({"embed": { "description": "I'm Q-Bot, a unique bot created for this server.\n\nYou can use me with the prefix `?`\nand see all my commands by doing `?help`", "color": 2543500, "author": { "name": `Welcome to Qumu's Discord Server, ${msg.author.username} !`, "icon_url": msg.author.avatarURL}}});
             } catch (err) {
                 console.log(err)
             }
@@ -178,14 +177,14 @@ bot.on('message', async msg => {
                     isSleeping = 1;
                     bot.user.setStatus("dnd")
                     bot.user.setActivity("being updated...", {type : 0})
-                        .then(msg.react("✅") , console.log("[" + new Date().toLocaleTimeString() + "] Sleeping enabled"))
+                        .then(msg.react("✅") , console.log("info: sleeping enabled"))
                         .catch(console.error);
                     return msg.channel.send("Sleeping Mode On !")
                 } else {
                     isSleeping = 0;
                     bot.user.setStatus("online")
                     bot.user.setActivity("Qumu's Remixes | ?help", {type : 2})
-                        .then(msg.react("✅") , console.log("[" + new Date().toLocaleTimeString() + "] Sleeping disabled"))
+                        .then(msg.react("✅") , console.log("info: sleeping disabled"))
                         .catch(console.error);
                     return msg.channel.send("Sleeping Mode Off !")
                 };
@@ -375,7 +374,7 @@ bot.on('messageReactionAdd', async reaction => {
         await msg.react(reaction.emoji.name);
         await channel.send({
             "embed": {
-              "description": "```" + msg.content + "```[message link✉️](" + msg.url + ")",
+              "description": `\`\`\`${msg.content}\`\`\`[message link✉️](${msg.url})`,
               "color": 14212956,
               "timestamp": msg.createdTimestamp,
               "footer": {
@@ -387,7 +386,7 @@ bot.on('messageReactionAdd', async reaction => {
               }
             }
           });
-        return console.log("[" + new Date().toLocaleTimeString() + "] info: new message into starboard (author: " + msg.author.tag + ")");
+        return console.log(`info: new message into starboard (author: ${msg.author.tag})`);
     }
 });
 
@@ -405,7 +404,7 @@ setInterval(async () => {
         .then(data => {
             if(newCount == data.subCount)return;
             let subs = data.subCount.toLocaleString()
-            channel.edit({ name: '📊 ' + subs + ' subs'})
+            channel.edit({ name: `📊 ${subs} subs`})
         })
 
 }, 3600000);
@@ -439,11 +438,11 @@ setInterval(async () => {
             data.forEach(async user => {
                 var userInfo = await bot.fetchUser(user.id)
                 const embed = new Discord.RichEmbed();
-                embed.setTitle("**Happy Birthday, " + userInfo.username + " ! 🎉🎉**")
-                embed.setFooter("Born on : " + today)
+                embed.setTitle(`**Happy Birthday, ${userInfo.username} ! 🎉🎉**`)
+                embed.setFooter(`Born on : ${today}`)
                 embed.setColor('#FFFF72')
                 embed.setThumbnail(userInfo.avatarURL)
-                channel.send("<@" + user.id + ">")
+                channel.send(`<@${user.id}>`)
                 channel.send(embed)
             });
         }
@@ -586,17 +585,15 @@ async function imageLvl(msg, level) {
     await page.setViewport({width: 808, height: 208, deviceScaleFactor: 2})
     await page.setContent(contentLvl, {waitUntil: 'networkidle0'});
 
-    var name = Crypto.SHA1(msg.author.tag).toString()
-
-    await page.screenshot({path: 'image/' + name + '.jpg', type: 'jpeg', quality: 100});
+    await page.screenshot({path: `image/${name}.jpg`, type: 'jpeg', quality: 100});
 
     await browser.close();
 
     try {
-        return msg.reply('', {files: ['image/' + name + '.jpg']})
+        return msg.reply('', {files: [`image/${name}.jpg`]})
     } catch(err) {
         console.error(err)
-        return msg.reply("You're now level " + level + " ! Congrats !")
+        return msg.reply(`You're now level ${level} ! Congrats !`)
     }
 
 }
@@ -683,14 +680,12 @@ async function profileImg(msg, id) {
     await page.setViewport({width: 508, height: 428, deviceScaleFactor: 2})
     await page.setContent(contentProfile, {waitUntil: 'networkidle0'});
 
-    var name = Crypto.SHA1('prof' + msg.author.tag).toString()
-
-    await page.screenshot({path: 'image/' + name + '.jpg', type: 'jpeg', quality: 100});
+    await page.screenshot({path: `image/prof${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
 
     await browser.close();
 
     try {
-        return await msg.channel.send('', {files: ['image/' + name + '.jpg']}).then(msg.channel.stopTyping(true));
+        return await msg.channel.send('', {files: [`image/prof${msg.author.tag}.jpg`]}).then(msg.channel.stopTyping(true));
     } catch(err) {
         console.error(err)
         return msg.channel.send("An error occured, please contact <@125325519054045184>")
@@ -743,14 +738,12 @@ async function sonicSays(msg, cont) {
         await page.setViewport({width: 385, height: 209, deviceScaleFactor: 2})
         await page.setContent(contentSS, {waitUntil: 'networkidle0'});
 
-        var name = Crypto.SHA1('sonic' + msg.author.tag).toString()
-
-        await page.screenshot({path: 'image/' + name + '.jpg', type: 'jpeg', quality: 100});
+        await page.screenshot({path: `image/sonic${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
 
         await browser.close();
 
         try {
-            return msg.channel.send('', {files: ['image/' + name + '.jpg']}).then(msg.channel.stopTyping(true));
+            return msg.channel.send('', {files: [`image/sonic${msg.author.tag}.jpg`]}).then(msg.channel.stopTyping(true));
         } catch(err) {
             console.error(err)
         }
