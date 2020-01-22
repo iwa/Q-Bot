@@ -177,10 +177,10 @@ bot.on('message', async msg => {
                 };
 
             case "resetbirthday":
-                return profile.resetbd(msg, cont, db, author_id, Discord, bot);
+                return profile.reset(msg, cont, db, author_id, Discord, bot, 'birthday');
 
             case "resetfc":
-                return profile.resetfc(msg, cont, db, author_id, Discord, bot);
+                return profile.reset(msg, cont, db, author_id, Discord, bot, 'fc');
 
         }
     }
