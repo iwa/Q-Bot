@@ -159,21 +159,7 @@ bot.on('message', async msg => {
         switch (req) {
 
             case "sleep":
-                if(isSleeping == 0) {
-                    isSleeping = 1;
-                    bot.user.setStatus("dnd")
-                    bot.user.setActivity("being updated...", {type : 0})
-                        .then(msg.react("✅") , console.log("info: sleeping enabled"))
-                        .catch(console.error);
-                    return msg.channel.send("Sleeping Mode On !")
-                } else {
-                    isSleeping = 0;
-                    bot.user.setStatus("online")
-                    bot.user.setActivity("Qumu's Remixes | ?help", {type : 2})
-                        .then(msg.react("✅") , console.log("info: sleeping disabled"))
-                        .catch(console.error);
-                    return msg.channel.send("Sleeping Mode Off !")
-                };
+                return isSleeping = staff.sleep(msg, bot, isSleeping);
 
             case "resetbirthday":
                 return profile.reset(msg, cont, db, author_id, Discord, bot, 'birthday');
