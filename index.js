@@ -22,6 +22,7 @@ const fetch = require('node-fetch');
 const puppeteer = require('puppeteer');
 
 let config = require('./config.json');
+let commands = require('./lib/dictionary.json');
 
 const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(config.yt_token)
@@ -157,146 +158,25 @@ bot.on('message', async msg => {
     // cmd Admin
 
     if(admin.indexOf(author_id) == 0) {
-        switch (req) {
+        let cmd = commands.admin[req];
 
-            case "sleep":
-                return isSleeping = staff.sleep(msg, bot, isSleeping);
-
-            case "resetbirthday":
-                return profile.reset(msg, cont, db, author_id, Discord, bot, 'birthday');
-
-            case "resetfc":
-                return profile.reset(msg, cont, db, author_id, Discord, bot, 'fc');
-
-        }
+        if(cmd) return eval(commands.admin[req]);
     }
 
     // cmd Mods
 
     if(isMod(msg) === true || admin.indexOf(author_id) > -1) {
-        switch (req) {
+        let cmd = commands.staff[req];
 
-            case "bulk" :
-                return staff.bulk(msg, cont, author);
-
-            case "forceskip":
-                return music.forceskip(msg, bot, Discord);
-
-            case "mute":
-                return staff.mute(msg, cont, author_id, admin, config.modRole, Discord, bot);
-
-        }
+        if(cmd) return eval(commands.staff[req]);
     }
 
     // cmd Member
 
-    switch (req) {
+    let cmd = commands.member[req];
 
-        // Profile
-
-        case "profile":
-            return profile.show(msg, cont, author_id, bot, profileImg);
-
-        case "setbirthday":
-            return profile.setbd(msg, cont, db, author_id, Discord);
-
-        case "setfc":
-            return profile.setfc(msg, cont, db, author_id, Discord);
-
-        case "becomefan":
-            return profile.joinFan(msg);
-
-        case "leavefan":
-            return profile.leaveFan(msg);
-
-        // Actions
-
-        case "pat":
-            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'pat');
-
-        case "hug":
-            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'hug');
-
-        case "boop":
-            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'boop');
-
-        case "slap":
-            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'slap');
-
-        // Games
-
-        case "roll":
-            return games.roll(msg, cont, randomInt, author);
-
-        case "flip":
-            return games.flipCoin(msg, randomInt, Discord);
-
-        case "rps":
-            return games.rps(msg, cont, randomInt, Discord, error);
-
-        case "8ball":
-        case "8b":
-            return games.ball(msg, cont, Discord);
-
-        // Memes
-
-        case "sonicsays":
-            return memes.sonicsays(msg, cont, author_id, admin, sonicSays);
-
-        // Music
-
-        case "play":
-            return music.play(msg, yt, cont, author_id);
-
-        case "remove":
-            return music.remove(msg, cont);
-
-        case "queue":
-        case "q":
-            return music.list(msg, cont);
-
-        case "skip":
-            return music.skip(msg, bot);
-
-        case "clear":
-            return music.clear(msg);
-
-        case "stop":
-        case "quit":
-        case "leave":
-            return music.stop(msg);
-
-        case "loop":
-        case "repeat":
-            return music.loop(msg);
-
-        case "playing":
-        case "np":
-        case "nowplaying":
-            return music.np(msg, bot);
-
-        // Utilities
-
-        case "help":
-        case "commands":
-            return help.action(msg, cont, author, isMod, admin);
-
-        case "info":
-            var iwa = await bot.fetchUser(admin[0]);
-        return utilities.info(msg, iwa.avatarURL);
-
-        case "ping":
-            return utilities.ping(msg, author, bot);
-
-        case "pong":
-            return utilities.pong(msg, author, bot);
-
-        case "leaderboard":
-        case "lead":
-            return utilities.leaderboard(msg, cont, author, Discord, db, bot);
-
-    }
-
+    if(!cmd) return;
+    else return eval(commands.member[req]);
 });
 
 
