@@ -1,9 +1,13 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
 
-const mongo = require('mongodb').MongoClient;
-const url = 'mongodb://localhost:27017/';
-const dbName = 'qbot';
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+
+const adapter = new FileSync('src/db.json');
+const db = low(adapter);
+
+db.defaults({ user: []}).write();
 
 const help = require('./js/help')
 const staff = require('./js/staff')
@@ -28,14 +32,7 @@ let prefix = "?";
 let admin = ['125325519054045184', '214740144538910721'];
 var isSleeping = 0, lastComboColor;
 var cooldown = [], cooldownXP = [];
-let connOptions = {
-    'useUnifiedTopology': true,
-    'authSource': "admin"/*,
-    'auth': {
-        'user': "qbot",
-        'password': config.mongoPwd
-    }*/
-};
+
 let levels = {
     1 : '611979452414427138',
     2 : '611979473352392714',
@@ -118,21 +115,16 @@ bot.on('message', async msg => {
             return await msg.react('❌');
         }
 
-        var mongod = await mongo.connect(url, connOptions);
-        var db = mongod.db(dbName);
-
-        var user = await db.collection('user').findOne({ '_id': { $eq: author_id } });
+        var user = await db.get('user').find({ id: author_id }).value();
 
         if(!user)
-            await db.collection('user').insertOne({ _id: author_id, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0, birthday: null, fc: null });
+            await db.get('user').push({ id: msg.author.id, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0, birthday: null, fc: null }).write()
         else if(!cooldownXP[author_id]) {
-            await db.collection('user').updateOne({ _id: author_id }, { $inc: { exp: 1 }});
+            user = await db.get('user').find({ id: author_id }).update('exp', n => n + 1).write();
             levelCheck(msg, user.exp);
             cooldownXP[author_id] = 1;
             return setTimeout(async () => { delete cooldownXP[author_id] }, 5000)
         }
-
-        return mongod.close();
     }
 
     var plainCont = msg.content.replace(/\s\s+/g, ' ');
@@ -143,12 +135,7 @@ bot.on('message', async msg => {
         if(msg.guild.id != "225359327525994497")return;
         if(msg.channel.id != "608630294261530624")return;
 
-        var mongod = await mongo.connect(url, connOptions);
-        var db = mongod.db(dbName);
-
-        var user = await db.collection('user').findOne({ '_id': { $eq: author_id } });
-
-        mongod.close();
+        var user = await db.get('user').find({ id: author_id }).value();
 
         if(user) {
             var lvl = whichLevel(user.exp);
@@ -190,14 +177,10 @@ bot.on('message', async msg => {
                 };
 
             case "resetbirthday":
-                var mongod = await mongo.connect(url, connOptions);
-                var db = mongod.db(dbName);
-            return profile.resetbd(msg, cont, mongod, db, author_id, Discord, bot);
+                return profile.resetbd(msg, cont, db, author_id, Discord, bot);
 
             case "resetfc":
-                var mongod = await mongo.connect(url, connOptions);
-                var db = mongod.db(dbName);
-            return profile.resetfc(msg, cont, mongod, db, author_id, Discord, bot);
+                return profile.resetfc(msg, cont, db, author_id, Discord, bot);
 
         }
     }
@@ -244,14 +227,10 @@ bot.on('message', async msg => {
                 return profileImg(msg, author_id);
 
         case "setbirthday":
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
-        return profile.setbd(msg, cont, mongod, db, author_id, Discord);
+            return profile.setbd(msg, cont, db, author_id, Discord);
 
         case "setfc":
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
-        return profile.setfc(msg, cont, mongod, db, author_id, Discord);
+            return profile.setfc(msg, cont, db, author_id, Discord);
 
         case "becomefan":
             return profile.joinFan(msg);
@@ -262,24 +241,16 @@ bot.on('message', async msg => {
         // Actions
 
         case "pat":
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
-        return actions.pat(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+            return actions.pat(msg, cont, randomInt, author, author_id, db, Discord);
 
         case "hug":
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
-        return actions.hug(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+            return actions.hug(msg, cont, randomInt, author, author_id, db, Discord);
 
         case "boop":
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
-        return actions.boop(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+            return actions.boop(msg, cont, randomInt, author, author_id, db, Discord);
 
         case "slap":
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
-        return actions.slap(msg, cont, randomInt, author, author_id, mongod, db, Discord);
+            return actions.slap(msg, cont, randomInt, author, author_id, db, Discord);
 
         // Games
 
@@ -352,9 +323,7 @@ bot.on('message', async msg => {
 
         case "leaderboard":
         case "lead":
-            var mongod = await mongo.connect(url, connOptions);
-            var db = mongod.db(dbName);
-        return utilities.leaderboard(msg, cont, author, Discord, mongod, db, bot);
+            return utilities.leaderboard(msg, cont, author, Discord, db, bot);
 
     }
 
@@ -423,12 +392,7 @@ setInterval(async () => {
         var mm = String(today.getMonth() + 1).padStart(2, '0');
         today = mm + '/' + dd;
 
-        var mongod = await mongo.connect(url, connOptions);
-        var db = mongod.db(dbName);
-
-        var data = await db.collection('user').findMany({ 'birthday': { $eq: today } }).toArray();
-
-        mongod.close();
+        var data = await db.get('user').filter({ birthday: today }).value();
 
         if(data.length >= 1) {
 
@@ -600,18 +564,7 @@ async function imageLvl(msg, level) {
 
 async function profileImg(msg, id) {
 
-    var mongod = await mongo.connect(url, connOptions);
-    var db = mongod.db(dbName);
-
-    var user = await db.collection('user').findOne({ '_id': { $eq: id } });
-
-    var leadXP = await db.collection('user').find().sort({exp:-1}).toArray();
-    var leadHug = await db.collection('user').find().sort({hug:-1}).toArray();
-    var leadPat = await db.collection('user').find().sort({pat:-1}).toArray();
-    var leadBoop = await db.collection('user').find().sort({boop:-1}).toArray();
-    var leadSlap = await db.collection('user').find().sort({boop:-1}).toArray();
-
-    mongod.close();
+    var user = await db.get('user').find({ id: id }).value();
 
     if(!user)return msg.channel.send(":x: > **You aren't / The user you mentionned isn't registered into the database, you / they need to talk once in a channel to have your / their profile initialized**");
 
@@ -623,11 +576,13 @@ async function profileImg(msg, id) {
     let fc = user.fc;
     var level, remaining, need;
 
-    var positionXP = leadXP.findIndex(val => val._id == id)+1;
-    var positionHug = leadHug.findIndex(val => val._id == id)+1;
-    var positionPat = leadPat.findIndex(val => val._id == id)+1;
-    var positionBoop = leadBoop.findIndex(val => val._id == id)+1;
-    var positionSlap = leadSlap.findIndex(val => val._id == id)+1;
+    var positionXP = await db.get('user').orderBy('exp', 'desc').findIndex(val => val.id == id).value()
+    var positionHug = await db.get('user').orderBy('hug', 'desc').findIndex(val => val.id == id).value()
+    var positionPat = await db.get('user').orderBy('pat', 'desc').findIndex(val => val.id == id).value()
+    var positionBoop = await db.get('user').orderBy('boop', 'desc').findIndex(val => val.id == id).value()
+    var positionSlap = await db.get('user').orderBy('slap', 'desc').findIndex(val => val.id == id).value()
+
+    positionXP++; positionHug++; positionPat++; positionBoop++; positionSlap++;
 
     if(birthday == null)
         birthday = 'not registered yet';
