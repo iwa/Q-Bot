@@ -14,6 +14,7 @@ const staff = require('./js/staff')
 const profile = require('./js/profile')
 const actions = require('./js/actions')
 const games = require('./js/games')
+const memes = require('./js/memes')
 const music = require('./js/music')
 const utilities = require('./js/utilities')
 
@@ -240,8 +241,7 @@ bot.on('message', async msg => {
         // Memes
 
         case "sonicsays":
-            if(msg.channel.id != '606165780215889960' && author_id != master)return;
-        return sonicSays(msg, cont);
+            return memes.sonicsays(msg, cont, author_id, admin, sonicSays);
 
         // Music
 
