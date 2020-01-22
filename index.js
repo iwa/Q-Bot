@@ -64,18 +64,18 @@ bot.on('warn', console.warn)
 
 bot.on('error', console.error)
 
-bot.on('disconnect', () => console.log("[" + new Date().toLocaleTimeString() + "] _Something went bad, I'm disconnected now, try to reconnect..."))
+bot.on('disconnect', () => console.log("warn: bot disconnected"))
 
 bot.on('reconnecting', async () => {
     await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
     await bot.user.setStatus("online").catch(console.error)
-    console.log("[" + new Date().toLocaleTimeString() + "] _Reconnecting....")
+    console.log("info: bot reconnecting...")
 });
 
 bot.on('ready', async () => {
     await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
     await bot.user.setStatus("online").catch(console.error)
-    console.log(`[` + new Date().toLocaleTimeString() + `] _Logged in as ${bot.user.username}...`);
+    console.log(`info: logged in as ${bot.user.username}`);
 });
 
 
