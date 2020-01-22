@@ -67,56 +67,27 @@ module.exports = class profile {
         }
     }
 
-    static async resetbd (msg, cont, db, author_id, Discord, bot) {
+    static async reset (msg, cont, db, author_id, Discord, bot, type) {
 
         if(cont.length == 2) {
 
             let id = cont[1]
 
             var userDB = await db.get('user').find({ id: id }).value()
-            if(!userDB) {
+            if(!userDB)
                 return msg.channel.send({"embed": { "title": ":x: > **The user you entered isn't registered in the database yet**", "color": 13632027 }});
-            }
 
             let user = await bot.fetchUser(userDB.id)
 
-            await db.get('user').find({ id: author_id }).set('birthday', null).write();
+            await db.get('user').find({ id: author_id }).set(type, null).write();
 
             const embed = new Discord.RichEmbed();
             embed.setColor('AQUA')
-            embed.setTitle(user.tag + "'s birthday is now reset");
+            embed.setTitle(`${user.tag}'s ${type} is now reset`);
 
             try {
-                console.log("[" + new Date().toLocaleTimeString() + "] Reset Birthday of " + msg.author.tag)
-                return await msg.channel.send(embed)
-            } catch(err) {
-                console.error(err);
-            }
-        }
-    }
-
-    static async resetfc (msg, cont, db, author_id, Discord, bot) {
-
-        if(cont.length == 2) {
-
-            let id = cont[1]
-
-            var userDB = await db.get('user').find({ id: id }).value()
-            if(!userDB) {
-                return msg.channel.send({"embed": { "title": ":x: > **The user you entered isn't registered in the database yet**", "color": 13632027 }});
-            }
-
-            let user = await bot.fetchUser(userDB.id)
-
-            await db.get('user').find({ id: author_id }).set('fc', null).write();
-
-            const embed = new Discord.RichEmbed();
-            embed.setColor('AQUA')
-            embed.setTitle(user.tag + "'s FC is now reset");
-
-            try {
-                console.log("[" + new Date().toLocaleTimeString() + "] Reset Switch FC of " + msg.author.tag)
-                return await msg.channel.send(embed)
+                console.log(`info: reset ${type} of ${msg.author.tag}`)
+                return await msg.channel.send(embed);
             } catch(err) {
                 console.error(err);
             }
