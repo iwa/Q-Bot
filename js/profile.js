@@ -1,6 +1,6 @@
 module.exports = class profile {
 
-    static async setbd (msg, cont, mongod, db, author_id, Discord) {
+    static async setbd (msg, cont, db, author_id, Discord) {
 
         if(cont.length == 2) {
             var content = cont[1]
@@ -8,7 +8,7 @@ module.exports = class profile {
                 return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid ! Please enter your birthday like that : mm/dd**", "color": 13632027 }});
             }
 
-            var userDB = await db.collection('user').findOne({ '_id': { $eq: author_id } });
+            var userDB = await db.get('user').find({ id: author_id }).value();
             if(userDB.birthday != null) {
                 return msg.channel.send({"embed": { "title": ":x: > **You can't change your birthday date ! Contact iwa for any demand of change.**", "color": 13632027 }});
             }
@@ -19,13 +19,11 @@ module.exports = class profile {
                 var dd = String(date.getDate()).padStart(2, '0');
                 var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
                 var today = mm + '/' + dd;
-                await db.collection('user').updateOne({ '_id': { $eq: author_id } }, { $set: { birthday: today }});
+                await db.get('user').find({ id: author_id }).set('birthday', today).write();
                 const embed = new Discord.RichEmbed();
                 embed.setAuthor("Your birthday is now set to : ", msg.author.avatarURL);
                 embed.setTitle("**" + today + "**")
                 embed.setColor('AQUA')
-
-                mongod.close();
 
                 try {
                     console.log("[" + new Date().toLocaleTimeString() + "] Birthday : " + msg.author.tag + " set to " + today)
@@ -33,14 +31,11 @@ module.exports = class profile {
                 } catch(err) {
                     console.error(err);
                 }
-            } else {
-                mongod.close();
+            } else
                 return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid ! Please enter your birthday like that : mm/dd**", "color": 13632027 }});
-            }
 
-        } else {
+        } else
             return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid ! Please enter your birthday like that : mm/dd**", "color": 13632027 }});
-        }
 
     }
 
@@ -52,12 +47,12 @@ module.exports = class profile {
                 return msg.channel.send({"embed": { "title": ":x: > **Switch Friend Code format invalid ! Please enter your FC without the 'SW-' at the beginning**", "color": 13632027 }});
             }
 
-            var userDB = await db.collection('user').findOne({ '_id': { $eq: author_id } });
+            var userDB = await db.get('user').find({ id: author_id }).value();
             if(userDB.fc != null) {
                 return msg.channel.send({"embed": { "title": ":x: > **You can't change your FC !**", "description": "**Contact <@125325519054045184> for any demand of change.**", "color": 13632027 }});
             }
 
-            await db.collection('user').updateOne({ '_id': { $eq: author_id } }, { $set: { fc: content }});
+            await db.get('user').find({ id: author_id }).set('fc', content).write();
             const embed = new Discord.RichEmbed();
             embed.setAuthor("Your Switch FC is now set to : ", msg.author.avatarURL);
             embed.setTitle("**" + content + "**")
@@ -69,26 +64,23 @@ module.exports = class profile {
             } catch(err) {
                 console.error(err);
             }
-        } else
-            mongod.close();
-
+        }
     }
 
-    static async resetbd (msg, cont, mongod, db, author_id, Discord, bot) {
+    static async resetbd (msg, cont, db, author_id, Discord, bot) {
 
         if(cont.length == 2) {
 
             let id = cont[1]
 
-            var userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
+            var userDB = await db.get('user').find({ id: id }).value()
             if(!userDB) {
                 return msg.channel.send({"embed": { "title": ":x: > **The user you entered isn't registered in the database yet**", "color": 13632027 }});
             }
 
-            let user = await bot.fetchUser(userDB._id)
+            let user = await bot.fetchUser(userDB.id)
 
-            await db.collection('user').updateOne({ '_id': { $eq: author_id } }, { $set: { birthday: null }});
-            mongod.close();
+            await db.get('user').find({ id: author_id }).set('birthday', null).write();
 
             const embed = new Discord.RichEmbed();
             embed.setColor('AQUA')
@@ -103,21 +95,20 @@ module.exports = class profile {
         }
     }
 
-    static async resetfc (msg, cont, mongod, db, author_id, Discord, bot) {
+    static async resetfc (msg, cont, db, author_id, Discord, bot) {
 
         if(cont.length == 2) {
 
             let id = cont[1]
 
-            var userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
+            var userDB = await db.get('user').find({ id: id }).value()
             if(!userDB) {
                 return msg.channel.send({"embed": { "title": ":x: > **The user you entered isn't registered in the database yet**", "color": 13632027 }});
             }
 
-            let user = await bot.fetchUser(userDB._id)
+            let user = await bot.fetchUser(userDB.id)
 
-            await db.collection('user').updateOne({ '_id': { $eq: author_id } }, { $set: { fc: null }});
-            mongod.close();
+            await db.get('user').find({ id: author_id }).set('fc', null).write();
 
             const embed = new Discord.RichEmbed();
             embed.setColor('AQUA')
