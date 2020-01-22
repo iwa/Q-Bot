@@ -1,5 +1,22 @@
 module.exports = class profile {
 
+    static async show (msg, cont, author_id, bot, profileImg) {
+        if(cont.length == 2) {
+
+            if(msg.mentions.everyone)return;
+
+            var mention = msg.mentions.users.first()
+
+            if(!mention)return;
+
+            if(mention.id == msg.author.id || mention.id == bot.user.id)return;
+
+            return profileImg(msg, mention.id);
+
+        } else
+            return profileImg(msg, author_id);
+    }
+
     static async setbd (msg, cont, db, author_id, Discord) {
 
         if(cont.length == 2) {

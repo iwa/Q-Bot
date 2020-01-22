@@ -194,22 +194,7 @@ bot.on('message', async msg => {
         // Profile
 
         case "profile":
-            if(cont.length > 2)return;
-
-            if(cont.length == 2) {
-
-                if(msg.mentions.everyone)return;
-
-                var mention = msg.mentions.users.first()
-
-                if(!mention)return;
-
-                if(mention.id == msg.author.id || mention.id == bot.user.id)return;
-
-                return profileImg(msg, mention.id);
-
-            } else
-                return profileImg(msg, author_id);
+            return profile.show(msg, cont, author_id, bot, profileImg);
 
         case "setbirthday":
             return profile.setbd(msg, cont, db, author_id, Discord);
