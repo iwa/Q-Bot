@@ -17,11 +17,10 @@ const games = require('./js/games')
 const music = require('./js/music')
 const utilities = require('./js/utilities')
 
-const fs = require('fs')
 const fetch = require('node-fetch');
 const puppeteer = require('puppeteer');
 
-let config = JSON.parse(fs.readFileSync('./config.json', 'utf-8'))
+let config = require('./config.json');
 
 const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(config.yt_token)
