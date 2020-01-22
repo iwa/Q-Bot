@@ -1,5 +1,5 @@
 keys.json
-db.json
+lib/db.json
 settings.json
 .DS_Store
 node_modules/
