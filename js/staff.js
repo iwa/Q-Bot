@@ -60,4 +60,22 @@ module.exports = class staff {
 
     }
 
+    static sleep (msg, bot, isSleeping) {
+        if(isSleeping == 0) {
+            bot.user.setStatus("dnd")
+            bot.user.setActivity("being updated...", {type : 0})
+                .then(msg.react("✅") , console.log("info: sleeping enabled"))
+                .catch(console.error);
+            msg.channel.send("Sleeping Mode On !")
+            return 1;
+        } else {
+            bot.user.setStatus("online")
+            bot.user.setActivity("Qumu's Remixes | ?help", {type : 2})
+                .then(msg.react("✅") , console.log("info: sleeping disabled"))
+                .catch(console.error);
+            msg.channel.send("Sleeping Mode Off !")
+            return 0;
+        };
+    }
+
 }
