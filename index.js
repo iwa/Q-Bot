@@ -241,16 +241,16 @@ bot.on('message', async msg => {
         // Actions
 
         case "pat":
-            return actions.pat(msg, cont, randomInt, author, author_id, db, Discord);
+            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'pat');
 
         case "hug":
-            return actions.hug(msg, cont, randomInt, author, author_id, db, Discord);
+            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'hug');
 
         case "boop":
-            return actions.boop(msg, cont, randomInt, author, author_id, db, Discord);
+            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'boop');
 
         case "slap":
-            return actions.slap(msg, cont, randomInt, author, author_id, db, Discord);
+            return actions.run(msg, cont, randomInt, author, author_id, db, Discord, 'slap');
 
         // Games
 
