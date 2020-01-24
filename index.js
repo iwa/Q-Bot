@@ -20,6 +20,7 @@ const utilities = require('./js/utilities')
 const letmein = require('./js/letmein')
 
 const fetch = require('node-fetch');
+const fs = require('fs');
 const puppeteer = require('puppeteer');
 
 let config = require('./config.json');
@@ -374,7 +375,8 @@ async function imageLvl(msg, level) {
 
     var avatarURL = await msg.author.avatarURL
 
-    var contentLvl = `<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet"> <style type="text/css"> body { margin: 0; } .box { border: 4px solid #FFFFFF; border-radius: 3px; color: white; font-size: 100px; width: 800px; height: 200px; font-family: 'Roboto', sans-serif; background-color: #8BC6EC; background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%); } #pfp { position: absolute; top: 4px; left: 4px; height: 200px; width: 200px } h4 { position: absolute; margin: 0; top: 30px; left: 290px; font-size: 55pt; font-weight: 700; } p { position: absolute; margin: 0; top: 120px; left: 315px; font-size: 32pt; } h4 + img { width: 55pt; position: absolute; top: 30px; left: 650px; } </style></head><body> <div class="box"> <img src="${avatarURL}" id="pfp" /> <h4>Congrats !</h4> <img src="https://iwa.sh/img/party-popper.png"> <p>You're now level ${level} !</p> </div></body></html>`;
+    var htmlContent = fs.readFileSync('./views/level', 'utf-8');
+    var contentLvl = eval(htmlContent);
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -460,7 +462,8 @@ async function profileImg(msg, id) {
         whichColor = (randomInt(7) - 1)
     lastComboColor = whichColor
 
-    var contentProfile = `<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet"> <style type="text/css"> body { margin: 0; } .box { border: 4px solid #FFFFFF; border-radius: 3px; color: white; width: 500px; height: 420px; font-family: 'Roboto'; background-color: #8BC6EC; background-image: linear-gradient(135deg, ${colors[whichColor][0]} 0%, ${colors[whichColor][1]} 100%); } #pfp { position: absolute; height: 140px; width: 140px; border-radius: 5%; } .box > section { position: absolute; top: 14px; left: 14px; width: 480px; height: 400px; background-color: rgba(0, 0, 0, 0.15); } header > div { position: absolute; top: 10px; left: 150px; display: table; width: 320px; height: 80px; } header > div > h4 { margin: 0; font-size: 28pt; font-weight: 500; display: table-cell; line-height: 1.1; text-align: left; vertical-align: middle; } header > section > h5 { position: absolute; margin: 0; top: 95px; left: 155px; font-size: 17pt; font-weight: 300; display: block; text-align: left; letter-spacing: 2px; } header > section > h6 { position: absolute; margin: 0; top: 102px; right: 12px; font-size: 12pt; font-weight: 300; display: block; text-align: right; letter-spacing: 2px; color: rgba(255, 255, 255, 0.75); width: 200px; } header > section > #xp { height: 8px; margin: 0; position: absolute; top: 120px; left: 150px; text-align: left; border: 1px solid rgba(255,255,255,0.4); border-radius: 0.2em; width: 320px; } header > section > #xp::-webkit-progress-value { background: rgba(255, 255, 255, 0.85); border-radius: 0.2em; } header > section > #xp::-webkit-progress-bar { background: rgba(156, 160, 162, 0.5); border-radius: 0.2em; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset; } main > table { position: absolute; top: 170px; left: 10px; width: 460px; text-align: center; font-size: 16pt; } th { font-weight: 500; margin: 0 0 10px 0; } td { font-weight: 300; } main > table > tbody > #ranks { font-size: 11pt; color: rgba(255, 255, 255, 0.65); } main > #birthday > h5 { position: absolute; margin: 0; top: 280px; left: 50px; font-size: 17pt; font-weight: 300; display: block; text-align: left; letter-spacing: 2px; } main > #birthday > h6 { position: absolute; margin: 0; top: 280px; left: 240px; font-size: 17pt; font-weight: 300; display: block; text-align: left; letter-spacing: 1px; color: rgba(255, 255, 255, 0.8); } main > #switch-fc > h5 { position: absolute; margin: 0; top: 340px; left: 50px; font-size: 17pt; font-weight: 300; display: block; text-align: left; letter-spacing: 2px; } main > #switch-fc > h6 { position: absolute; margin: 0; top: 340px; left: 200px; font-size: 17pt; font-weight: 300; display: block; text-align: left; letter-spacing: 1px; color: rgba(255, 255, 255, 0.8); } main > #badges > h5 { position: absolute; margin: 0; top: 344px; left: 22px; font-size: 16pt; font-weight: 300; display: block; text-align: left; letter-spacing: 1px; text-decoration: underline; } footer > p { position: absolute; top: 385px; width: 480px; margin: 0; text-align: center; letter-spacing: 1px; color: rgba(255, 255, 255, 0.15); font-size: 10pt; } </style></head><body> <div class="box"> <section> <header> <img src="${userDiscord.avatarURL}" id="pfp" /> <div> <h4>${userDiscord.username}</h4> </div> <section> <h5>Level ${level}</h5> <h6>#${positionXP} <b>|</b> ${remaining}/${need}</h6> <progress id="xp" value="${remaining}" max="${need}"></progress> </section> </header> <main> <table> <tr> <th>Hugs</th> <th>Pats</th> <th>Boops</th> <th>Slap</th> </tr> <tr> <td>${user.hug}</td> <td>${user.pat}</td> <td>${user.boop}</td> <td>${user.slap}</td> </tr> <tr id="ranks"> <td>#${positionHug}</td> <td>#${positionPat}</td> <td>#${positionBoop}</td> <td>#${positionSlap}</td> </tr> </table> <section id="birthday"> <h5>Your birthday :</h5> <h6>${birthday}</h6> </section> <section id="switch-fc"> <h5>Switch FC :</h5> <h6>${fc}</h6> </section> </main> <footer> <p id="copyright">Made with ♥ by iwa</p> </footer> </section> </div></body></html>`;
+    var htmlContent = fs.readFileSync('./views/profile', 'utf-8');
+    var contentProfile = eval(htmlContent);
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -493,7 +496,8 @@ async function sonicSays(msg, cont) {
         parole.shift()
         var x = parole.join(' ')
 
-        var contentSS = `<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet"> <style type="text/css"> body { margin: 0; } .box { width: 385px; height: 209px; color: white; font-family: 'Roboto'; background-image: url('https://iwa.sh/img/sonicsays.png'); background-repeat: no-repeat; } .box > h1 { margin: 0; font-weight: 500; width: 220px; height: 125px; position: absolute; top: 50px; left: 10px; font-size: 14pt; letter-spacing: 1px; text-shadow: -1px 0 #000000, 0 1px #000000, 1px 0 #000000, 0 -1px #000000; } </style></head><body> <div class="box"> <h1>${x}</h1> </div></body></html>`;
+        var htmlContent = fs.readFileSync('./views/sonicsays', 'utf-8');
+        var contentSS = eval(htmlContent);
 
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
