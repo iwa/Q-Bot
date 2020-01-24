@@ -19,7 +19,6 @@ const music = require('./js/music')
 const utilities = require('./js/utilities')
 const letmein = require('./js/letmein')
 
-const fetch = require('node-fetch');
 const fs = require('fs');
 const puppeteer = require('puppeteer');
 
