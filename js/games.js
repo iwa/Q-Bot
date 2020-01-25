@@ -29,7 +29,7 @@ module.exports = class games {
         return console.log(`info: flip coin by ${msg.author.tag}`)
     }
 
-    static rps (msg, cont, randomInt, Discord, error) {
+    static rps (msg, cont, randomInt, Discord) {
 
         if(cont.length < 2)return;
         var req = cont[1].toLowerCase(), numReq, res;
@@ -49,7 +49,7 @@ module.exports = class games {
             break;
 
             default:
-                return error.no(18, msg);
+                return msg.channel.send({"embed": { "title": ":x: > **You need to pick between rock, paper and scissors !**" }})
         }
 
         var n = randomInt(3);
@@ -72,7 +72,7 @@ module.exports = class games {
 
         embed.setDescription(res);
 
-        console.log("[" + new Date().toLocaleTimeString() + "] R-P-S by " + msg.author.tag)
+        console.log(`info: rps by ${msg.author.tag}`)
         return msg.channel.send(embed).catch(console.error)
 
     }

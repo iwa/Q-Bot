@@ -24,7 +24,7 @@
 
         "roll": "games.roll(msg, cont, randomInt, author);",
         "flip": "games.flipCoin(msg, randomInt);",
-        "rps": "games.rps(msg, cont, randomInt, Discord, error);",
+        "rps": "games.rps(msg, cont, randomInt, Discord);",
         "8ball": "games.ball(msg, cont, Discord);",
 
         "sonicsays": "memes.sonicsays(msg, cont, admin, sonicSays);",
