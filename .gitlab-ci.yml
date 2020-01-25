@@ -20,5 +20,4 @@ eslint:
   stage: lint
   script:
     - npm install -g eslint
-    - eslint --init
     - eslint js/*.js
