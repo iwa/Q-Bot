@@ -333,6 +333,7 @@ async function profileImg(msg, id) {
     await browser.close();
 
     try {
+        console.log(`info: profile by ${msg.author.tag}`)
         return await msg.channel.send('', {files: [`image/prof${msg.author.tag}.jpg`]}).then(msg.channel.stopTyping(true));
     } catch(err) {
         console.error(err)
@@ -364,6 +365,7 @@ async function sonicSays(msg, cont) {
         await browser.close();
 
         try {
+            console.log(`info: sonicsays by ${msg.author.tag}`)
             return msg.channel.send('', {files: [`image/sonic${msg.author.tag}.jpg`]}).then(msg.channel.stopTyping(true));
         } catch(err) {
             console.error(err)

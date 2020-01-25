@@ -133,7 +133,7 @@ module.exports = class music {
                 embed.setColor('LUMINOUS_VIVID_PINK')
                 msg.channel.stopTyping()
                 msg.channel.send(embed)
-                console.log("[" + new Date().toLocaleTimeString() + "] Add Queue : " + msg.author.tag + " added " + data.title)
+                console.log(`info: add to queue: ${msg.author.tag} added ${data.title}`)
             }
             else {
                 msg.channel.stopTyping()
@@ -183,7 +183,7 @@ module.exports = class music {
                 embed.setColor('LUMINOUS_VIVID_PINK')
                 msg.channel.stopTyping()
                 msg.channel.send(embed)
-                console.log("[" + new Date().toLocaleTimeString() + "] Add Queue : " + msg.author.tag + " added " + data.title)
+                console.log(`info: add to queue: ${msg.author.tag} added ${data.title}`)
             }
             else {
                 msg.channel.stopTyping()
@@ -210,12 +210,12 @@ module.exports = class music {
         const embed = new Discord.RichEmbed();
         embed.setColor('GREEN')
         embed.setAuthor('Removed from the queue :', msg.author.avatarURL);
-        embed.setDescription("**" + title[queueID] + "**")
-        embed.setFooter("Removed by " + msg.author.username)
+        embed.setDescription(`**${title[queueID]}**`)
+        embed.setFooter(`Removed by ${msg.author.username}`)
 
         msg.channel.send(embed)
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Removed From Queue : " + msg.author.id + " removed " + title[queueID])
+        console.log(`info: remove from queue: ${msg.author.tag} removed ${title[queueID]}`)
 
         queue.splice(queueID, 1)
         title.splice(queueID, 1)
@@ -254,11 +254,11 @@ module.exports = class music {
 
         }
 
-        if (queue.length > 10) embed.setFooter("and " + (queue.length - 10) + " more...")
+        if (queue.length > 10) embed.setFooter(`and ${(queue.length - 10)} more...`)
         msg.channel.stopTyping(true);
         msg.channel.send(embed);
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Show Queue : by " + msg.author.tag)
+        console.log(`info: show queue by ${msg.author.tag}`)
 
     }
 
@@ -285,7 +285,7 @@ module.exports = class music {
             embed.setAuthor("Your voteskip has been registered !", msg.author.avatarURL)
             msg.channel.send(embed)
 
-            console.log("[" + new Date().toLocaleTimeString() + "] Voteskip : " + msg.author.tag)
+            console.log(`info: voteskip by ${msg.author.tag}`)
 
             if(skipReq >= Math.ceil((voiceChannel.members.size - 1) / 2)) {
                 let dispatcher = voiceConnection.dispatcher
@@ -295,7 +295,7 @@ module.exports = class music {
                 msg.channel.send(embed)
                 loop = 0;
                 dispatcher.end()
-                console.log("[" + new Date().toLocaleTimeString() + "] Skipping to the next song...")
+                console.log(`musc: skipping song`)
             } else {
                 const embed = new Discord.RichEmbed();
                 embed.setColor('BRIGHT_RED')
@@ -325,7 +325,7 @@ module.exports = class music {
         embed.setColor('GREEN')
         msg.channel.send(embed)
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Clear Queue by " + msg.author.tag)
+        console.log(`musc: clear queue by ${msg.author.tag}`)
 
     }
 
@@ -341,7 +341,7 @@ module.exports = class music {
 
         voiceChannel.leave()
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Stop Music by " + msg.author.tag)
+        console.log(`musc: stop by ${msg.author.tag}`)
 
     }
 
@@ -367,8 +367,7 @@ module.exports = class music {
 
         dispatcher.end()
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Force Skip by " + msg.author.tag)
-
+        return console.log(`musc: forceskip by ${msg.author.tag}`)
     }
 
     static loop (msg) {
@@ -377,7 +376,7 @@ module.exports = class music {
 
         if(loop == 0) {
             loop = 1
-            console.log("[" + new Date().toLocaleTimeString() + "] Loop enabled")
+            console.log(`info: loop enabled by ${msg.author.tag}`)
             const embed = new Discord.RichEmbed();
             embed.setAuthor("Looping the current song...", msg.author.avatarURL);
             embed.setColor('GREEN')
@@ -385,13 +384,12 @@ module.exports = class music {
         }
         else if (loop == 1) {
             loop = 0
-            console.log("[" + new Date().toLocaleTimeString() + "] Loop disabled")
+            console.log(`info: loop disabled by ${msg.author.tag}`)
             const embed = new Discord.RichEmbed();
             embed.setAuthor("This song will no longer be looped...", msg.author.avatarURL);
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
-
     }
 
     static np (msg, bot) {
@@ -420,10 +418,8 @@ module.exports = class music {
         embed.setFooter("Length : " + timeString)
         msg.channel.send(embed)
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Now Playing by " + msg.author.tag)
-
+        console.log(`info: nowplaying by ${msg.author.tag}`)
     }
-
 }
 
 
@@ -449,7 +445,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
                 embed.setFooter("Length : " + timeString)
 
                 msg.channel.send(embed)
-                console.log("[" + new Date().toLocaleTimeString() + "] Playing " + title[0])
+                console.log(`musc: playing: ${title[0]}`)
             }
         }).on('end', () => {
 

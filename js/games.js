@@ -8,11 +8,11 @@ module.exports = class games {
             cont.shift()
             var x = cont[0]
             msg.channel.send({"embed": { "title": "**" + randomInt(x) + "**" }})
-              .then(console.log("[" + new Date().toLocaleTimeString() + "] Roll (" + x + ") : " + author))
+              .then(console.log(`info: roll (${x}) by ${msg.author.tag}`))
               .catch(console.error);
         } else {
             msg.channel.send({"embed": { "title": "**" + randomInt(100) + "**" }})
-              .then(console.log("[" + new Date().toLocaleTimeString() + "] Roll (100) : " + author))
+            .then(console.log(`info: roll (100) by ${msg.author.tag}`))
               .catch(console.error);
         }
 
@@ -88,7 +88,7 @@ module.exports = class games {
         embed.setTitle(reply[r])
         embed.setColor('GREY')
 
-        console.log("[" + new Date().toLocaleTimeString() + "] 8ball by " + msg.author.tag);
+        console.log(`info: 8ball by ${msg.author.tag}`)
         return msg.channel.send(embed)
 
     }
