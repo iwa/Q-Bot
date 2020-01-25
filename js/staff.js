@@ -17,7 +17,7 @@ module.exports = class staff {
 
     }
 
-    static async mute (msg, cont, msg.author.id, admin, modRole, Discord, bot) {
+    static async mute (msg, cont, admin, modRole, Discord, bot) {
 
         if(cont.length == 3 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;
