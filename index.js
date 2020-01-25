@@ -120,7 +120,6 @@ bot.on('message', async msg => {
 
     if(admin.indexOf(author_id) == 0) {
         let cmd = commands.admin[req];
-
         if(cmd) return eval(commands.admin[req]);
     }
 
@@ -128,14 +127,12 @@ bot.on('message', async msg => {
 
     if(isMod(msg) === true || admin.indexOf(author_id) > -1) {
         let cmd = commands.staff[req];
-
         if(cmd) return eval(commands.staff[req]);
     }
 
     // cmd Member
 
     let cmd = commands.member[req];
-
     if(!cmd) return;
     else return eval(commands.member[req]);
 });
@@ -277,7 +274,6 @@ async function imageLvl(msg, level) {
         console.error(err)
         return msg.reply(`You're now level ${level} ! Congrats !`)
     }
-
 }
 
 async function levelInfo(xp) {
@@ -347,7 +343,6 @@ async function profileImg(msg, id) {
         console.error(err)
         return msg.channel.send("An error occured, please contact <@125325519054045184>")
     }
-
 }
 
 async function sonicSays(msg, cont) {
