@@ -110,7 +110,7 @@ bot.on('message', async msg => {
     var req = cont[0].substring(1).toLowerCase()
 
     if(req == "letmein")
-        return letmein.action(msg, author_id, levels, db);
+        return letmein.action(msg, author_id, levelInfo, levels, db);
 
     if(isSleeping === 1 && admin.indexOf(author_id) == -1)return;
 
