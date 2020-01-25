@@ -20,5 +20,6 @@
     "node-opus": "^0.3.3",
     "puppeteer": "^2.0.0",
     "ytdl-core": "^1.0.7"
-  }
+  },
+  "devDependencies": {}
 }
