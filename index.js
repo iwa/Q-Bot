@@ -24,6 +24,7 @@ const puppeteer = require('puppeteer');
 
 let config = require('./config.json');
 let commands = require('./lib/dictionary.json');
+let levels = require('./lib/levels.json');
 
 const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(config.yt_token)
@@ -34,29 +35,6 @@ let prefix = "?";
 let admin = ['125325519054045184', '214740144538910721'];
 var isSleeping = 0, lastComboColor;
 var cooldown = [], cooldownXP = [];
-
-let levels = {
-    1 : '611979452414427138',
-    2 : '611979473352392714',
-    3 : '611979471964340264',
-    4 : '611979474208292874',
-    5 : '611979472803069977',
-    6 : '636990776856936478',
-    7 : '636990836705329152',
-    8 : '636990839205396484',
-    9 : '636990867856687104',
-    10 : '636990871388160011',
-    11 : '636990874554728469',
-    12 : '636990877411049483',
-    13 : '636990848688586772',
-    14 : '636990858394206212',
-    15 : '636990861472694283',
-    16 : '636990864211836943',
-    17 : '636990851704160266',
-    18 : '636990854602555424',
-    19 : '636990845941317652',
-    20 : '636990842564771841'
-};
 
 
 process.on('uncaughtException', exception => {
