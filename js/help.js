@@ -1,7 +1,7 @@
 let admin = {
     "embed": {
       "title": "**❯ Admin**",
-      "description": "`?sleep`\n`?resetbirthday (UID)`\n`?resetfc (UID)`",
+      "description": "`?sleep`\n`?resetbirthday (UID)`\n`?resetfc (UID)`\n`?read`",
       "color": 13632027
     }
   }
@@ -30,7 +30,7 @@ let member = {
         },
         {
             "name": "**🕹 Games**",
-            "value": "`roll` `8ball` `8b` `flip` `rps`"
+            "value": "`roll` `8ball` `flip` `rps`"
         },
         {
             "name": "**💩 Memes**",
@@ -38,11 +38,11 @@ let member = {
         },
         {
             "name": "**🎶 Music**",
-            "value": "`play` `remove` `queue` `q` `skip` `clear` `stop` `quit` `leave` `loop` `nowplaying` `playing` `np`"
+            "value": "`play` `remove` `queue` `skip` `clear` `stop` `loop` `nowplaying`"
         },
         {
             "name": "**🛠 Utility**",
-            "value": "`ping` `pong` `help` `commands` `info` `leaderboard` `lead` `role` `anime` `manga`"
+            "value": "`ping` `pong` `help` `info` `leaderboard` `lead` `role` `anime` `manga`"
         },
       ]
     }

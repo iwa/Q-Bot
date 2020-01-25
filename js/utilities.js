@@ -1,5 +1,3 @@
-const Discord = require('discord.js')
-
 const al = require('anilist-node');
 const Anilist = new al();
 
@@ -81,7 +79,6 @@ module.exports = class utilities {
     static async role (msg, cont) {
 
         if(await msg.channel.type != "text")return;
-        if(await msg.guild.id != "225359327525994497")return;
         if(await msg.channel.id != "611349541685559316")return;
 
         if(cont.length < 3)return;
@@ -100,7 +97,7 @@ module.exports = class utilities {
 
     }
 
-    static async anime (msg, cont, error) {
+    static async anime (msg, cont, Discord) {
 
         if(cont.length < 2)return;
         cont.shift();
@@ -127,16 +124,17 @@ module.exports = class utilities {
             embed.addField("Description", desc, false)
             embed.setColor('BLUE')
 
-            console.log("[" + new Date().toLocaleTimeString() + "] Anime Request : " + req + " by " + msg.author.tag)
+            console.log(`info: anime request : ${req} by ${msg.author.tag}`)
             return msg.channel.send(embed)
         }).catch(err => {
             console.error(err)
-            return error.no(17, msg)
+            embed.setTitle(":x: > **An error occured, please retry**")
+            return msg.channel.send(embed)
         });
 
     }
 
-    static async manga (msg, cont, error) {
+    static async manga (msg, cont, Discord) {
 
         if(cont.length < 2)return;
         cont.shift();
@@ -162,11 +160,12 @@ module.exports = class utilities {
             embed.addField("Description", desc, false)
             embed.setColor('BLUE')
 
-            console.log("[" + new Date().toLocaleTimeString() + "] Manga Request : " + req + " by " + msg.author.tag)
-            return msg.channel.send(embed) 
+            console.log(`info: manga request : ${req} by ${msg.author.tag}`)
+            return msg.channel.send(embed)
         }).catch(err => {
             console.error(err)
-            return error.no(17, msg)
+            embed.setTitle(":x: > **An error occured, please retry**")
+            return msg.channel.send(embed)
         });
 
     }
