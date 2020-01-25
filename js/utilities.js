@@ -69,8 +69,12 @@ module.exports = class utilities {
             case "boops":
                 return boop(msg, Discord, db, bot)
 
+            case "slap":
+            case "slaps":
+                return slap(msg, Discord, db, bot)
+
             default:
-                msg.channel.send({"embed": { "title": "`exp | pat | hug | boop`", "color": 3396531}});
+                msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
             break;
         }
 

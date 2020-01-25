@@ -6,7 +6,7 @@
         "read": "db.read(); msg.react('✅');"
     },
     "staff": {
-        "bulk": "staff.bulk(msg, cont, author);",
+        "bulk": "staff.bulk(msg, cont);",
         "forceskip": "music.forceskip(msg, bot, Discord);",
         "mute": "staff.mute(msg, cont, admin, config.modRole, Discord, bot);"
     },
@@ -23,7 +23,7 @@
         "boop": "actions.run(msg, cont, randomInt, author, db, Discord, 'boop');",
         "slap": "actions.run(msg, cont, randomInt, author, db, Discord, 'slap');",
 
-        "roll": "games.roll(msg, cont, randomInt, author);",
+        "roll": "games.roll(msg, cont, randomInt);",
         "flip": "games.flipCoin(msg, randomInt);",
         "rps": "games.rps(msg, cont, randomInt, Discord);",
         "8ball": "games.ball(msg, cont, Discord);",

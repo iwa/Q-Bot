@@ -1,6 +1,6 @@
 module.exports = class staff {
 
-    static async bulk (msg, cont, author) {
+    static async bulk (msg, cont) {
 
         if(cont.length !== 1) {
             if(msg.channel.type !== "dm") {

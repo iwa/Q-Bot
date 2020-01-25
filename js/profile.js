@@ -76,7 +76,7 @@ module.exports = class profile {
             embed.setColor('AQUA')
             mongod.close();
             try {
-                console.log(`info: switch fc of ${msg.author.tag} set on ${today}`)
+                console.log(`info: switch fc of ${msg.author.tag} set`)
                 return await msg.channel.send(embed).then(msg.delete())
             } catch(err) {
                 console.error(err);
