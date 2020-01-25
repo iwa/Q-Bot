@@ -245,106 +245,13 @@ function isMod(msg) {
 }
 
 async function levelCheck(msg, xp) {
-    switch(xp) {
-        case 250:
-            await msg.member.addRole(levels[1]).catch(console.error);
-            return imageLvl(msg, 1);
-
-        case 500:
-            await msg.member.removeRole(levels[1]).catch(console.error);
-            await msg.member.addRole(levels[2]).catch(console.error);
-            return imageLvl(msg, 2);
-
-        case 1000:
-            await msg.member.removeRole(levels[2]).catch(console.error);
-            await msg.member.addRole(levels[3]).catch(console.error);
-            return imageLvl(msg, 3);
-
-        case 2000:
-            await msg.member.removeRole(levels[3]).catch(console.error);
-            await msg.member.addRole(levels[4]).catch(console.error);
-            return imageLvl(msg, 4);
-
-        case 3500:
-            await msg.member.removeRole(levels[4]).catch(console.error);
-            await msg.member.addRole(levels[5]).catch(console.error);
-            return imageLvl(msg, 5);
-
-        case 5000:
-            await msg.member.removeRole(levels[5]).catch(console.error);
-            await msg.member.addRole(levels[6]).catch(console.error);
-            return imageLvl(msg, 6);
-
-        case 7000:
-            await msg.member.removeRole(levels[6]).catch(console.error);
-            await msg.member.addRole(levels[7]).catch(console.error);
-            return imageLvl(msg, 7);
-
-        case 9000:
-            await msg.member.removeRole(levels[7]).catch(console.error);
-            await msg.member.addRole(levels[8]).catch(console.error);
-            return imageLvl(msg, 8);
-
-        case 12140:
-            await msg.member.removeRole(levels[8]).catch(console.error);
-            await msg.member.addRole(levels[9]).catch(console.error);
-            return imageLvl(msg, 9);
-
-        case 16000:
-            await msg.member.removeRole(levels[9]).catch(console.error);
-            await msg.member.addRole(levels[10]).catch(console.error);
-            return imageLvl(msg, 10);
-
-        case 20000:
-            await msg.member.removeRole(levels[10]).catch(console.error);
-            await msg.member.addRole(levels[11]).catch(console.error);
-            return imageLvl(msg, 11);
-
-        case 25000:
-            await msg.member.removeRole(levels[11]).catch(console.error);
-            await msg.member.addRole(levels[12]).catch(console.error);
-            return imageLvl(msg, 12);
-
-        case 30000:
-            await msg.member.removeRole(levels[12]).catch(console.error);
-            await msg.member.addRole(levels[13]).catch(console.error);
-            return imageLvl(msg, 13);
-
-        case 35000:
-            await msg.member.removeRole(levels[13]).catch(console.error);
-            await msg.member.addRole(levels[14]).catch(console.error);
-            return imageLvl(msg, 14);
-
-        case 40000:
-            await msg.member.removeRole(levels[14]).catch(console.error);
-            await msg.member.addRole(levels[15]).catch(console.error);
-            return imageLvl(msg, 15);
-
-        case 50000:
-            await msg.member.removeRole(levels[15]).catch(console.error);
-            await msg.member.addRole(levels[16]).catch(console.error);
-            return imageLvl(msg, 16);
-
-        case 60000:
-            await msg.member.removeRole(levels[16]).catch(console.error);
-            await msg.member.addRole(levels[17]).catch(console.error);
-            return imageLvl(msg, 17);
-
-        case 70000:
-            await msg.member.removeRole(levels[17]).catch(console.error);
-            await msg.member.addRole(levels[18]).catch(console.error);
-            return imageLvl(msg, 18);
-
-        case 85000:
-            await msg.member.removeRole(levels[18]).catch(console.error);
-            await msg.member.addRole(levels[19]).catch(console.error);
-            return imageLvl(msg, 19);
-
-        case 100000:
-            await msg.member.removeRole(levels[19]).catch(console.error);
-            await msg.member.addRole(levels[20]).catch(console.error);
-            return imageLvl(msg, 20);
-
+    for(var i = 1; i <= 20; i++) {
+        if(xp == levels[i].amount) {
+            if(i != 1)
+                await msg.member.removeRole(levels[i-1].id).catch(console.error);
+            await msg.member.addRole(levels[i].id).catch(console.error);
+            return imageLvl(msg, i);
+        }
     }
 }
 
