@@ -1,16 +1,16 @@
 image: node:latest
 
-  stages:
+stages:
     - build
 
-  cache:
+cache:
     paths:
-      - node_modules/
+        - node_modules/
 
-  install_dependencies:
+install_dependencies:
     stage: build
     script:
-      - npm install
+        - npm install
     artifacts:
-      paths:
-        - node_modules/
+        paths:
+            - node_modules/
