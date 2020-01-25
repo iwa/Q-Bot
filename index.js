@@ -29,8 +29,6 @@ let levels = require('./lib/levels.json');
 const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(config.yt_token)
 
-const osuKey = config.osu_key
-
 let prefix = "?";
 let admin = ['125325519054045184', '214740144538910721'];
 var isSleeping = 0, lastComboColor;
