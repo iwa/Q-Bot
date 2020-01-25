@@ -128,8 +128,7 @@ module.exports = class utilities {
             return msg.channel.send(embed)
         }).catch(err => {
             console.error(err)
-            embed.setTitle(":x: > **An error occured, please retry**")
-            return msg.channel.send(embed)
+            return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry**" }})
         });
 
     }
@@ -164,8 +163,7 @@ module.exports = class utilities {
             return msg.channel.send(embed)
         }).catch(err => {
             console.error(err)
-            embed.setTitle(":x: > **An error occured, please retry**")
-            return msg.channel.send(embed)
+            return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry**" }})
         });
 
     }
