@@ -1,20 +1,7 @@
 image: node:latest
 
 stages:
-  - build
   - lint
-
-cache:
-  paths:
-    - node_modules/
-
-install_depend:
-  stage: build
-  script:
-    - npm install
-  artifacts:
-    paths:
-      - node_modules/
 
 eslint:
   stage: lint
