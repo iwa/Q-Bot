@@ -66,17 +66,16 @@ bot.on('message', async msg => {
     if(msg.channel.type != "text")return;
 
     var author = msg.author.tag
-    var author_id = msg.author.id
 
-    if(!cooldown[author_id]) {
-        cooldown[author_id] = 1;
-        setTimeout(async () => { delete cooldown[author_id] }, 2500)
+    if(!cooldown[msg.author.id]) {
+        cooldown[msg.author.id] = 1;
+        setTimeout(async () => { delete cooldown[msg.author.id] }, 2500)
     } else
-        cooldown[author_id]++;
+        cooldown[msg.author.id]++;
 
-    if(cooldown[author_id] == 4)
+    if(cooldown[msg.author.id] == 4)
         return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
-    else if(cooldown[author_id] == 6) {
+    else if(cooldown[msg.author.id] == 6) {
         await msg.member.addRole('636254696880734238')
         var msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
         setTimeout(async () => {
@@ -93,15 +92,15 @@ bot.on('message', async msg => {
             return await msg.react('❌');
         }
 
-        var user = await db.get('user').find({ id: author_id }).value();
+        var user = await db.get('user').find({ id: msg.author.id }).value();
 
         if(!user)
             await db.get('user').push({ id: msg.author.id, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0, birthday: null, fc: null }).write()
-        else if(!cooldownXP[author_id]) {
-            user = await db.get('user').find({ id: author_id }).update('exp', n => n + 1).write();
+        else if(!cooldownXP[msg.author.id]) {
+            user = await db.get('user').find({ id: msg.author.id }).update('exp', n => n + 1).write();
             levelCheck(msg, user.exp);
-            cooldownXP[author_id] = 1;
-            return setTimeout(async () => { delete cooldownXP[author_id] }, 5000)
+            cooldownXP[msg.author.id] = 1;
+            return setTimeout(async () => { delete cooldownXP[msg.author.id] }, 5000)
         }
     }
 
@@ -110,20 +109,20 @@ bot.on('message', async msg => {
     var req = cont[0].substring(1).toLowerCase()
 
     if(req == "letmein")
-        return letmein.action(msg, author_id, levelInfo, levels, db);
+        return letmein.action(msg, msg.author.id, levelInfo, levels, db);
 
-    if(isSleeping === 1 && admin.indexOf(author_id) == -1)return;
+    if(isSleeping === 1 && admin.indexOf(msg.author.id) == -1)return;
 
     // cmd Admin
 
-    if(admin.indexOf(author_id) == 0) {
+    if(admin.indexOf(msg.author.id) == 0) {
         let cmd = commands.admin[req];
         if(cmd) return eval(commands.admin[req]);
     }
 
     // cmd Mods
 
-    if(isMod(msg) === true || admin.indexOf(author_id) > -1) {
+    if(isMod(msg) === true || admin.indexOf(msg.author.id) > -1) {
         let cmd = commands.staff[req];
         if(cmd) return eval(commands.staff[req]);
     }
