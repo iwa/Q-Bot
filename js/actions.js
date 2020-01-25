@@ -16,7 +16,7 @@ let count = {
 
 module.exports = class actions {
 
-    static async run (msg, cont, randomInt, author, author_id, db, Discord, type) {
+    static async run (msg, cont, randomInt, author, db, Discord, type) {
 
         var n = randomInt(count[type])
         while(lastGif[type] == n) {
@@ -32,7 +32,7 @@ module.exports = class actions {
 
             if(!mention)return;
 
-            if(mention.id == author_id) {
+            if(mention.id == msg.author.id) {
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself !**`, "color": 13632027 }});
             }
 

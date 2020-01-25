@@ -1,6 +1,6 @@
 module.exports = class profile {
 
-    static async show (msg, cont, author_id, bot, profileImg) {
+    static async show (msg, cont, bot, profileImg) {
         if(cont.length == 2) {
 
             if(msg.mentions.everyone)return;
@@ -14,10 +14,10 @@ module.exports = class profile {
             return profileImg(msg, mention.id);
 
         } else
-            return profileImg(msg, author_id);
+            return profileImg(msg, msg.author.id);
     }
 
-    static async setbd (msg, cont, db, author_id, Discord) {
+    static async setbd (msg, cont, db, Discord) {
 
         if(cont.length == 2) {
             var content = cont[1]
@@ -25,7 +25,7 @@ module.exports = class profile {
                 return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid ! Please enter your birthday like that : mm/dd**", "color": 13632027 }});
             }
 
-            var userDB = await db.get('user').find({ id: author_id }).value();
+            var userDB = await db.get('user').find({ id: msg.author.id }).value();
             if(userDB.birthday != null) {
                 return msg.channel.send({"embed": { "title": ":x: > **You can't change your birthday date ! Contact iwa for any demand of change.**", "color": 13632027 }});
             }
@@ -36,7 +36,7 @@ module.exports = class profile {
                 var dd = String(date.getDate()).padStart(2, '0');
                 var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
                 var today = mm + '/' + dd;
-                await db.get('user').find({ id: author_id }).set('birthday', today).write();
+                await db.get('user').find({ id: msg.author.id }).set('birthday', today).write();
                 const embed = new Discord.RichEmbed();
                 embed.setAuthor("Your birthday is now set to : ", msg.author.avatarURL);
                 embed.setTitle("**" + today + "**")
@@ -56,7 +56,7 @@ module.exports = class profile {
 
     }
 
-    static async setfc (msg, cont, mongod, db, author_id, Discord) {
+    static async setfc (msg, cont, mongod, db, Discord) {
 
         if(cont.length == 2) {
             var content = cont[1]
@@ -64,12 +64,12 @@ module.exports = class profile {
                 return msg.channel.send({"embed": { "title": ":x: > **Switch Friend Code format invalid ! Please enter your FC without the 'SW-' at the beginning**", "color": 13632027 }});
             }
 
-            var userDB = await db.get('user').find({ id: author_id }).value();
+            var userDB = await db.get('user').find({ id: msg.author.id }).value();
             if(userDB.fc != null) {
                 return msg.channel.send({"embed": { "title": ":x: > **You can't change your FC !**", "description": "**Contact <@125325519054045184> for any demand of change.**", "color": 13632027 }});
             }
 
-            await db.get('user').find({ id: author_id }).set('fc', content).write();
+            await db.get('user').find({ id: msg.author.id }).set('fc', content).write();
             const embed = new Discord.RichEmbed();
             embed.setAuthor("Your Switch FC is now set to : ", msg.author.avatarURL);
             embed.setTitle("**" + content + "**")
@@ -84,7 +84,7 @@ module.exports = class profile {
         }
     }
 
-    static async reset (msg, cont, db, author_id, Discord, bot, type) {
+    static async reset (msg, cont, db, Discord, bot, type) {
 
         if(cont.length == 2) {
 
@@ -96,7 +96,7 @@ module.exports = class profile {
 
             let user = await bot.fetchUser(userDB.id)
 
-            await db.get('user').find({ id: author_id }).set(type, null).write();
+            await db.get('user').find({ id: msg.author.id }).set(type, null).write();
 
             const embed = new Discord.RichEmbed();
             embed.setColor('AQUA')

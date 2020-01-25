@@ -18,7 +18,7 @@ var loop = 0, volume = 1;
 
 module.exports = class music {
 
-    static async play (msg, yt, cont, author_id) {
+    static async play (msg, yt, cont) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -28,7 +28,7 @@ module.exports = class music {
 
         if(voiceChannel == null)return;
 
-        if(!voiceChannel.members.find(val => val.id == author_id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
+        if(!voiceChannel.members.find(val => val.id == msg.author.id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
 
         let video_url = cont[1].split('&')
 
@@ -42,7 +42,7 @@ module.exports = class music {
             await reply.react('✅');
             await reply.react('❌');
 
-            var collected = await reply.awaitReactions((_reaction, user) => user.id == author_id, { time: 10000 })
+            var collected = await reply.awaitReactions((_reaction, user) => user.id == msg.author.id, { time: 10000 })
 
             if(collected.first() == undefined) {
                 reply.delete()

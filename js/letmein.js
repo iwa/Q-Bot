@@ -1,10 +1,10 @@
 module.exports = class letmein {
 
-    static async action (msg, author_id, levelInfo, levels, db) {
+    static async action (msg, levelInfo, levels, db) {
 
         if(msg.channel.id != "608630294261530624")return;
 
-        var user = await db.get('user').find({ id: author_id }).value();
+        var user = await db.get('user').find({ id: msg.author.id }).value();
 
         if(user) {
             var lvl = levelInfo(user.exp);
