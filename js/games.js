@@ -2,7 +2,7 @@ let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not"]
 
 module.exports = class games {
 
-    static roll (msg, cont, randomInt, author) {
+    static roll (msg, cont, randomInt) {
 
         if(cont.length !== 1) {
             cont.shift()
