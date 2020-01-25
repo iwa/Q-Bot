@@ -260,9 +260,7 @@ async function imageLvl(msg, level) {
 
     await page.setViewport({width: 808, height: 208, deviceScaleFactor: 2})
     await page.setContent(contentLvl, {waitUntil: 'networkidle0'});
-
     await page.screenshot({path: `image/${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
-
     await browser.close();
 
     try {
@@ -362,9 +360,7 @@ async function sonicSays(msg, cont) {
 
         await page.setViewport({width: 385, height: 209, deviceScaleFactor: 2})
         await page.setContent(contentSS, {waitUntil: 'networkidle0'});
-
         await page.screenshot({path: `image/sonic${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
-
         await browser.close();
 
         try {
