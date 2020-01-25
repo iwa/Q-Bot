@@ -42,6 +42,9 @@
         "info": "var iwa = await bot.fetchUser(admin[0]); utilities.info(msg, iwa.avatarURL);",
         "ping": "utilities.ping(msg, author, bot);",
         "pong": "utilities.pong(msg, author, bot);",
-        "leaderboard": "utilities.leaderboard(msg, cont, author, Discord, db, bot);"
+        "leaderboard": "utilities.leaderboard(msg, cont, author, Discord, db, bot);",
+        "anime": "utilities.anime(msg, cont, Discord);",
+        "manga": "utilities.manga(msg, cont, Discord);",
+        "role": "utilities.role(msg, cont);"
     }
 }
