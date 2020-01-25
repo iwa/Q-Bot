@@ -268,12 +268,12 @@ async function imageLvl(msg, level) {
     await page.setViewport({width: 808, height: 208, deviceScaleFactor: 2})
     await page.setContent(contentLvl, {waitUntil: 'networkidle0'});
 
-    await page.screenshot({path: `image/${name}.jpg`, type: 'jpeg', quality: 100});
+    await page.screenshot({path: `image/${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
 
     await browser.close();
 
     try {
-        return msg.reply('', {files: [`image/${name}.jpg`]})
+        return msg.reply('', {files: [`image/${msg.author.tag}.jpg`]})
     } catch(err) {
         console.error(err)
         return msg.reply(`You're now level ${level} ! Congrats !`)
