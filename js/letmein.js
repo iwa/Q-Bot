@@ -25,6 +25,7 @@ module.exports = class letmein {
 }
 
 async function whichLevel(xp) {
+    var level;
     if(xp < 250) { level = 0 }
     else if(xp >= 250 && xp < 500) { level = 1 }
     else if(xp >= 500 && xp < 1000) { level = 2 }

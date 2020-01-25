@@ -32,6 +32,8 @@ module.exports = class music {
 
         let video_url = cont[1].split('&')
 
+        var error, data;
+
         if(video_url[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 
             const playlist = await yt.getPlaylistByUrl(video_url[0]).catch(console.error)
@@ -68,9 +70,9 @@ module.exports = class music {
 
             for(const video of Object.values(videos)) {
                 const url = video.url
-                var error = false;
+                error = false;
                 if(queue.indexOf(url) == -1) {
-                    var data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
+                    data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
                     if(!error) {
                         queue.push(url)
                         title.push(Discord.escapeMarkdown(data.title))
@@ -104,10 +106,10 @@ module.exports = class music {
         if(YoutubeStream.validateURL(video_url[0])) {
 
             msg.channel.startTyping()
-            var error = false;
+            error = false;
 
             if(queue.indexOf(video_url[0]) == -1) {
-                var data = await YoutubeStream.getInfo(video_url[0]).catch(() => { error = true; })
+                data = await YoutubeStream.getInfo(video_url[0]).catch(() => { error = true; })
                 if(!error) {
                     queue.push(video_url[0])
                     title.push(Discord.escapeMarkdown(data.title))
@@ -154,10 +156,10 @@ module.exports = class music {
             if(!YoutubeStream.validateURL(video))return;
 
             msg.channel.startTyping();
-            var error = false;
+            error = false;
 
             if(queue.indexOf(video) == -1) {
-                var data = await YoutubeStream.getInfo(video).catch(() => { error = true; })
+                data = await YoutubeStream.getInfo(video).catch(() => { error = true; })
                 if(!error) {
                     queue.push(video)
                     title.push(Discord.escapeMarkdown(data.title))
@@ -238,7 +240,7 @@ module.exports = class music {
         else {
             embed.setTitle("**:cd: Here's the queue**")
 
-            queue.forEach(async (item, index, _array) => {
+            queue.forEach(async (item, index) => {
 
                 if(index == 0 || index > 10)return;
 
