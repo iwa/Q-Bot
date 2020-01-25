@@ -75,7 +75,7 @@ module.exports = class staff {
                 .catch(console.error);
             msg.channel.send("Sleeping Mode Off !")
             return 0;
-        };
+        }
     }
 
 }

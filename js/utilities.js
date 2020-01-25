@@ -43,7 +43,7 @@ module.exports = class utilities {
             console.log("[" + new Date().toLocaleTimeString() + "] Info sent to " + msg.author.tag)
             await msg.author.send(embed)
         } catch(ex) {
-            return error.no(9, msg)
+            return msg.channel.send("**:x: > Please open your DMs**")
         }
 
     }
