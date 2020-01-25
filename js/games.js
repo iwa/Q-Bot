@@ -18,19 +18,15 @@ module.exports = class games {
 
     }
 
-    static flipCoin (msg, randomInt, Discord) {
-
+    static flipCoin (msg, randomInt) {
         var n = randomInt(2);
-        const embed = new Discord.RichEmbed();
 
         if(n == 1)
-            embed.setTitle(":large_blue_diamond: **Heads**")
+            msg.channel.send({"embed": { "title": ":large_blue_diamond: **Heads**" }})
         else
-            embed.setTitle(":large_orange_diamond: **Tails**")
+            msg.channel.send({"embed": { "title": ":large_orange_diamond: **Tails**" }})
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Flip coin by " + msg.author.tag)
-        return msg.channel.send(embed).catch(console.error)
-
+        return console.log(`info: flip coin by ${msg.author.tag}`)
     }
 
     static rps (msg, cont, randomInt, Discord, error) {
