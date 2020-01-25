@@ -281,55 +281,40 @@ async function imageLvl(msg, level) {
 
 }
 
+async function levelInfo(xp) {
+    if(xp < levels[1].amount) {
+        return {'level': 0, 'current': xp, 'max': levels[1].amount}
+    }
+    for(var i = 1; i < 20; i++) {
+        if(xp >= levels[i].amount && xp < levels[i+1].amount) {
+            return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i].amount - levels[i-1].amount)}
+        }
+    }
+    return {'level': 20, 'current': xp, 'max': levels[20].amount}
+}
+
 async function profileImg(msg, id) {
 
     var user = await db.get('user').find({ id: id }).value();
 
-    if(!user)return msg.channel.send(":x: > **You aren't / The user you mentionned isn't registered into the database, you / they need to talk once in a channel to have your / their profile initialized**");
+    if(!user)return msg.channel.send(":x: > **You aren't registered into the database, you need to talk once in a channel to have your profile initialized**");
 
     msg.channel.startTyping();
 
     let userDiscord = await bot.fetchUser(id)
-    let xp = user.exp;
-    let birthday = user.birthday;
-    let fc = user.fc;
-    var level, remaining, need;
-
     var positionXP = await db.get('user').orderBy('exp', 'desc').findIndex(val => val.id == id).value()
     var positionHug = await db.get('user').orderBy('hug', 'desc').findIndex(val => val.id == id).value()
     var positionPat = await db.get('user').orderBy('pat', 'desc').findIndex(val => val.id == id).value()
     var positionBoop = await db.get('user').orderBy('boop', 'desc').findIndex(val => val.id == id).value()
     var positionSlap = await db.get('user').orderBy('slap', 'desc').findIndex(val => val.id == id).value()
 
-    positionXP++; positionHug++; positionPat++; positionBoop++; positionSlap++;
+    if(user.birthday == null)
+        user.birthday = 'not registered yet';
 
-    if(birthday == null)
-        birthday = 'not registered yet';
+    if(user.fc == null)
+        user.fc = 'not registered yet';
 
-    if(fc == null)
-        fc = 'not registered yet';
-
-    if(xp < 250) { level = 0; remaining = xp ; need = 250 }
-    else if(xp >= 250 && xp < 500) { level = 1; remaining = xp - 250 ; need = 250 }
-    else if(xp >= 500 && xp < 1000) { level = 2; remaining = xp - 500 ; need = 500 }
-    else if(xp >= 1000 && xp < 2000) { level = 3; remaining = xp - 1000 ; need = 1000 }
-    else if(xp >= 2000 && xp < 3500) { level = 4; remaining = xp - 2000 ; need = 1500 }
-    else if(xp >= 3500 && xp < 5000) { level = 5; remaining = xp - 3500 ; need = 1500 }
-    else if(xp >= 5000 && xp < 7000) { level = 6; remaining = xp - 5000 ; need = 2000 }
-    else if(xp >= 7000 && xp < 9000) { level = 7; remaining = xp - 7000 ; need = 2000 }
-    else if(xp >= 9000 && xp < 12140) { level = 8; remaining = xp - 9000 ; need = 3140 }
-    else if(xp >= 12140 && xp < 16000) { level = 9; remaining = xp - 12140 ; need = 3860 }
-    else if(xp >= 16000 && xp < 20000) { level = 10; remaining = xp - 16000 ; need = 4000 }
-    else if(xp >= 20000 && xp < 25000) { level = 11; remaining = xp - 20000 ; need = 5000 }
-    else if(xp >= 25000 && xp < 30000) { level = 12; remaining = xp - 25000 ; need = 5000 }
-    else if(xp >= 30000 && xp < 35000) { level = 13; remaining = xp - 30000 ; need = 5000 }
-    else if(xp >= 35000 && xp < 40000) { level = 14; remaining = xp - 35000 ; need = 5000 }
-    else if(xp >= 40000 && xp < 50000) { level = 15; remaining = xp - 40000 ; need = 10000 }
-    else if(xp >= 50000 && xp < 60000) { level = 16; remaining = xp - 50000 ; need = 10000 }
-    else if(xp >= 60000 && xp < 70000) { level = 17; remaining = xp - 60000 ; need = 10000 }
-    else if(xp >= 70000 && xp < 85000) { level = 18; remaining = xp - 70000 ; need = 15000 }
-    else if(xp >= 85000 && xp < 100000) { level = 19; remaining = xp - 85000 ; need = 15000 }
-    else if(xp >= 100000) { level = 20; remaining = xp ; need = 100000 }
+    var lvlInfo = await levelInfo(user.exp);
 
     var colors = [
         ['#8BC6EC', '#9599E2'],
@@ -347,16 +332,14 @@ async function profileImg(msg, id) {
     lastComboColor = whichColor
 
     var htmlContent = fs.readFileSync('./views/profile', 'utf-8');
-    var contentProfile = eval(htmlContent);
+    var contentProfile = await eval(htmlContent);
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     await page.setViewport({width: 508, height: 428, deviceScaleFactor: 2})
     await page.setContent(contentProfile, {waitUntil: 'networkidle0'});
-
     await page.screenshot({path: `image/prof${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
-
     await browser.close();
 
     try {
