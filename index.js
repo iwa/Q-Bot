@@ -207,8 +207,7 @@ setInterval(async () => {
 
         if(data.length >= 1) {
 
-            let guild = await bot.guilds.find(val => val.id == config.guildID)
-            let channel = await guild.channels.find(val => val.id == config.birthdayTC)
+            let channel = bot.channels.find(val => val.id == config.birthdayTC)
 
             data.forEach(async user => {
                 var userInfo = await bot.fetchUser(user.id)
