@@ -43,7 +43,7 @@ module.exports = class profile {
                 embed.setColor('AQUA')
 
                 try {
-                    console.log("[" + new Date().toLocaleTimeString() + "] Birthday : " + msg.author.tag + " set to " + today)
+                    console.log(`info: birthday of ${msg.author.tag} set on ${today}`)
                     return await msg.channel.send(embed).then(msg.delete())
                 } catch(err) {
                     console.error(err);
@@ -76,7 +76,7 @@ module.exports = class profile {
             embed.setColor('AQUA')
             mongod.close();
             try {
-                console.log("[" + new Date().toLocaleTimeString() + "] Switch FC : " + msg.author.tag + " set to " + content)
+                console.log(`info: switch fc of ${msg.author.tag} set on ${today}`)
                 return await msg.channel.send(embed).then(msg.delete())
             } catch(err) {
                 console.error(err);
@@ -120,7 +120,7 @@ module.exports = class profile {
         if(await msg.member.roles.find(val => val.id == '613317566261231638')) {
             return msg.reply("you're already a Q-Bot fan !")
         } else {
-            console.log("[" + new Date().toLocaleTimeString() + "] Fans join : " + msg.author.tag)
+            console.log(`info: fans join: ${msg.author.tag}`)
             return msg.member.addRole('613317566261231638').then(msg.reply("you'll be notified of every updates !"))
         }
 
@@ -133,7 +133,7 @@ module.exports = class profile {
         if(await msg.channel.id != "611349541685559316")return;
 
         if(await msg.member.roles.find(val => val.id == '613317566261231638')) {
-            console.log("[" + new Date().toLocaleTimeString() + "] Fans leave : " + msg.author.tag)
+            console.log(`info: fans leave: ${msg.author.tag}`)
             return msg.member.removeRole('613317566261231638').then(msg.reply("you'll not be notified anymore."))
         } else {
             return msg.reply("you're already not a Q-Bot fan !")

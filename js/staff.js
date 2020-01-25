@@ -8,7 +8,7 @@ module.exports = class staff {
                 cont.shift()
                 var nb = parseInt(cont[0])
                 msg.channel.bulkDelete(nb)
-                    .then(console.log("[" + new Date().toLocaleTimeString() + "] Bulk delete : " + nb + " in #" + msg.channel.name + " by " + author))
+                    .then(console.log(`info: bulk delete: ${nb} in #${msg.channel.name} by ${msg.author.tag}`))
                     .catch(console.error);
             }
         }

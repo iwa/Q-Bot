@@ -269,7 +269,7 @@ async function xp (msg, author, Discord, db, bot) {
     })
 
     setTimeout(() => {
-        msg.channel.send(embed).then(console.log("[" + new Date().toLocaleTimeString() + "] XP Leaderboard to " + author), msg.channel.stopTyping()).catch(console.error)
+        msg.channel.send(embed).then(console.log(`info: xp leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
     }, 1500)
 }
 
@@ -291,7 +291,7 @@ async function pat (msg, author, Discord, db, bot) {
     })
 
     setTimeout(() => {
-        msg.channel.send(embed).then(console.log("[" + new Date().toLocaleTimeString() + "] Pat Leaderboard to " + author), msg.channel.stopTyping()).catch(console.error)
+        msg.channel.send(embed).then(console.log(`info: pat leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
     }, 1500)
 }
 
@@ -313,7 +313,7 @@ async function hug (msg, author, Discord, db, bot) {
     })
 
     setTimeout(() => {
-        msg.channel.send(embed).then(console.log("[" + new Date().toLocaleTimeString() + "] Hug Leaderboard to " + author), msg.channel.stopTyping()).catch(console.error)
+        msg.channel.send(embed).then(console.log(`info: hug leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
     }, 1500)
 }
 
@@ -335,6 +335,6 @@ async function boop (msg, author, Discord, db, bot) {
     })
 
     setTimeout(() => {
-        msg.channel.send(embed).then(console.log("[" + new Date().toLocaleTimeString() + "] Boop Leaderboard to " + author), msg.channel.stopTyping()).catch(console.error)
+        msg.channel.send(embed).then(console.log(`info: boop leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
     }, 1500)
 }

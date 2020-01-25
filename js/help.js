@@ -180,7 +180,7 @@ module.exports = class help {
         } else
             sendHelp(msg, isMod, adminList);
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Help sent to " + author)
+        console.log(`info: help sent to ${author}`)
     }
 
 }
