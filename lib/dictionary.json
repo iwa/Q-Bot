@@ -2,7 +2,8 @@
     "admin": {
         "sleep": "isSleeping = staff.sleep(msg, bot, isSleeping);",
         "resetbd": "profile.reset(msg, cont, db, author_id, Discord, bot, 'birthday');",
-        "resetfc": "profile.reset(msg, cont, db, author_id, Discord, bot, 'fc');"
+        "resetfc": "profile.reset(msg, cont, db, author_id, Discord, bot, 'fc');",
+        "read": "db.read(); msg.react('✅');"
     },
     "staff": {
         "bulk": "staff.bulk(msg, cont, author);",
