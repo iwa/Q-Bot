@@ -53,21 +53,21 @@ module.exports = class utilities {
         switch(cont[1]) {
             case "xp":
             case "exp":
-                return xp(msg, author, Discord, db, bot)
+                return xp(msg, Discord, db, bot)
 
             case "pat":
             case "pats":
             case "patpat":
             case "patpats":
-                return pat(msg, author, Discord, db, bot)
+                return pat(msg, Discord, db, bot)
 
             case "hug":
             case "hugs":
-                return hug(msg, author, Discord, db, bot)
+                return hug(msg, Discord, db, bot)
 
             case "boop":
             case "boops":
-                return boop(msg, author, Discord, db, bot)
+                return boop(msg, Discord, db, bot)
 
             default:
                 msg.channel.send({"embed": { "title": "`exp | pat | hug | boop`", "color": 3396531}});
@@ -251,7 +251,7 @@ async function leave (msg, game) {
 }
 
 
-async function xp (msg, author, Discord, db, bot) {
+async function xp (msg, Discord, db, bot) {
 
     let leaderboard = await db.get('user').orderBy('value', 'desc').take(10).value()
     var n = 0;
@@ -273,7 +273,7 @@ async function xp (msg, author, Discord, db, bot) {
     }, 1500)
 }
 
-async function pat (msg, author, Discord, db, bot) {
+async function pat (msg, Discord, db, bot) {
 
     let leaderboard = await db.get('user').orderBy('pat', 'desc').take(10).value()
     var n = 0;
@@ -295,7 +295,7 @@ async function pat (msg, author, Discord, db, bot) {
     }, 1500)
 }
 
-async function hug (msg, author, Discord, db, bot) {
+async function hug (msg, Discord, db, bot) {
 
     let leaderboard = await db.get('user').orderBy('hug', 'desc').take(10).value()
     var n = 0;
@@ -317,7 +317,7 @@ async function hug (msg, author, Discord, db, bot) {
     }, 1500)
 }
 
-async function boop (msg, author, Discord, db, bot) {
+async function boop (msg, Discord, db, bot) {
 
     let leaderboard = await db.get('user').orderBy('boop', 'desc').take(10).value()
     var n = 0;
@@ -336,5 +336,27 @@ async function boop (msg, author, Discord, db, bot) {
 
     setTimeout(() => {
         msg.channel.send(embed).then(console.log(`info: boop leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
+    }, 1500)
+}
+
+async function slap (msg, Discord, db, bot) {
+
+    let leaderboard = await db.get('user').orderBy('slap', 'desc').take(10).value()
+    var n = 0;
+
+    msg.channel.startTyping()
+
+    const embed = new Discord.RichEmbed();
+    embed.setColor('GREY')
+    embed.setTitle("**Slaps Leaderboard**")
+
+    leaderboard.forEach(async elem => {
+        let user = await bot.fetchUser(elem.id)
+        n++;
+        embed.addField(n + ". " + user.username, elem.boop + " slaps")
+    })
+
+    setTimeout(() => {
+        msg.channel.send(embed).then(console.log(`info: slap leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
     }, 1500)
 }
