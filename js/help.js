@@ -22,7 +22,7 @@ let member = {
       "fields": [
         {
             "name": "**👤 Profile**",
-            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan`"
+            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan` `boost`"
         },
         {
             "name": "**💕 Actions**",
@@ -167,6 +167,10 @@ module.exports = class help {
 
                 case "nowplaying":
                     what = "```markdown\n< nowplaying >\n\n# Usage\n?nowplaying\n\n# Description\nShow the current playing song```";
+                break;
+
+                case "boost":
+                    what = "```markdown\n< boost >\n\n# Usage\n?boost\n\n# Description\nPut on or put off the Booster Color\n**only usable if you are a booster**```";
                 break;
 
                 default:
