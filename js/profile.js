@@ -141,4 +141,13 @@ module.exports = class profile {
 
     }
 
+    static async boostColor (msg, boosterRole, boostColorRole) {
+        if(await msg.member.roles.find(val => val.id == boosterRole)) {
+            if(await msg.member.roles.find(val => val.id == boostColorRole))
+                return msg.member.removeRole(boostColorRole).then(msg.reply("you put off your Booster Color !"))
+            else
+                return msg.member.addRole(boostColorRole).then(msg.reply("you put on your Booster Color !"))
+        }
+    }
+
 }
