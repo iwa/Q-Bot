@@ -1,5 +1,6 @@
 const al = require('anilist-node');
 const Anilist = new al();
+let levels = require('../lib/levels.json');
 
 module.exports = class utilities {
 
@@ -174,6 +175,18 @@ module.exports = class utilities {
 
     static randomInt(max) {
         return Math.floor(Math.random() * Math.floor(max) + 1);
+    }
+
+    static async levelInfo(xp) {
+        if(xp < levels[1].amount) {
+            return {'level': 0, 'current': xp, 'max': levels[1].amount}
+        }
+        for(var i = 1; i < 20; i++) {
+            if(xp >= levels[i].amount && xp < levels[i+1].amount) {
+                return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i].amount - levels[i-1].amount)}
+            }
+        }
+        return {'level': 20, 'current': xp, 'max': levels[20].amount}
     }
 
 }
