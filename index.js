@@ -18,9 +18,9 @@ const memes = require('./js/memes')
 const music = require('./js/music')
 const utilities = require('./js/utilities')
 const letmein = require('./js/letmein')
+const img = require('./js/img')
 
 const fs = require('fs');
-const puppeteer = require('puppeteer');
 
 let config = require('./config.json');
 let commands = require('./lib/dictionary.json');
@@ -187,7 +187,6 @@ setInterval(async () => {
 // Check if a member no longer booster have the color
 
 setInterval(async () => {
-
     var members = bot.guilds.find(val => val.id == config.guildID)
 
     members.forEach(async elem => {
@@ -195,14 +194,11 @@ setInterval(async () => {
             await elem.removeRole(config.boostColorRole);
         }
     });
-
 }, 60000);
-
 
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
 
 setInterval(async () => {
-
     var today = new Date();
     var hh = today.getUTCHours()
 
@@ -229,9 +225,7 @@ setInterval(async () => {
                 channel.send(embed)
             });
         }
-
     }
-
 }, 3600000);
 
 
@@ -239,7 +233,6 @@ setInterval(async () => {
 
 if(config.testMode === 1) bot.login(config.test_token)
 else bot.login(config.discord_token)
-
 
 // Functions
 
@@ -264,22 +257,13 @@ async function levelCheck(msg, xp) {
 }
 
 async function imageLvl(msg, level) {
-
     var avatarURL = await msg.author.avatarURL
-
     var htmlContent = fs.readFileSync('./views/level', 'utf-8');
     var contentLvl = eval(htmlContent);
-
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-
-    await page.setViewport({width: 808, height: 208, deviceScaleFactor: 2})
-    await page.setContent(contentLvl, {waitUntil: 'networkidle0'});
-    await page.screenshot({path: `image/${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
-    await browser.close();
+    var file = await img.generator(808, 208, contentLvl, msg.author.tag, 'lvl')
 
     try {
-        return msg.reply('', {files: [`image/${msg.author.tag}.jpg`]})
+        return msg.reply('', {files: [file]})
     } catch(err) {
         console.error(err)
         return msg.reply(`You're now level ${level} ! Congrats !`)
@@ -338,18 +322,11 @@ async function profileImg(msg, id) {
 
     var htmlContent = fs.readFileSync('./views/profile', 'utf-8');
     var contentProfile = await eval(htmlContent);
-
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-
-    await page.setViewport({width: 508, height: 428, deviceScaleFactor: 2})
-    await page.setContent(contentProfile, {waitUntil: 'networkidle0'});
-    await page.screenshot({path: `image/prof${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
-    await browser.close();
+    var file = await img.generator(508, 428, contentProfile, msg.author.tag, 'prof')
 
     try {
         console.log(`info: profile by ${msg.author.tag}`)
-        return await msg.channel.send('', {files: [`image/prof${msg.author.tag}.jpg`]}).then(msg.channel.stopTyping(true));
+        return await msg.channel.send('', {files: [file]}).then(msg.channel.stopTyping(true));
     } catch(err) {
         console.error(err)
         return msg.channel.send("An error occured, please contact <@125325519054045184>")
@@ -357,31 +334,19 @@ async function profileImg(msg, id) {
 }
 
 async function sonicSays(msg, cont) {
-
     if(cont.length !== 1) {
         msg.channel.startTyping();
-
         var parole = cont;
-        if(msg.channel.type !== "dm") {
-            msg.delete().catch(console.error);
-        }
         parole.shift()
         var x = parole.join(' ')
 
         var htmlContent = fs.readFileSync('./views/sonicsays', 'utf-8');
         var contentSS = eval(htmlContent);
-
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-
-        await page.setViewport({width: 385, height: 209, deviceScaleFactor: 2})
-        await page.setContent(contentSS, {waitUntil: 'networkidle0'});
-        await page.screenshot({path: `image/sonic${msg.author.tag}.jpg`, type: 'jpeg', quality: 100});
-        await browser.close();
+        var file = await img.generator(385, 209, contentSS, msg.author.tag, 'sonic')
 
         try {
             console.log(`info: sonicsays by ${msg.author.tag}`)
-            return msg.channel.send('', {files: [`image/sonic${msg.author.tag}.jpg`]}).then(msg.channel.stopTyping(true));
+            return msg.channel.send('', {files: [file]}).then(msg.channel.stopTyping(true));
         } catch(err) {
             console.error(err)
         }
