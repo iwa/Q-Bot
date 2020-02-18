@@ -1,8 +1,7 @@
 const Discord = require('discord.js')
 const YoutubeStream = require('ytdl-core')
-const fs = require('fs')
 
-let config = JSON.parse(fs.readFileSync('./config.json', 'utf-8'))
+let config = require('../config.json')
 
 let TC = config.musicTC;
 let VC = config.musicVC;
@@ -18,11 +17,11 @@ var loop = 0, volume = 1;
 
 module.exports = class music {
 
-    static async play (msg, yt, cont) {
+    static async play (msg, args, yt) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        if(!cont[1])return;
+        if(!args[0])return;
 
         let voiceChannel = msg.guild.channels.find(val => val.id == VC)
 
@@ -30,7 +29,7 @@ module.exports = class music {
 
         if(!voiceChannel.members.find(val => val.id == msg.author.id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
 
-        let video_url = cont[1].split('&')
+        let video_url = args[0].split('&')
 
         var error, data;
 
@@ -146,8 +145,7 @@ module.exports = class music {
                 }
             }
         } else {
-            cont.shift()
-            let keywords = cont.join(' ')
+            let keywords = args.join(' ')
 
             var video = await yt.searchVideos(keywords, 1).then(data => {
                 return data[0].url
@@ -199,11 +197,11 @@ module.exports = class music {
 
     }
 
-    static remove (msg, cont) {
+    static remove (msg, args) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        var queueID = cont[1]
+        var queueID = args[0]
 
         if(isNaN(queueID)) return;
 
@@ -222,11 +220,11 @@ module.exports = class music {
 
     }
 
-    static list (msg, cont) {
+    static list (msg, args) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        if(cont.length > 1)return;
+        if(args.length > 0)return;
 
         if(queue.length < 0)return;
 
