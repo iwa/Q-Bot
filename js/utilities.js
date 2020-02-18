@@ -5,24 +5,6 @@ let config = require('../config.json')
 
 module.exports = class utilities {
 
-    static async ping (msg, author, bot) {
-
-        var ping = Math.ceil(bot.ping)
-        await msg.channel.send("pong ! `" + ping + "ms`")
-            .then(console.log("[" + new Date().toLocaleTimeString() + "] Ping : " + author))
-            .catch(console.error);
-
-    }
-
-    static async pong (msg, author, bot) {
-
-        var ping = Math.ceil(bot.ping)
-        await msg.channel.send("ping ! `" + ping + "ms`")
-            .then(console.log("[" + new Date().toLocaleTimeString() + "] Ping : " + author))
-            .catch(console.error);
-
-    }
-
     static async info (msg, iwaUrl) {
 
         var embed = {
