@@ -2,22 +2,6 @@ let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not"]
 
 module.exports = class games {
 
-    static roll (msg, cont, randomInt) {
-
-        if(cont.length !== 1) {
-            cont.shift()
-            var x = cont[0]
-            msg.channel.send({"embed": { "title": "**" + randomInt(x) + "**" }})
-              .then(console.log(`info: roll (${x}) by ${msg.author.tag}`))
-              .catch(console.error);
-        } else {
-            msg.channel.send({"embed": { "title": "**" + randomInt(100) + "**" }})
-            .then(console.log(`info: roll (100) by ${msg.author.tag}`))
-              .catch(console.error);
-        }
-
-    }
-
     static flipCoin (msg, randomInt) {
         var n = randomInt(2);
 
