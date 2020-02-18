@@ -260,7 +260,7 @@ module.exports = class music {
 
     }
 
-    static skip (msg, bot) {
+    static skip (bot, msg) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
