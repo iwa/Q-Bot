@@ -1,6 +1,7 @@
 const al = require('anilist-node');
 const Anilist = new al();
-let levels = require('../lib/levels.json');
+let levels = require('../lib/levels.json')
+let config = require('../config.json')
 
 module.exports = class utilities {
 
@@ -187,6 +188,11 @@ module.exports = class utilities {
             }
         }
         return {'level': 20, 'current': xp, 'max': levels[20].amount}
+    }
+
+    static isMod(msg) {
+        if(msg.member.roles.find(val => val.id == config.modRole) > -1) { return true }
+        else { return false }
     }
 
 }
