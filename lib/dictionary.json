@@ -36,6 +36,7 @@
         "skip": "music.skip(msg, bot);",
         "clear": "music.clear(msg);",
         "stop": "music.stop(msg);",
+        "leave": "music.stop(msg);",
         "loop": "music.loop(msg);",
         "nowplaying": "music.np(msg, bot);",
 
