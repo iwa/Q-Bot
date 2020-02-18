@@ -184,6 +184,21 @@ setInterval(async () => {
 }, 3600000);
 
 
+// Check if a member no longer booster have the color
+
+setInterval(async () => {
+
+    var members = bot.guilds.find(val => val.id == config.guildID)
+
+    members.forEach(async elem => {
+        if(await elem.roles.find(val => val.id == config.boostColorRole) && await elem.roles.find(val => val.id != config.boosterRole)) {
+            await elem.removeRole(config.boostColorRole);
+        }
+    });
+
+}, 60000);
+
+
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
 
 setInterval(async () => {
