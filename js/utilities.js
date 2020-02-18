@@ -1,3 +1,4 @@
+const Discord = require('discord.js')
 const al = require('anilist-node');
 const Anilist = new al();
 let levels = require('../lib/levels.json')
@@ -30,11 +31,11 @@ module.exports = class utilities {
 
     }
 
-    static leaderboard (msg, cont, author, Discord, db, bot) {
+    static leaderboard (bot, msg, args, db) {
 
-        if(cont.length > 2)return;
+        if(args.length > 1)return;
 
-        switch(cont[1]) {
+        switch(args[0]) {
             case "xp":
             case "exp":
                 return xp(msg, Discord, db, bot)
