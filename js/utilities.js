@@ -172,6 +172,10 @@ module.exports = class utilities {
 
     }
 
+    static randomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max) + 1);
+    }
+
 }
 
 // Functions
