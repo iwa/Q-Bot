@@ -16,6 +16,7 @@
         "setfc": "profile.setfc(msg, cont, db, Discord);",
         "becomefan": "profile.joinFan(msg);",
         "leavefan": "profile.leaveFan(msg);",
+        "boost": "profile.boostColor(msg, config.boosterRole, config.boostColorRole)",
 
         "patpat": "msg.reply('**Deprecated** -> use `?pat` instead');",
         "pat": "actions.run(msg, cont, randomInt, author, db, Discord, 'pat');",
