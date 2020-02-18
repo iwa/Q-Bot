@@ -2,16 +2,6 @@ let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not"]
 
 module.exports = class games {
 
-    static flipCoin (msg, randomInt) {
-        var n = randomInt(2);
-
-        if(n == 1)
-            msg.channel.send({"embed": { "title": ":large_blue_diamond: **Heads**" }})
-        else
-            msg.channel.send({"embed": { "title": ":large_orange_diamond: **Tails**" }})
-
-        return console.log(`info: flip coin by ${msg.author.tag}`)
-    }
 
     static rps (msg, cont, randomInt, Discord) {
 
