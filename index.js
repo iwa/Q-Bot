@@ -258,9 +258,9 @@ async function levelCheck(msg, xp) {
 
 async function imageLvl(msg, level) {
     var avatarURL = await msg.author.avatarURL
-    var htmlContent = fs.readFileSync('./views/level', 'utf-8');
-    var contentLvl = eval(htmlContent);
-    var file = await img.generator(808, 208, contentLvl, msg.author.tag, 'lvl')
+
+    var html = await ejs.renderFile('views/level.ejs', { avatarURL });
+    var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
 
     try {
         return msg.reply('', {files: [file]})
