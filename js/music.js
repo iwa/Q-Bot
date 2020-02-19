@@ -1,10 +1,8 @@
 const Discord = require('discord.js')
 const YoutubeStream = require('ytdl-core')
 
-let config = require('../config.json')
-
-let TC = config.musicTC;
-let VC = config.musicVC;
+let TC = process.env.MUSICTC;
+let VC = process.env.MUSICVC;
 
 var queue = [];
 var title = [];
