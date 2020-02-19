@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
+bot.commands = new Discord.Collection();
 
 require('dotenv').config()
 const fs = require('fs');
@@ -13,18 +14,18 @@ const db = low(adapter);
 
 db.defaults({ user: []}).write();
 
-const help = require('./js/help')
-const staff = require('./js/staff')
-const profile = require('./js/profile')
-const actions = require('./js/actions')
-const games = require('./js/games')
-const memes = require('./js/memes')
-const music = require('./js/music')
-const utilities = require('./js/utilities')
 const letmein = require('./js/letmein')
 const img = require('./js/img')
 
-const fs = require('fs');
+fs.readdir('./commands/', (error, f) => {
+    if (error) return console.error(error);
+    let commandes = f.filter(f => f.split('.').pop() === 'js');
+    if (commandes.length <= 0) return console.log('warn: no commands found');
+    commandes.forEach((f) => {
+        let commande = require(`./commands/${f}`);
+        bot.commands.set(commande.help.name, commande);
+    });
+});
 
 let config = require('./config.json');
 let commands = require('./lib/dictionary.json');
