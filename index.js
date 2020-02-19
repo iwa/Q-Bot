@@ -128,10 +128,8 @@ bot.on('message', async msg => {
     }
 
     // cmd Member
-
-    let cmd = commands.member[req];
-    if(!cmd) return;
-    else return eval(commands.member[req]);
+    if (!cmd) return;
+    else cmd.run(bot, msg, args);
 });
 
 
