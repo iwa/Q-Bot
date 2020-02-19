@@ -104,9 +104,9 @@ bot.on('message', async msg => {
         }
     }
 
-    let args = message.content.slice(prefix.length).trim().split(/ +/g);
+    let args = msg.content.slice(prefix.length).trim().split(/ +/g);
     let req = args.shift();
-    let cmd = client.commands.get(req);
+    let cmd = bot.commands.get(req);
 
     if(req == "letmein")
         return letmein.action(msg, levels, db);
