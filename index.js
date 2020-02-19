@@ -235,8 +235,7 @@ setInterval(async () => {
 
 // Login
 
-if(config.testMode === 1) bot.login(config.test_token)
-else bot.login(config.discord_token)
+bot.login(process.env.TOKEN)
 
 // Functions
 
