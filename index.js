@@ -222,11 +222,6 @@ function randomInt(max) {
     return Math.floor(Math.random() * Math.floor(max) + 1);
 }
 
-function isMod(msg) {
-    if(msg.member.roles.find(val => val.id == config.modRole) > -1) { return true }
-    else { return false }
-}
-
 async function levelCheck(msg, xp) {
     for(var i = 1; i <= 20; i++) {
         if(xp == levels[i].amount) {
