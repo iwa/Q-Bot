@@ -63,16 +63,16 @@ module.exports = class utilities {
 
     }
 
-    static async role (msg, cont) {
+    static async role (msg, args) {
 
         if(await msg.channel.type != "text")return;
         if(await msg.channel.id != "611349541685559316")return;
 
-        if(cont.length < 3)return;
+        if(args.length < 2)return;
 
-        var req = cont[1];
-        cont.splice(0, 2);
-        var game = cont.join(' ').toLowerCase();
+        var req = args[0];
+        args.splice(0, 1);
+        var game = args.join(' ').toLowerCase();
 
         switch(req) {
             case "join":
