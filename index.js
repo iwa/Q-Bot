@@ -34,8 +34,7 @@ const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(process.env.YT_TOKEN)
 
 let prefix = "?";
-let admin = ['125325519054045184', '214740144538910721'];
-var isSleeping = 0, lastComboColor;
+var isSleeping = 0;
 var cooldown = [], cooldownXP = [];
 
 
