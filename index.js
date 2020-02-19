@@ -218,10 +218,6 @@ bot.login(process.env.TOKEN)
 
 // Functions
 
-function randomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max) + 1);
-}
-
 async function levelCheck(msg, xp) {
     for(var i = 1; i <= 20; i++) {
         if(xp == levels[i].amount) {
