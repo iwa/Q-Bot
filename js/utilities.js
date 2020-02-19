@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
 let levels = require('../lib/levels.json')
-let config = require('../config.json')
 
 module.exports = class utilities {
 
@@ -102,7 +101,7 @@ module.exports = class utilities {
     }
 
     static isMod(msg) {
-        if(msg.member.roles.find(val => val.id == config.modRole) > -1) { return true }
+        if(msg.member.roles.find(val => val.id == process.env.MODROLE) > -1) { return true }
         else { return false }
     }
 
