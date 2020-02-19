@@ -8,3 +8,4 @@ draft.txt
 .save/
 image/
 config.json
+.env
