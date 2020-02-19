@@ -1,7 +1,6 @@
 const music = require('../js/music')
-let config = require('../config.json')
 const { YouTube } = require('better-youtube-api')
-const yt = new YouTube(config.yt_token)
+const yt = new YouTube(process.env.YT_TOKEN)
 
 module.exports.run = (bot, msg, args) => {
     music.play(msg, args, yt);
