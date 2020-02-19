@@ -12,7 +12,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('lib/db.json');
 const db = low(adapter);
 
-db.defaults({ user: []}).write();
+db.defaults({ user: [] }).write();
 
 const letmein = require('./js/letmein')
 const img = require('./js/img')
