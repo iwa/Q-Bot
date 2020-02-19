@@ -113,21 +113,6 @@ bot.on('message', async msg => {
 
     if(isSleeping === 1 && msg.author.id != process.env.IWA)return;
 
-    // cmd Admin
-
-    if(msg.author.id == process.env.IWA) {
-        let cmd = commands.admin[req];
-        if(cmd) return eval(commands.admin[req]);
-    }
-
-    // cmd Mods
-
-    if(isMod(msg) === true || msg.author.id == process.env.IWA || msg.author.id != process.env.QUMU) {
-        let cmd = commands.staff[req];
-        if(cmd) return eval(commands.staff[req]);
-    }
-
-    // cmd Member
     if (!cmd) return;
     else cmd.run(bot, msg, args);
 });
