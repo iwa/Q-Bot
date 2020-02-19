@@ -247,18 +247,6 @@ async function imageLvl(msg, level) {
     }
 }
 
-async function levelInfo(xp) {
-    if(xp < levels[1].amount) {
-        return {'level': 0, 'current': xp, 'max': levels[1].amount}
-    }
-    for(var i = 1; i < 20; i++) {
-        if(xp >= levels[i].amount && xp < levels[i+1].amount) {
-            return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i].amount - levels[i-1].amount)}
-        }
-    }
-    return {'level': 20, 'current': xp, 'max': levels[20].amount}
-}
-
 async function profileImg(msg, id) {
 
     var user = await db.get('user').find({ id: id }).value();
