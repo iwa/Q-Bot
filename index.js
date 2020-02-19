@@ -104,9 +104,9 @@ bot.on('message', async msg => {
         }
     }
 
-    var plainCont = msg.content.replace(/\s\s+/g, ' ');
-    var cont = plainCont.split(' ')
-    var req = cont[0].substring(1).toLowerCase()
+    let args = message.content.slice(prefix.length).trim().split(/ +/g);
+    let req = args.shift();
+    let cmd = client.commands.get(req);
 
     if(req == "letmein")
         return letmein.action(msg, levels, db);
