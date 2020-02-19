@@ -17,7 +17,7 @@ module.exports = class staff {
 
     }
 
-    static async mute (msg, cont, admin, modRole, Discord, bot) {
+    static async mute (msg, cont, modRole, Discord, bot) {
 
         if(cont.length == 3 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;
@@ -27,7 +27,7 @@ module.exports = class staff {
             if(!mention)return;
             if(mention.id == msg.author.id || mention.id == bot.user.id)return;
 
-            if(admin.indexOf(msg.author.id) == -1 && mention.roles.find(val => val.id == modRole) > -1)return;
+            if((msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) && mention.roles.find(val => val.id == modRole) > -1)return;
 
             try {
                 msg.delete();

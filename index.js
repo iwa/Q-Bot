@@ -114,18 +114,18 @@ bot.on('message', async msg => {
     if(req == "letmein")
         return letmein.action(msg, levels, db);
 
-    if(isSleeping === 1 && admin.indexOf(msg.author.id) == -1)return;
+    if(isSleeping === 1 && msg.author.id != process.env.IWA)return;
 
     // cmd Admin
 
-    if(admin.indexOf(msg.author.id) == 0) {
+    if(msg.author.id == process.env.IWA) {
         let cmd = commands.admin[req];
         if(cmd) return eval(commands.admin[req]);
     }
 
     // cmd Mods
 
-    if(isMod(msg) === true || admin.indexOf(msg.author.id) > -1) {
+    if(isMod(msg) === true || msg.author.id == process.env.IWA || msg.author.id != process.env.QUMU) {
         let cmd = commands.staff[req];
         if(cmd) return eval(commands.staff[req]);
     }
