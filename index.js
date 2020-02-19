@@ -27,8 +27,6 @@ fs.readdir('./commands/', (error, f) => {
     });
 });
 
-let config = require('./config.json');
-let commands = require('./lib/dictionary.json');
 let levels = require('./lib/levels.json');
 
 const { YouTube } = require('better-youtube-api')
