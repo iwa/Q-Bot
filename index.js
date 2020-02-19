@@ -67,8 +67,6 @@ bot.on('message', async msg => {
     if(msg.author.bot)return;
     if(msg.channel.type != "text")return;
 
-    var author = msg.author.tag
-
     if(!cooldown[msg.author.id]) {
         cooldown[msg.author.id] = 1;
         setTimeout(async () => { delete cooldown[msg.author.id] }, 2500)
