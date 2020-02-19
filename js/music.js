@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const YoutubeStream = require('ytdl-core')
+const utils = require('./utilities')
 
 let TC = process.env.MUSICTC;
 let VC = process.env.MUSICVC;
@@ -342,6 +343,8 @@ module.exports = class music {
     }
 
     static forceskip (msg, bot) {
+
+        if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 

@@ -1,6 +1,10 @@
+const utils = require('./utilities')
+
 module.exports = class staff {
 
     static async bulk (msg, cont) {
+
+        if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(cont.length !== 1) {
             if(msg.channel.type !== "dm") {
@@ -18,6 +22,8 @@ module.exports = class staff {
     }
 
     static async mute (msg, cont, modRole, Discord, bot) {
+
+        if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(cont.length == 3 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;
