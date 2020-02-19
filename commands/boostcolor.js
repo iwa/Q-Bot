@@ -1,11 +1,9 @@
-let config = require('../config.json')
-
 module.exports.run = async (bot, msg) => {
-    if(await msg.member.roles.find(val => val.id == config.boosterRole)) {
-        if(await msg.member.roles.find(val => val.id == config.boostColorRole))
-            return msg.member.removeRole(config.boostColorRole).then(msg.reply("you put off your Booster Color !"))
+    if(await msg.member.roles.find(val => val.id == process.env.BOOSTROLE)) {
+        if(await msg.member.roles.find(val => val.id == process.env.BOOSTCOLOR))
+            return msg.member.removeRole(process.env.BOOSTCOLOR).then(msg.reply("you put off your Booster Color !"))
         else
-            return msg.member.addRole(config.boostColorRole).then(msg.reply("you put on your Booster Color !"))
+            return msg.member.addRole(process.env.BOOSTCOLOR).then(msg.reply("you put on your Booster Color !"))
     }
 };
 
