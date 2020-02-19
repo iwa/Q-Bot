@@ -1,6 +1,4 @@
 const Discord = require('discord.js')
-const al = require('anilist-node');
-const Anilist = new al();
 let levels = require('../lib/levels.json')
 let config = require('../config.json')
 
@@ -86,40 +84,6 @@ module.exports = class utilities {
 
     }
 
-    static async manga (msg, cont, Discord) {
-
-        if(cont.length < 2)return;
-        cont.shift();
-        var req = cont.join(' ');
-
-        Anilist.search('manga', req, 1, 1).then(async data => {
-            var res = data.media[0];
-            var info = await Anilist.media.manga(res.id)
-            const embed = new Discord.RichEmbed();
-            embed.setTitle("**" + info.title.romaji + " / " + info.title.english + "**")
-            embed.setThumbnail(info.coverImage.large)
-            embed.addField("Status", info.status, true)
-            if(info.volumes != null)
-                embed.addField("Volumes", info.volumes, true)
-            embed.addField("Format", info.format, false)
-            embed.addField("Started on", info.startDate.month + "/" + info.startDate.day + "/" + info.startDate.year, true)
-            if(info.endDate.day != null)
-                embed.addField("Ended on", info.endDate.month + "/" + info.endDate.day + "/" + info.endDate.year, true)
-            embed.addField("Genres", info.genres, false)
-            var desc = await info.description.replace(/<br>/gm, '');
-            if(desc.length >= 1024)
-                desc = desc.substring(0, 1023)
-            embed.addField("Description", desc, false)
-            embed.setColor('BLUE')
-
-            console.log(`info: manga request : ${req} by ${msg.author.tag}`)
-            return msg.channel.send(embed)
-        }).catch(err => {
-            console.error(err)
-            return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry**" }})
-        });
-
-    }
 
     static randomInt(max) {
         return Math.floor(Math.random() * Math.floor(max) + 1);
