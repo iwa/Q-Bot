@@ -1,6 +1,10 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
 
+require('dotenv').config()
+const fs = require('fs');
+const ejs = require('ejs')
+
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
@@ -27,7 +31,7 @@ let commands = require('./lib/dictionary.json');
 let levels = require('./lib/levels.json');
 
 const { YouTube } = require('better-youtube-api')
-const yt = new YouTube(config.yt_token)
+const yt = new YouTube(process.env.YT_TOKEN)
 
 let prefix = "?";
 let admin = ['125325519054045184', '214740144538910721'];
@@ -87,7 +91,7 @@ bot.on('message', async msg => {
     if(!msg.content.startsWith(prefix)) {
 
         if(msg.channel.id == '608630294261530624')return;
-        if(msg.channel.id == config.suggestionTC) {
+        if(msg.channel.id == process.env.SUGGESTIONTC) {
             await msg.react('✅');
             return await msg.react('❌');
         }
@@ -138,12 +142,12 @@ bot.on('message', async msg => {
 // Reactions Event
 
 bot.on('messageReactionAdd', async reaction => {
-    if(reaction.message.guild.id !== config.guildID)return;
+    if(reaction.message.guild.id !== process.env.GUILDID)return;
     if(reaction.emoji.name !== '⭐')return;
     if(reaction.users.find(val => val.id == bot.user.id))return;
     if(reaction.count >= 6) {
         var msg = reaction.message;
-        var channel = bot.channels.find(val => val.id == config.starboardTC);
+        var channel = bot.channels.find(val => val.id == process.env.STARBOARDTC);
 
         await msg.react(reaction.emoji.name);
         await channel.send({
@@ -169,7 +173,7 @@ bot.on('messageReactionAdd', async reaction => {
 
 setInterval(async () => {
 
-    let channel = bot.channels.find(val => val.id == config.subCount)
+    let channel = bot.channels.find(val => val.id == process.env.SUBCOUNT)
     let title = channel.name
 
     let newCount = title.replace(/\D/gim, '')
@@ -187,11 +191,11 @@ setInterval(async () => {
 // Check if a member no longer booster have the color
 
 setInterval(async () => {
-    var members = bot.guilds.find(val => val.id == config.guildID)
+    var members = bot.guilds.find(val => val.id == process.env.GUILDID)
 
     members.forEach(async elem => {
-        if(await elem.roles.find(val => val.id == config.boostColorRole) && await elem.roles.find(val => val.id != config.boosterRole)) {
-            await elem.removeRole(config.boostColorRole);
+        if(await elem.roles.find(val => val.id == process.env.BOOSTCOLOR) && await elem.roles.find(val => val.id != process.env.BOOSTROLE)) {
+            await elem.removeRole(process.env.BOOSTCOLOR);
         }
     });
 }, 60000);
@@ -212,7 +216,7 @@ setInterval(async () => {
 
         if(data.length >= 1) {
 
-            let channel = bot.channels.find(val => val.id == config.birthdayTC)
+            let channel = bot.channels.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
                 var userInfo = await bot.fetchUser(user.id)
