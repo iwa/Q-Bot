@@ -5,5 +5,7 @@ module.exports.run = (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'loop'
+    name: 'loop',
+    usage: "?loop",
+    desc: "Enable / Disable loop for the current song"
 };

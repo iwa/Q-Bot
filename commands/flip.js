@@ -10,5 +10,7 @@ module.exports.run = (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'flip'
+    name: 'flip',
+    usage: "?flip",
+    desc: "Flip a coin"
 };

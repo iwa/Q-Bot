@@ -6,5 +6,7 @@ module.exports.run = async (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'pong'
+    name: 'pong',
+    usage: "?pong",
+    desc: "This will send you the ping between Q-Bot and Discord's Servers"
 };

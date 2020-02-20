@@ -14,5 +14,7 @@ module.exports.run = async (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: '8ball'
+    name: '8ball',
+    usage: "?8ball (your question)",
+    desc: "Let Q-Bot reply to all your questions, with a lot of honesty"
 };

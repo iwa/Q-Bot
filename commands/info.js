@@ -6,5 +6,7 @@ module.exports.run = async (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'info'
+    name: 'info',
+    usage: "?info",
+    desc: "Show some info about Q-Bot"
 };

@@ -7,5 +7,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'play'
+    name: 'play',
+    usage: "?play (YouTube link | keywords)",
+    desc: "Play YouTube videos in the Qumu Radio voice channel"
 };

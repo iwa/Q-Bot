@@ -5,5 +5,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'role'
+    name: 'role',
+    usage: "?role (join | leave) (game)",
+    desc: "Join or leave games-related roles"
 };

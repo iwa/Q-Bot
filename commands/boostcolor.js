@@ -8,5 +8,7 @@ module.exports.run = async (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'boostcolor'
+    name: 'boostcolor',
+    usage: "?boostcolor",
+    desc: "Put on or put off the Booster Color\n**only usable if you are a Nitro booster**"
 };

@@ -5,5 +5,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'queue'
+    name: 'queue',
+    usage: "?queue",
+    desc: "Show the music queue"
 };

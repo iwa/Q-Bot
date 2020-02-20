@@ -5,5 +5,7 @@ module.exports.run = (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'leave'
+    name: 'leave',
+    usage: "?leave",
+    desc: "Make the bot stop playing music and disconnect it from the Qumu Radio"
 };

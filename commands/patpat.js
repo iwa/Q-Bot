@@ -3,5 +3,7 @@ module.exports.run = (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'patpat'
+    name: 'patpat',
+    usage: "**Deprecated** -> use `?pat` instead",
+    desc: ""
 };

@@ -20,5 +20,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'roll'
+    name: 'roll',
+    usage: "?roll [number]\n_will choose 100 by default if you don't precise any number_",
+    desc: "Generates a number between 1 and the number you choose"
 };
