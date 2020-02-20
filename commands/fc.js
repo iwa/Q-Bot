@@ -27,5 +27,5 @@ module.exports.run = async (bot, msg, args, db) => {
 module.exports.help = {
     name: 'fc',
     usage: "?fc",
-    desc: "Pat people by mentioning them"
+    desc: "Print your Switch Friend Code in the channel you sent the command"
 };
