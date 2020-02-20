@@ -432,7 +432,8 @@ async function playSong (msg, voiceConnection, voiceChannel) {
 
     voiceConnection.then(connection => {
 
-        connection.playStream(video, {volume : volume, bitrate : 96000}).on('start', () => {
+        connection.playStream(video, {volume : volume, bitrate : 96000, passes: 3})
+        .on('start', () => {
             if(loop == 0) {
                 var date = new Date(null)
                 date.setSeconds(length[0])
