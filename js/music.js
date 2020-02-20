@@ -410,11 +410,11 @@ module.exports = class music {
         embed.setColor('GREEN')
         embed.setTitle("**:cd: Now Playing :**")
 
-        var desc = "[" + title[0] + "](" + queue[0] + ")";
+        var desc = `[${title[0]}](${queue[0]})`;
         if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable it";
         embed.setDescription(desc)
 
-        embed.setFooter("Length : " + timeString)
+        embed.setFooter(`Length : ${timeString}`)
         msg.channel.send(embed)
 
         console.log(`info: nowplaying by ${msg.author.tag}`)
@@ -441,8 +441,8 @@ async function playSong (msg, voiceConnection, voiceChannel) {
                 const embed = new Discord.RichEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("**:cd: Now Playing :**")
-                embed.setDescription("[" + title[0] + "](" + queue[0] + ")")
-                embed.setFooter("Length : " + timeString)
+                embed.setDescription(`[${title[0]}](${queue[0]})`)
+                embed.setFooter(`Length : ${timeString}`)
 
                 msg.channel.send(embed)
                 console.log(`musc: playing: ${title[0]}`)
