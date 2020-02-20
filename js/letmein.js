@@ -3,8 +3,7 @@ const utils = require('./utilities')
 module.exports = class letmein {
 
     static async action (msg, levels, db) {
-
-        if(msg.channel.id != "608630294261530624")return;
+        if(msg.channel.id != process.env.LOBBY)return;
 
         var user = await db.get('user').find({ id: msg.author.id }).value();
 
