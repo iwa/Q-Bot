@@ -342,7 +342,7 @@ module.exports = class music {
 
     }
 
-    static forceskip (msg, bot) {
+    static forceskip (bot, msg) {
 
         if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
