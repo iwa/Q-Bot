@@ -5,5 +5,7 @@ module.exports.run = (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'clear'
+    name: 'clear',
+    usage: "?clear",
+    desc: "Clear the music queue\nOnly in #radio-lounge"
 };

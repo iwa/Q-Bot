@@ -5,5 +5,7 @@ module.exports.run = (bot, msg, args, db) => {
 };
 
 module.exports.help = {
-    name: 'hug'
+    name: 'hug',
+    usage: "?hug (mention someone) [someone else]",
+    desc: "Hug people by mentioning them"
 };

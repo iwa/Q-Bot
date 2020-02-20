@@ -33,5 +33,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'manga'
+    name: 'manga',
+    usage: "?manga (title)",
+    desc: "See some info about a manga"
 };

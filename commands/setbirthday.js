@@ -38,5 +38,7 @@ module.exports.run = async (bot, msg, args, db) => {
 };
 
 module.exports.help = {
-    name: 'setbirthday'
+    name: 'setbirthday',
+    usage: "?setbirthday (your birthday, mm/dd)",
+    desc: "Register your birthday to Q-Bot\nPlease use this format : **mm/dd**\nThis use UTC timezone"
 };

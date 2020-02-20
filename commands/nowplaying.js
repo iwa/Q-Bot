@@ -5,5 +5,7 @@ module.exports.run = (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'nowplaying'
+    name: 'nowplaying',
+    usage: "?nowplaying",
+    desc: "Show the current playing song"
 };

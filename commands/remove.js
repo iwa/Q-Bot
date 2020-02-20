@@ -5,5 +5,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'remove'
+    name: 'remove',
+    usage: "?remove (id of the video in the queue)",
+    desc: "Remove a video in the queue"
 };

@@ -5,5 +5,7 @@ module.exports.run = (bot, msg, args, db) => {
 };
 
 module.exports.help = {
-    name: 'slap'
+    name: 'slap',
+    usage: "?slap (mention someone) [someone else]",
+    desc: "Slap people by mentioning them"
 };

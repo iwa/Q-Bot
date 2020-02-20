@@ -27,5 +27,7 @@ module.exports.run = async (bot, msg, args, db) => {
 };
 
 module.exports.help = {
-    name: 'setfc'
+    name: 'setfc',
+    usage: "?setfc (your Switch FC)",
+    desc: "Register your Switch Friend Code to Q-Bot\nPlease enter your FC without 'SW-' at the beginning"
 };

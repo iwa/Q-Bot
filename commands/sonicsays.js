@@ -21,5 +21,7 @@ module.exports.run = async (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'sonicsays'
+    name: 'sonicsays',
+    usage: "?sonicsays (text)",
+    desc: "Generate a Sonic Says meme"
 };

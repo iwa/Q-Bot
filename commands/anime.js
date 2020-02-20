@@ -34,5 +34,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'anime'
+    name: 'anime',
+    usage: "?anime (title)",
+    desc: "See some info about an anime"
 };

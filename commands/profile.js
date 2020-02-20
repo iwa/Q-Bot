@@ -15,7 +15,9 @@ module.exports.run = (bot, msg, args, db) => {
 };
 
 module.exports.help = {
-    name: 'profile'
+    name: 'profile',
+    usage: "?profile [mention someone]",
+    desc: "Print your or someone's profile"
 };
 
 async function profileImg(bot, msg, db, id) {

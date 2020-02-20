@@ -10,5 +10,7 @@ module.exports.run = async (bot, msg) => {
 };
 
 module.exports.help = {
-    name: 'leavefan'
+    name: 'leavefan',
+    usage: "?leavefan",
+    desc: "Do this command if you no longer want to be aware of every updates of Q-Bot"
 };

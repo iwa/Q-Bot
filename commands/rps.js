@@ -48,5 +48,7 @@ module.exports.run = (bot, msg, args) => {
 };
 
 module.exports.help = {
-    name: 'rps'
+    name: 'rps',
+    usage: "?rps (rock | paper | scissors)",
+    desc: "Play to Rock-Paper-Scissors with me"
 };

@@ -5,5 +5,7 @@ module.exports.run = (bot, msg, args, db) => {
 };
 
 module.exports.help = {
-    name: 'pat'
+    name: 'pat',
+    usage: "?pat (mention someone) [someone else]",
+    desc: "Pat people by mentioning them"
 };
