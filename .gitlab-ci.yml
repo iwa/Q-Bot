@@ -7,4 +7,4 @@ eslint:
   stage: lint
   script:
     - npm install -g eslint
-    - eslint js/*.js
+    - eslint index.js js/*.js commands/*.js
