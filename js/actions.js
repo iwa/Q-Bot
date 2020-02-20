@@ -1,3 +1,6 @@
+const Discord = require('discord.js')
+const util = require('../js/utilities')
+
 let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so cute with me ?", "omg", "<3", "so cuuuute c:", "c:", "c;", ":3", "QT af :O", "oh yeaaaah ;3"]
 
 var lastGif = {
@@ -16,16 +19,16 @@ let count = {
 
 module.exports = class actions {
 
-    static async run (msg, cont, randomInt, author, db, Discord, type) {
+    static async run (msg, args, db, type) {
 
-        var n = randomInt(count[type])
+        var n = util.randomInt(count[type])
         while(lastGif[type] == n) {
-            n = randomInt(count[type]);
+            n = util.randomInt(count[type]);
         }
         lastGif[type] = n;
-        var r = randomInt(reply.length)
+        var r = util.randomInt(reply.length)
 
-        if(cont.length == 2) {
+        if(args.length == 1) {
             if(msg.mentions.everyone)return;
 
             var mention = msg.mentions.users.first()
@@ -60,7 +63,7 @@ module.exports = class actions {
             embed.setFooter(`you have given ${user[type]} ${type}s`)
 
             return msg.channel.send(embed)
-            .then(console.log(`info: ${type} sent by ${author}`), msg.channel.stopTyping(true))
+            .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
             .catch(console.error);
 
         }
