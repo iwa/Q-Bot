@@ -65,7 +65,7 @@ module.exports = class staff {
 
     }
 
-    static sleep (msg, bot) {
+    static sleep (bot, msg) {
         if(msg.author.id != process.env.IWA)return;
         if(process.env.SLEEP == 0) {
             bot.user.setStatus("dnd")
