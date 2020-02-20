@@ -35,25 +35,25 @@ module.exports = class utilities {
         switch(args[0]) {
             case "xp":
             case "exp":
-                return xp(msg, Discord, db, bot)
+                return leaderboard(bot, msg, db, Discord, 'exp')
 
             case "pat":
             case "pats":
             case "patpat":
             case "patpats":
-                return pat(msg, Discord, db, bot)
+                return leaderboard(bot, msg, db, Discord, 'pat')
 
             case "hug":
             case "hugs":
-                return hug(msg, Discord, db, bot)
+                return leaderboard(bot, msg, db, Discord, 'hug')
 
             case "boop":
             case "boops":
-                return boop(msg, Discord, db, bot)
+                return leaderboard(bot, msg, db, Discord, 'boop')
 
             case "slap":
             case "slaps":
-                return slap(msg, Discord, db, bot)
+                return leaderboard(bot, msg, db, Discord, 'slap')
 
             default:
                 msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
@@ -188,112 +188,24 @@ async function leave (msg, game) {
 }
 
 
-async function xp (msg, Discord, db, bot) {
-
-    let leaderboard = await db.get('user').orderBy('value', 'desc').take(10).value()
+async function leaderboard (bot, msg, db, Discord, type) {
+    let leaderboard = await db.get('user').orderBy(type, 'desc').take(10).value()
     var n = 0;
 
     msg.channel.startTyping()
+    var title = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
 
     const embed = new Discord.RichEmbed();
     embed.setColor('GREY')
-    embed.setTitle("**XP Leaderboard**")
+    embed.setTitle(`**${title} Leaderboard**`)
 
     leaderboard.forEach(async elem => {
         let user = await bot.fetchUser(elem.id)
         n++;
-        embed.addField(n + ". " + user.username, elem.exp + " xp's")
+        embed.addField(`${n}. ${user.username}`, `${elem.exp} ${type}s`)
     })
 
     setTimeout(() => {
-        msg.channel.send(embed).then(console.log(`info: xp leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
-    }, 1500)
-}
-
-async function pat (msg, Discord, db, bot) {
-
-    let leaderboard = await db.get('user').orderBy('pat', 'desc').take(10).value()
-    var n = 0;
-
-    msg.channel.startTyping()
-
-    const embed = new Discord.RichEmbed();
-    embed.setColor('GREY')
-    embed.setTitle("**Pat Leaderboard**")
-
-    leaderboard.forEach(async elem => {
-        let user = await bot.fetchUser(elem.id)
-        n++;
-        embed.addField(n + ". " + user.username, elem.pat + " pats")
-    })
-
-    setTimeout(() => {
-        msg.channel.send(embed).then(console.log(`info: pat leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
-    }, 1500)
-}
-
-async function hug (msg, Discord, db, bot) {
-
-    let leaderboard = await db.get('user').orderBy('hug', 'desc').take(10).value()
-    var n = 0;
-
-    msg.channel.startTyping()
-
-    const embed = new Discord.RichEmbed();
-    embed.setColor('GREY')
-    embed.setTitle("**Hugs Leaderboard**")
-
-    leaderboard.forEach(async elem => {
-        let user = await bot.fetchUser(elem.id)
-        n++;
-        embed.addField(n + ". " + user.username, elem.hug + " hugs")
-    })
-
-    setTimeout(() => {
-        msg.channel.send(embed).then(console.log(`info: hug leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
-    }, 1500)
-}
-
-async function boop (msg, Discord, db, bot) {
-
-    let leaderboard = await db.get('user').orderBy('boop', 'desc').take(10).value()
-    var n = 0;
-
-    msg.channel.startTyping()
-
-    const embed = new Discord.RichEmbed();
-    embed.setColor('GREY')
-    embed.setTitle("**Boops Leaderboard**")
-
-    leaderboard.forEach(async elem => {
-        let user = await bot.fetchUser(elem.id)
-        n++;
-        embed.addField(n + ". " + user.username, elem.boop + " boops")
-    })
-
-    setTimeout(() => {
-        msg.channel.send(embed).then(console.log(`info: boop leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
-    }, 1500)
-}
-
-async function slap (msg, Discord, db, bot) {
-
-    let leaderboard = await db.get('user').orderBy('slap', 'desc').take(10).value()
-    var n = 0;
-
-    msg.channel.startTyping()
-
-    const embed = new Discord.RichEmbed();
-    embed.setColor('GREY')
-    embed.setTitle("**Slaps Leaderboard**")
-
-    leaderboard.forEach(async elem => {
-        let user = await bot.fetchUser(elem.id)
-        n++;
-        embed.addField(n + ". " + user.username, elem.boop + " slaps")
-    })
-
-    setTimeout(() => {
-        msg.channel.send(embed).then(console.log(`info: slap leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
+        msg.channel.send(embed).then(console.log(`info: ${type} leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
     }, 1500)
 }
