@@ -33,7 +33,6 @@ const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(process.env.YT_TOKEN)
 
 let prefix = "?";
-var isSleeping = 0;
 var cooldown = [], cooldownXP = [];
 
 
@@ -111,7 +110,7 @@ bot.on('message', async msg => {
     if(req == "letmein")
         return letmein.action(msg, levels, db);
 
-    if(isSleeping === 1 && msg.author.id != process.env.IWA)return;
+    if(process.env.SLEEP === 1 && msg.author.id != process.env.IWA)return;
 
     if (!cmd) return;
     else cmd.run(bot, msg, args);
