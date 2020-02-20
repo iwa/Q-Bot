@@ -1,3 +1,4 @@
+const Discord = require('discord.js')
 const utils = require('./utilities')
 
 module.exports = class staff {
@@ -19,11 +20,11 @@ module.exports = class staff {
 
     }
 
-    static async mute (msg, cont, modRole, Discord, bot) {
+    static async mute (bot, msg, args) {
 
         if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
-        if(cont.length == 3 && msg.channel.type != 'dm') {
+        if(args.length == 2 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;
 
             var mention = msg.mentions.members.first()
@@ -31,7 +32,7 @@ module.exports = class staff {
             if(!mention)return;
             if(mention.id == msg.author.id || mention.id == bot.user.id)return;
 
-            if((msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) && mention.roles.find(val => val.id == modRole) > -1)return;
+            if((msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) && mention.roles.find(val => val.id == process.env.MODROLE) > -1)return;
 
             try {
                 msg.delete();
@@ -39,7 +40,7 @@ module.exports = class staff {
                 console.error(error);
             }
 
-            var time = cont[2]
+            var time = args[1]
 
             if(time <= 0 || time > 1440)return;
 
@@ -47,7 +48,7 @@ module.exports = class staff {
 
             const embed = new Discord.RichEmbed();
             embed.setColor('RED')
-            embed.setTitle("**" + mention.user.username + "**, you've been muted for " + cont[2] + " minutes by **" + msg.author.username + "**")
+            embed.setTitle(`**${mention.user.username}**, you've been muted for ${args[1]} minutes by **${msg.author.username}**`)
 
             try {
                 await mention.addRole('636254696880734238')
