@@ -1,10 +1,12 @@
+const Discord = require('discord.js')
+
 module.exports = class profile {
 
-    static async reset (msg, cont, db, Discord, bot, type) {
+    static async reset (bot, msg, args, db, type) {
+        if(msg.author.id != process.env.IWA)return;
+        if(args.length == 1) {
 
-        if(cont.length == 2) {
-
-            let id = cont[1]
+            let id = args[0]
 
             var userDB = await db.get('user').find({ id: id }).value()
             if(!userDB)
