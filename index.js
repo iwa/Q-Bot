@@ -34,7 +34,6 @@ const yt = new YouTube(process.env.YT_TOKEN)
 
 var cooldown = [], cooldownXP = [];
 
-
 process.on('uncaughtException', exception => {
     console.error(exception);
 });
@@ -56,7 +55,6 @@ bot.on('ready', async () => {
     await bot.user.setStatus("online").catch(console.error)
     console.log(`info: logged in as ${bot.user.username}`);
 });
-
 
 // Message Event
 
@@ -83,7 +81,6 @@ bot.on('message', async msg => {
     }
 
     if(!msg.content.startsWith(process.env.PREFIX)) {
-
         if(msg.channel.id == '608630294261530624')return;
         if(msg.channel.id == process.env.SUGGESTIONTC) {
             await msg.react('✅');
@@ -115,7 +112,6 @@ bot.on('message', async msg => {
     else return cmd.run(bot, msg, args, db);
 });
 
-
 // Reactions Event
 
 bot.on('messageReactionAdd', async reaction => {
@@ -145,14 +141,11 @@ bot.on('messageReactionAdd', async reaction => {
     }
 });
 
-
 // Subs count, refresh every hour
 
 setInterval(async () => {
-
     let channel = bot.channels.find(val => val.id == process.env.SUBCOUNT)
     let title = channel.name
-
     let newCount = title.replace(/\D/gim, '')
 
     await yt.getChannel('UC0QbcOX2gI5zruEvpSmnf6Q')
@@ -161,9 +154,7 @@ setInterval(async () => {
             let subs = data.subCount.toLocaleString()
             channel.edit({ name: `📊 ${subs} subs`})
         })
-
 }, 3600000);
-
 
 // Check if a member no longer booster have the color
 
@@ -184,7 +175,6 @@ setInterval(async () => {
     var hh = today.getUTCHours()
 
     if(hh == 7) {
-
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0');
         today = mm + '/' + dd;
@@ -192,7 +182,6 @@ setInterval(async () => {
         var data = await db.get('user').filter({ birthday: today }).value();
 
         if(data.length >= 1) {
-
             let channel = bot.channels.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
@@ -208,7 +197,6 @@ setInterval(async () => {
         }
     }
 }, 3600000);
-
 
 // Login
 
