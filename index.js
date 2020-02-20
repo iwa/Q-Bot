@@ -32,7 +32,6 @@ let levels = require('./lib/levels.json');
 const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(process.env.YT_TOKEN)
 
-let prefix = "?";
 var cooldown = [], cooldownXP = [];
 
 
@@ -83,7 +82,7 @@ bot.on('message', async msg => {
         }, 1200000);
     }
 
-    if(!msg.content.startsWith(prefix)) {
+    if(!msg.content.startsWith(process.env.PREFIX)) {
 
         if(msg.channel.id == '608630294261530624')return;
         if(msg.channel.id == process.env.SUGGESTIONTC) {
@@ -103,7 +102,7 @@ bot.on('message', async msg => {
         }
     }
 
-    let args = msg.content.slice(prefix.length).trim().split(/ +/g);
+    let args = msg.content.slice(1).trim().split(/ +/g);
     let req = args.shift();
     let cmd = bot.commands.get(req);
 
