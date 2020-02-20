@@ -1,25 +1,7 @@
-const al = require('anilist-node');
-const Anilist = new al();
+const Discord = require('discord.js')
+let levels = require('../lib/levels.json')
 
 module.exports = class utilities {
-
-    static async ping (msg, author, bot) {
-
-        var ping = Math.ceil(bot.ping)
-        await msg.channel.send("pong ! `" + ping + "ms`")
-            .then(console.log("[" + new Date().toLocaleTimeString() + "] Ping : " + author))
-            .catch(console.error);
-
-    }
-
-    static async pong (msg, author, bot) {
-
-        var ping = Math.ceil(bot.ping)
-        await msg.channel.send("ping ! `" + ping + "ms`")
-            .then(console.log("[" + new Date().toLocaleTimeString() + "] Ping : " + author))
-            .catch(console.error);
-
-    }
 
     static async info (msg, iwaUrl) {
 
@@ -46,11 +28,11 @@ module.exports = class utilities {
 
     }
 
-    static leaderboard (msg, cont, author, Discord, db, bot) {
+    static leaderboard (bot, msg, args, db) {
 
-        if(cont.length > 2)return;
+        if(args.length > 1)return;
 
-        switch(cont[1]) {
+        switch(args[0]) {
             case "xp":
             case "exp":
                 return xp(msg, Discord, db, bot)
@@ -80,16 +62,16 @@ module.exports = class utilities {
 
     }
 
-    static async role (msg, cont) {
+    static async role (msg, args) {
 
         if(await msg.channel.type != "text")return;
         if(await msg.channel.id != "611349541685559316")return;
 
-        if(cont.length < 3)return;
+        if(args.length < 2)return;
 
-        var req = cont[1];
-        cont.splice(0, 2);
-        var game = cont.join(' ').toLowerCase();
+        var req = args[0];
+        args.splice(0, 1);
+        var game = args.join(' ').toLowerCase();
 
         switch(req) {
             case "join":
@@ -101,75 +83,26 @@ module.exports = class utilities {
 
     }
 
-    static async anime (msg, cont, Discord) {
 
-        if(cont.length < 2)return;
-        cont.shift();
-        var req = cont.join(' ');
-
-        Anilist.search('anime', req, 1, 1).then(async data => {
-            var res = data.media[0];
-            var info = await Anilist.media.anime(res.id)
-            const embed = new Discord.RichEmbed();
-            embed.setTitle("**" + info.title.romaji + " / " + info.title.english + "**")
-            embed.setThumbnail(info.coverImage.large)
-            embed.addField("Status", info.status, true)
-            if(info.episodes != null)
-                embed.addField("Episodes", info.episodes, true)
-            embed.addField("Format", info.format, true)
-            embed.addField("Duration per ep", info.duration + "min", true)
-            embed.addField("Started on", info.startDate.month + "/" + info.startDate.day + "/" + info.startDate.year, true)
-            if(info.endDate.day != null)
-                embed.addField("Ended on", info.endDate.month + "/" + info.endDate.day + "/" + info.endDate.year, true)
-            embed.addField("Genres", info.genres, false)
-            var desc = await info.description.replace(/<br>/gm, '');
-            if(desc.length >= 1024)
-                desc = desc.substring(0, 1023)
-            embed.addField("Description", desc, false)
-            embed.setColor('BLUE')
-
-            console.log(`info: anime request : ${req} by ${msg.author.tag}`)
-            return msg.channel.send(embed)
-        }).catch(err => {
-            console.error(err)
-            return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry**" }})
-        });
-
+    static randomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max) + 1);
     }
 
-    static async manga (msg, cont, Discord) {
+    static async levelInfo(xp) {
+        if(xp < levels[1].amount) {
+            return {'level': 0, 'current': xp, 'max': levels[1].amount}
+        }
+        for(var i = 1; i < 20; i++) {
+            if(xp >= levels[i].amount && xp < levels[i+1].amount) {
+                return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i].amount - levels[i-1].amount)}
+            }
+        }
+        return {'level': 20, 'current': xp, 'max': levels[20].amount}
+    }
 
-        if(cont.length < 2)return;
-        cont.shift();
-        var req = cont.join(' ');
-
-        Anilist.search('manga', req, 1, 1).then(async data => {
-            var res = data.media[0];
-            var info = await Anilist.media.manga(res.id)
-            const embed = new Discord.RichEmbed();
-            embed.setTitle("**" + info.title.romaji + " / " + info.title.english + "**")
-            embed.setThumbnail(info.coverImage.large)
-            embed.addField("Status", info.status, true)
-            if(info.volumes != null)
-                embed.addField("Volumes", info.volumes, true)
-            embed.addField("Format", info.format, false)
-            embed.addField("Started on", info.startDate.month + "/" + info.startDate.day + "/" + info.startDate.year, true)
-            if(info.endDate.day != null)
-                embed.addField("Ended on", info.endDate.month + "/" + info.endDate.day + "/" + info.endDate.year, true)
-            embed.addField("Genres", info.genres, false)
-            var desc = await info.description.replace(/<br>/gm, '');
-            if(desc.length >= 1024)
-                desc = desc.substring(0, 1023)
-            embed.addField("Description", desc, false)
-            embed.setColor('BLUE')
-
-            console.log(`info: manga request : ${req} by ${msg.author.tag}`)
-            return msg.channel.send(embed)
-        }).catch(err => {
-            console.error(err)
-            return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry**" }})
-        });
-
+    static isMod(msg) {
+        if(msg.member.roles.find(val => val.id == process.env.MODROLE) > -1) { return true }
+        else { return false }
     }
 
 }

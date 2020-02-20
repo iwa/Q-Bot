@@ -1,5 +1,10 @@
 const Discord = require('discord.js')
 const bot = new Discord.Client()
+bot.commands = new Discord.Collection();
+
+require('dotenv').config()
+const fs = require('fs');
+const ejs = require('ejs')
 
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -7,31 +12,27 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('lib/db.json');
 const db = low(adapter);
 
-db.defaults({ user: []}).write();
+db.defaults({ user: [] }).write();
 
-const help = require('./js/help')
-const staff = require('./js/staff')
-const profile = require('./js/profile')
-const actions = require('./js/actions')
-const games = require('./js/games')
-const memes = require('./js/memes')
-const music = require('./js/music')
-const utilities = require('./js/utilities')
 const letmein = require('./js/letmein')
 const img = require('./js/img')
 
-const fs = require('fs');
+fs.readdir('./commands/', (error, f) => {
+    if (error) return console.error(error);
+    let commandes = f.filter(f => f.split('.').pop() === 'js');
+    if (commandes.length <= 0) return console.log('warn: no commands found');
+    commandes.forEach((f) => {
+        let commande = require(`./commands/${f}`);
+        bot.commands.set(commande.help.name, commande);
+    });
+});
 
-let config = require('./config.json');
-let commands = require('./lib/dictionary.json');
 let levels = require('./lib/levels.json');
 
 const { YouTube } = require('better-youtube-api')
-const yt = new YouTube(config.yt_token)
+const yt = new YouTube(process.env.YT_TOKEN)
 
 let prefix = "?";
-let admin = ['125325519054045184', '214740144538910721'];
-var isSleeping = 0, lastComboColor;
 var cooldown = [], cooldownXP = [];
 
 
@@ -65,8 +66,6 @@ bot.on('message', async msg => {
     if(msg.author.bot)return;
     if(msg.channel.type != "text")return;
 
-    var author = msg.author.tag
-
     if(!cooldown[msg.author.id]) {
         cooldown[msg.author.id] = 1;
         setTimeout(async () => { delete cooldown[msg.author.id] }, 2500)
@@ -87,7 +86,7 @@ bot.on('message', async msg => {
     if(!msg.content.startsWith(prefix)) {
 
         if(msg.channel.id == '608630294261530624')return;
-        if(msg.channel.id == config.suggestionTC) {
+        if(msg.channel.id == process.env.SUGGESTIONTC) {
             await msg.react('✅');
             return await msg.react('❌');
         }
@@ -104,46 +103,29 @@ bot.on('message', async msg => {
         }
     }
 
-    var plainCont = msg.content.replace(/\s\s+/g, ' ');
-    var cont = plainCont.split(' ')
-    var req = cont[0].substring(1).toLowerCase()
+    let args = msg.content.slice(prefix.length).trim().split(/ +/g);
+    let req = args.shift();
+    let cmd = bot.commands.get(req);
 
     if(req == "letmein")
-        return letmein.action(msg, msg.author.id, levelInfo, levels, db);
+        return letmein.action(msg, levels, db);
 
-    if(isSleeping === 1 && admin.indexOf(msg.author.id) == -1)return;
+    if(process.env.SLEEP === 1 && msg.author.id != process.env.IWA)return;
 
-    // cmd Admin
-
-    if(admin.indexOf(msg.author.id) == 0) {
-        let cmd = commands.admin[req];
-        if(cmd) return eval(commands.admin[req]);
-    }
-
-    // cmd Mods
-
-    if(isMod(msg) === true || admin.indexOf(msg.author.id) > -1) {
-        let cmd = commands.staff[req];
-        if(cmd) return eval(commands.staff[req]);
-    }
-
-    // cmd Member
-
-    let cmd = commands.member[req];
-    if(!cmd) return;
-    else return eval(commands.member[req]);
+    if (!cmd) return;
+    else cmd.run(bot, msg, args, db);
 });
 
 
 // Reactions Event
 
 bot.on('messageReactionAdd', async reaction => {
-    if(reaction.message.guild.id !== config.guildID)return;
+    if(reaction.message.guild.id !== process.env.GUILDID)return;
     if(reaction.emoji.name !== '⭐')return;
     if(reaction.users.find(val => val.id == bot.user.id))return;
     if(reaction.count >= 6) {
         var msg = reaction.message;
-        var channel = bot.channels.find(val => val.id == config.starboardTC);
+        var channel = bot.channels.find(val => val.id == process.env.STARBOARDTC);
 
         await msg.react(reaction.emoji.name);
         await channel.send({
@@ -169,7 +151,7 @@ bot.on('messageReactionAdd', async reaction => {
 
 setInterval(async () => {
 
-    let channel = bot.channels.find(val => val.id == config.subCount)
+    let channel = bot.channels.find(val => val.id == process.env.SUBCOUNT)
     let title = channel.name
 
     let newCount = title.replace(/\D/gim, '')
@@ -187,11 +169,11 @@ setInterval(async () => {
 // Check if a member no longer booster have the color
 
 setInterval(async () => {
-    var members = bot.guilds.find(val => val.id == config.guildID)
+    var members = bot.guilds.find(val => val.id == process.env.GUILDID)
 
     members.forEach(async elem => {
-        if(await elem.roles.find(val => val.id == config.boostColorRole) && await elem.roles.find(val => val.id != config.boosterRole)) {
-            await elem.removeRole(config.boostColorRole);
+        if(await elem.roles.find(val => val.id == process.env.BOOSTCOLOR) && await elem.roles.find(val => val.id != process.env.BOOSTROLE)) {
+            await elem.removeRole(process.env.BOOSTCOLOR);
         }
     });
 }, 60000);
@@ -212,7 +194,7 @@ setInterval(async () => {
 
         if(data.length >= 1) {
 
-            let channel = bot.channels.find(val => val.id == config.birthdayTC)
+            let channel = bot.channels.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
                 var userInfo = await bot.fetchUser(user.id)
@@ -231,19 +213,9 @@ setInterval(async () => {
 
 // Login
 
-if(config.testMode === 1) bot.login(config.test_token)
-else bot.login(config.discord_token)
+bot.login(process.env.TOKEN)
 
 // Functions
-
-function randomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max) + 1);
-}
-
-function isMod(msg) {
-    if(msg.member.roles.find(val => val.id == config.modRole) > -1) { return true }
-    else { return false }
-}
 
 async function levelCheck(msg, xp) {
     for(var i = 1; i <= 20; i++) {
@@ -258,97 +230,14 @@ async function levelCheck(msg, xp) {
 
 async function imageLvl(msg, level) {
     var avatarURL = await msg.author.avatarURL
-    var htmlContent = fs.readFileSync('./views/level', 'utf-8');
-    var contentLvl = eval(htmlContent);
-    var file = await img.generator(808, 208, contentLvl, msg.author.tag, 'lvl')
+
+    var html = await ejs.renderFile('views/level.ejs', { avatarURL });
+    var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
 
     try {
         return msg.reply('', {files: [file]})
     } catch(err) {
         console.error(err)
         return msg.reply(`You're now level ${level} ! Congrats !`)
-    }
-}
-
-async function levelInfo(xp) {
-    if(xp < levels[1].amount) {
-        return {'level': 0, 'current': xp, 'max': levels[1].amount}
-    }
-    for(var i = 1; i < 20; i++) {
-        if(xp >= levels[i].amount && xp < levels[i+1].amount) {
-            return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i].amount - levels[i-1].amount)}
-        }
-    }
-    return {'level': 20, 'current': xp, 'max': levels[20].amount}
-}
-
-async function profileImg(msg, id) {
-
-    var user = await db.get('user').find({ id: id }).value();
-
-    if(!user)return msg.channel.send(":x: > **You aren't registered into the database, you need to talk once in a channel to have your profile initialized**");
-
-    msg.channel.startTyping();
-
-    let userDiscord = await bot.fetchUser(id)
-    var positionXP = await db.get('user').orderBy('exp', 'desc').findIndex(val => val.id == id).value()
-    var positionHug = await db.get('user').orderBy('hug', 'desc').findIndex(val => val.id == id).value()
-    var positionPat = await db.get('user').orderBy('pat', 'desc').findIndex(val => val.id == id).value()
-    var positionBoop = await db.get('user').orderBy('boop', 'desc').findIndex(val => val.id == id).value()
-    var positionSlap = await db.get('user').orderBy('slap', 'desc').findIndex(val => val.id == id).value()
-
-    if(user.birthday == null)
-        user.birthday = 'not registered yet';
-
-    if(user.fc == null)
-        user.fc = 'not registered yet';
-
-    var lvlInfo = await levelInfo(user.exp);
-
-    var colors = [
-        ['#8BC6EC', '#9599E2'],
-        ['#B2F9B6', '#56E3BC'],
-        ['#FFFFD5', '#86DFBC'],
-        ['#FFE5E5', '#C8BDFF'],
-        ['#FF7171', '#8A1C5F'],
-        ['#FFFAB0', '#E6B99F'],
-        ['#6D98FF', '#EE69D9']
-    ]
-
-    var whichColor = (randomInt(7) - 1)
-    while(lastComboColor == whichColor)
-        whichColor = (randomInt(7) - 1)
-    lastComboColor = whichColor
-
-    var htmlContent = fs.readFileSync('./views/profile', 'utf-8');
-    var contentProfile = await eval(htmlContent);
-    var file = await img.generator(508, 428, contentProfile, msg.author.tag, 'prof')
-
-    try {
-        console.log(`info: profile by ${msg.author.tag}`)
-        return await msg.channel.send('', {files: [file]}).then(msg.channel.stopTyping(true));
-    } catch(err) {
-        console.error(err)
-        return msg.channel.send("An error occured, please contact <@125325519054045184>")
-    }
-}
-
-async function sonicSays(msg, cont) {
-    if(cont.length !== 1) {
-        msg.channel.startTyping();
-        var parole = cont;
-        parole.shift()
-        var x = parole.join(' ')
-
-        var htmlContent = fs.readFileSync('./views/sonicsays', 'utf-8');
-        var contentSS = eval(htmlContent);
-        var file = await img.generator(385, 209, contentSS, msg.author.tag, 'sonic')
-
-        try {
-            console.log(`info: sonicsays by ${msg.author.tag}`)
-            return msg.channel.send('', {files: [file]}).then(msg.channel.stopTyping(true));
-        } catch(err) {
-            console.error(err)
-        }
     }
 }

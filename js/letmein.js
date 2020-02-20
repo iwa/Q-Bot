@@ -1,13 +1,15 @@
+const utils = require('./utilities')
+
 module.exports = class letmein {
 
-    static async action (msg, levelInfo, levels, db) {
+    static async action (msg, levels, db) {
 
         if(msg.channel.id != "608630294261530624")return;
 
         var user = await db.get('user').find({ id: msg.author.id }).value();
 
         if(user) {
-            var lvl = levelInfo(user.exp);
+            var lvl = utils.levelInfo(user.exp);
             if(lvl.level != 0) await msg.member.addRole(levels[lvl.level].id);
         }
 
