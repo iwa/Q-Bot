@@ -196,13 +196,13 @@ async function leaderboard (bot, msg, db, Discord, type) {
     var title = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
 
     const embed = new Discord.RichEmbed();
-    embed.setColor('GREY')
-    embed.setTitle(`**${title} Leaderboard**`)
+    embed.setColor(16114507)
+    embed.setTitle(`:trophy: **${title} Leaderboard**`)
 
     leaderboard.forEach(async elem => {
         let user = await bot.fetchUser(elem.id)
         n++;
-        embed.addField(`${n}. ${user.username}`, `${elem.exp} ${type}s`)
+        embed.addField(`**${n}. ${user.username}**`, `${elem.exp} ${type}s`)
     })
 
     setTimeout(() => {
