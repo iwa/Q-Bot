@@ -113,7 +113,7 @@ bot.on('message', async msg => {
     if(process.env.SLEEP === 1 && msg.author.id != process.env.IWA)return;
 
     if (!cmd) return;
-    else cmd.run(bot, msg, args);
+    else cmd.run(bot, msg, args, db);
 });
 
 
