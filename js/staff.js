@@ -2,15 +2,13 @@ const utils = require('./utilities')
 
 module.exports = class staff {
 
-    static async bulk (msg, cont) {
-
+    static async bulk (msg, args) {
         if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
-        if(cont.length !== 1) {
+        if(args.length !== 0) {
             if(msg.channel.type !== "dm") {
                 msg.delete().catch(console.error);
-                cont.shift()
-                var nb = parseInt(cont[0])
+                var nb = parseInt(args[0])
                 msg.channel.bulkDelete(nb)
                     .then(console.log(`info: bulk delete: ${nb} in #${msg.channel.name} by ${msg.author.tag}`))
                     .catch(console.error);
