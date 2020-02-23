@@ -20,7 +20,6 @@ let count = {
 module.exports = class actions {
 
     static async run (msg, args, db, type) {
-
         var n = util.randomInt(count[type])
         while(lastGif[type] == n) {
             n = util.randomInt(count[type]);
