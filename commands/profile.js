@@ -60,12 +60,10 @@ async function profileImg(bot, msg, db, id) {
 
     var colors = [
         ['#8BC6EC', '#9599E2'],
-        ['#B2F9B6', '#56E3BC'],
         ['#FFFFD5', '#86DFBC'],
         ['#FFE5E5', '#C8BDFF'],
-        ['#FF7171', '#8A1C5F'],
-        ['#FFFAB0', '#E6B99F'],
-        ['#6D98FF', '#EE69D9']
+        ['#FD9090', '#F9AEDC'],
+        ['#ECE799', '#FFD3B9']
     ]
 
     var whichColor = (utils.randomInt(7) - 1)
