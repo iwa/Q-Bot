@@ -22,7 +22,7 @@ module.exports = class staff {
 
     static async mute (bot, msg, args) {
 
-        if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
+        if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(args.length == 2 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;
