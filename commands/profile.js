@@ -36,7 +36,7 @@ async function profileImg(bot, msg, db, id) {
     let guild = await bot.guilds.find(val => val.id == process.env.GUILDID)
     let member = await guild.members.find(val => val.id == id)
 
-    if(userDiscord.id == process.env.IWA)
+    if(userDiscord.id == process.env.QUMU)
         user.icon = '<i class="fas fa-chess-king"></i>'
     else if(member.roles.find(val => val.id == process.env.MODROLE))
         user.icon = '<i class="fas fa-chess-rook"></i>'
