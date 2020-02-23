@@ -63,13 +63,20 @@ async function profileImg(bot, msg, db, id) {
         ['#FFFFD5', '#86DFBC'],
         ['#FFE5E5', '#C8BDFF'],
         ['#FD9090', '#F9AEDC'],
-        ['#ECE799', '#FFD3B9']
+        ['#ECE799', '#FFD3B9'],
+        ['#90B1FF', '#F0A6E4']
     ]
 
-    var whichColor = (utils.randomInt(7) - 1)
-    while(lastComboColor == whichColor)
-        whichColor = (utils.randomInt(7) - 1)
-    lastComboColor = whichColor
+    var whichColor;
+
+    if(userDiscord.id == process.env.QUMU || member.roles.find(val => val.id == process.env.MODROLE))
+        whichColor = 5
+    else {
+        whichColor = (utils.randomInt(5) - 1)
+        while(lastComboColor == whichColor)
+            whichColor = (utils.randomInt(5) - 1)
+        lastComboColor = whichColor
+    }
 
     var html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
     var file = await img.generator(508, 428, html, msg.author.tag, 'prof')
