@@ -31,6 +31,16 @@ async function profileImg(bot, msg, db, id) {
     let userDiscord = await bot.fetchUser(id)
     user.avatar = userDiscord.avatarURL
     user.username = userDiscord.username
+    user.icon = null
+
+    let guild = await bot.guilds.find(val => val.id == process.env.GUILDID)
+    let member = await guild.members.find(val => val.id == id)
+
+    if(userDiscord.id == process.env.IWA)
+        user.icon = '<i class="fas fa-chess-king"></i>'
+    else if(member.roles.find(val => val.id == process.env.MODROLE))
+        user.icon = '<i class="fas fa-chess-rook"></i>'
+
     user.positionXP = await db.get('user').orderBy('exp', 'desc').findIndex(val => val.id == id).value()
     user.positionHug = await db.get('user').orderBy('hug', 'desc').findIndex(val => val.id == id).value()
     user.positionPat = await db.get('user').orderBy('pat', 'desc').findIndex(val => val.id == id).value()
