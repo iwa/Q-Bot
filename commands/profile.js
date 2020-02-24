@@ -78,8 +78,14 @@ async function profileImg(bot, msg, db, id) {
         lastComboColor = whichColor
     }
 
-    var html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
-    var file = await img.generator(508, 428, html, msg.author.tag, 'prof')
+    var html, file;
+    if(userDiscord.id == process.env.QUMU) {
+        html = await ejs.renderFile('views/profileQumu.ejs', { user, colors, whichColor });
+        file = await img.generator(508, 288, html, msg.author.tag, 'prof')
+    } else {
+        html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
+        file = await img.generator(508, 428, html, msg.author.tag, 'prof')
+    }
 
     try {
         console.log(`info: profile by ${msg.author.tag}`)
