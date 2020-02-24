@@ -189,7 +189,7 @@ async function leave (msg, game) {
 
 
 async function leaderboard (bot, msg, db, Discord, type) {
-    let leaderboard = await db.get('user').orderBy(type, 'desc').take(10).value()
+    let leaderboard = await db.get('user').filter({hidden: false}).orderBy(type, 'desc').take(10).value()
     var n = 0;
 
     msg.channel.startTyping()
