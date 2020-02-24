@@ -63,7 +63,6 @@ module.exports = class utilities {
     }
 
     static async role (msg, args) {
-
         if(await msg.channel.type != "text")return;
         if(await msg.channel.id != "611349541685559316")return;
 
@@ -142,6 +141,16 @@ async function join (msg, game) {
                 return msg.member.addRole('662017803804475393').then(msg.reply("you joined Pokémon role !"))
             } break;
 
+        case "minecraft":
+            if(! await msg.member.roles.find(val => val.id == '681557797661442063')) {
+                return msg.member.addRole('681557797661442063').then(msg.reply("you joined Minecraft role !"))
+            } break;
+
+        case "terraria":
+            if(! await msg.member.roles.find(val => val.id == '681557799725170718')) {
+                return msg.member.addRole('681557799725170718').then(msg.reply("you joined Terraria role !"))
+            } break;
+
         default:
             return msg.reply("the game you entered doesn't exist yet")
 
@@ -179,6 +188,16 @@ async function leave (msg, game) {
         case "pokémon":
             if(await msg.member.roles.find(val => val.id == '662017803804475393')) {
                 return msg.member.removeRole('662017803804475393').then(msg.reply("you leaved Pokémon role !"))
+            } break;
+
+        case "minecraft":
+            if(await msg.member.roles.find(val => val.id == '681557797661442063')) {
+                return msg.member.removeRole('681557797661442063').then(msg.reply("you leaved Minecraft role !"))
+            } break;
+
+        case "terraria":
+            if(await msg.member.roles.find(val => val.id == '681557799725170718')) {
+                return msg.member.removeRole('681557799725170718').then(msg.reply("you leaved Terraria role !"))
             } break;
 
         default:
