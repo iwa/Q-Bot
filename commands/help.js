@@ -3,7 +3,7 @@ const utils = require('../js/utilities')
 let admin = {
     "embed": {
       "title": "**❯ Admin**",
-      "description": "`?sleep`\n`?resetbirthday (UID)`\n`?resetfc (UID)`\n`?read`",
+      "description": "`?sleep`\n`?resetbd (UID)`\n`?resetfc (UID)`\n`?read`",
       "color": 13632027
     }
   }
@@ -24,7 +24,7 @@ let member = {
       "fields": [
         {
             "name": "**👤 Profile**",
-            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan` `boost`"
+            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan` `fc`"
         },
         {
             "name": "**💕 Actions**",
@@ -40,11 +40,11 @@ let member = {
         },
         {
             "name": "**🎶 Music** (only usable in #radio-lounge)",
-            "value": "`play` `remove` `queue` `skip` `clear` `stop` `loop` `nowplaying`"
+            "value": "`play` `remove` `queue` `skip` `clear` `stop` `leave` `loop` `nowplaying`"
         },
         {
             "name": "**🛠 Utility**",
-            "value": "`ping` `pong` `help` `info` `leaderboard` `lead` `role` `anime` `manga`"
+            "value": "`ping` `pong` `help` `info` `leaderboard` `lead` `role` `anime` `manga` `boostcolor` `thanksiwa`"
         },
       ]
     }
@@ -88,5 +88,5 @@ async function sendHelp(msg, isMod) {
             return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
     else
-        await msg.channel.send(member)
+        return await msg.channel.send(member)
 }
