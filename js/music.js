@@ -1,11 +1,9 @@
 const Discord = require('discord.js')
 const YoutubeStream = require('ytdl-core')
-const fs = require('fs')
+const utils = require('./utilities')
 
-let config = JSON.parse(fs.readFileSync('./config.json', 'utf-8'))
-
-let TC = config.musicTC;
-let VC = config.musicVC;
+let TC = process.env.MUSICTC;
+let VC = process.env.MUSICVC;
 
 var queue = [];
 var title = [];
@@ -18,19 +16,21 @@ var loop = 0, volume = 1;
 
 module.exports = class music {
 
-    static async play (msg, yt, cont, author_id) {
+    static async play (msg, args, yt) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        if(!cont[1])return;
+        if(!args[0])return;
 
         let voiceChannel = msg.guild.channels.find(val => val.id == VC)
 
         if(voiceChannel == null)return;
 
-        if(!voiceChannel.members.find(val => val.id == author_id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
+        if(!voiceChannel.members.find(val => val.id == msg.author.id)) { return msg.channel.send(":x: > **You need to be connected in the voice channel before I join it !**") }
 
-        let video_url = cont[1].split('&')
+        let video_url = args[0].split('&')
+
+        var error, data;
 
         if(video_url[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 
@@ -40,7 +40,7 @@ module.exports = class music {
             await reply.react('✅');
             await reply.react('❌');
 
-            var collected = await reply.awaitReactions((_reaction, user) => user.id == author_id, { time: 10000 })
+            var collected = await reply.awaitReactions((_reaction, user) => user.id == msg.author.id, { time: 10000 })
 
             if(collected.first() == undefined) {
                 reply.delete()
@@ -68,9 +68,9 @@ module.exports = class music {
 
             for(const video of Object.values(videos)) {
                 const url = video.url
-                var error = false;
+                error = false;
                 if(queue.indexOf(url) == -1) {
-                    var data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
+                    data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
                     if(!error) {
                         queue.push(url)
                         title.push(Discord.escapeMarkdown(data.title))
@@ -104,10 +104,10 @@ module.exports = class music {
         if(YoutubeStream.validateURL(video_url[0])) {
 
             msg.channel.startTyping()
-            var error = false;
+            error = false;
 
             if(queue.indexOf(video_url[0]) == -1) {
-                var data = await YoutubeStream.getInfo(video_url[0]).catch(() => { error = true; })
+                data = await YoutubeStream.getInfo(video_url[0]).catch(() => { error = true; })
                 if(!error) {
                     queue.push(video_url[0])
                     title.push(Discord.escapeMarkdown(data.title))
@@ -131,7 +131,7 @@ module.exports = class music {
                 embed.setColor('LUMINOUS_VIVID_PINK')
                 msg.channel.stopTyping()
                 msg.channel.send(embed)
-                console.log("[" + new Date().toLocaleTimeString() + "] Add Queue : " + msg.author.tag + " added " + data.title)
+                console.log(`info: add to queue: ${msg.author.tag} added ${data.title}`)
             }
             else {
                 msg.channel.stopTyping()
@@ -144,8 +144,7 @@ module.exports = class music {
                 }
             }
         } else {
-            cont.shift()
-            let keywords = cont.join(' ')
+            let keywords = args.join(' ')
 
             var video = await yt.searchVideos(keywords, 1).then(data => {
                 return data[0].url
@@ -154,10 +153,10 @@ module.exports = class music {
             if(!YoutubeStream.validateURL(video))return;
 
             msg.channel.startTyping();
-            var error = false;
+            error = false;
 
             if(queue.indexOf(video) == -1) {
-                var data = await YoutubeStream.getInfo(video).catch(() => { error = true; })
+                data = await YoutubeStream.getInfo(video).catch(() => { error = true; })
                 if(!error) {
                     queue.push(video)
                     title.push(Discord.escapeMarkdown(data.title))
@@ -181,7 +180,7 @@ module.exports = class music {
                 embed.setColor('LUMINOUS_VIVID_PINK')
                 msg.channel.stopTyping()
                 msg.channel.send(embed)
-                console.log("[" + new Date().toLocaleTimeString() + "] Add Queue : " + msg.author.tag + " added " + data.title)
+                console.log(`info: add to queue: ${msg.author.tag} added ${data.title}`)
             }
             else {
                 msg.channel.stopTyping()
@@ -197,34 +196,34 @@ module.exports = class music {
 
     }
 
-    static remove (msg, cont) {
+    static remove (msg, args) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        var queueID = cont[1]
+        var queueID = args[0]
 
         if(isNaN(queueID)) return;
 
         const embed = new Discord.RichEmbed();
         embed.setColor('GREEN')
         embed.setAuthor('Removed from the queue :', msg.author.avatarURL);
-        embed.setDescription("**" + title[queueID] + "**")
-        embed.setFooter("Removed by " + msg.author.username)
+        embed.setDescription(`**${title[queueID]}**`)
+        embed.setFooter(`Removed by ${msg.author.username}`)
 
         msg.channel.send(embed)
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Removed From Queue : " + msg.author.id + " removed " + title[queueID])
+        console.log(`info: remove from queue: ${msg.author.tag} removed ${title[queueID]}`)
 
         queue.splice(queueID, 1)
         title.splice(queueID, 1)
 
     }
 
-    static list (msg, cont) {
+    static list (msg, args) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        if(cont.length > 1)return;
+        if(args.length > 0)return;
 
         if(queue.length < 0)return;
 
@@ -238,7 +237,7 @@ module.exports = class music {
         else {
             embed.setTitle("**:cd: Here's the queue**")
 
-            queue.forEach(async (item, index, _array) => {
+            queue.forEach(async (item, index) => {
 
                 if(index == 0 || index > 10)return;
 
@@ -252,15 +251,15 @@ module.exports = class music {
 
         }
 
-        if (queue.length > 10) embed.setFooter("and " + (queue.length - 10) + " more...")
+        if (queue.length > 10) embed.setFooter(`and ${(queue.length - 10)} more...`)
         msg.channel.stopTyping(true);
         msg.channel.send(embed);
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Show Queue : by " + msg.author.tag)
+        console.log(`info: show queue by ${msg.author.tag}`)
 
     }
 
-    static skip (msg, bot) {
+    static skip (bot, msg) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -283,7 +282,7 @@ module.exports = class music {
             embed.setAuthor("Your voteskip has been registered !", msg.author.avatarURL)
             msg.channel.send(embed)
 
-            console.log("[" + new Date().toLocaleTimeString() + "] Voteskip : " + msg.author.tag)
+            console.log(`info: voteskip by ${msg.author.tag}`)
 
             if(skipReq >= Math.ceil((voiceChannel.members.size - 1) / 2)) {
                 let dispatcher = voiceConnection.dispatcher
@@ -293,7 +292,7 @@ module.exports = class music {
                 msg.channel.send(embed)
                 loop = 0;
                 dispatcher.end()
-                console.log("[" + new Date().toLocaleTimeString() + "] Skipping to the next song...")
+                console.log(`musc: skipping song`)
             } else {
                 const embed = new Discord.RichEmbed();
                 embed.setColor('BRIGHT_RED')
@@ -323,7 +322,7 @@ module.exports = class music {
         embed.setColor('GREEN')
         msg.channel.send(embed)
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Clear Queue by " + msg.author.tag)
+        console.log(`musc: clear queue by ${msg.author.tag}`)
 
     }
 
@@ -339,11 +338,13 @@ module.exports = class music {
 
         voiceChannel.leave()
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Stop Music by " + msg.author.tag)
+        console.log(`musc: stop by ${msg.author.tag}`)
 
     }
 
-    static forceskip (msg, bot) {
+    static forceskip (bot, msg) {
+
+        if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -365,8 +366,7 @@ module.exports = class music {
 
         dispatcher.end()
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Force Skip by " + msg.author.tag)
-
+        return console.log(`musc: forceskip by ${msg.author.tag}`)
     }
 
     static loop (msg) {
@@ -375,7 +375,7 @@ module.exports = class music {
 
         if(loop == 0) {
             loop = 1
-            console.log("[" + new Date().toLocaleTimeString() + "] Loop enabled")
+            console.log(`info: loop enabled by ${msg.author.tag}`)
             const embed = new Discord.RichEmbed();
             embed.setAuthor("Looping the current song...", msg.author.avatarURL);
             embed.setColor('GREEN')
@@ -383,13 +383,12 @@ module.exports = class music {
         }
         else if (loop == 1) {
             loop = 0
-            console.log("[" + new Date().toLocaleTimeString() + "] Loop disabled")
+            console.log(`info: loop disabled by ${msg.author.tag}`)
             const embed = new Discord.RichEmbed();
             embed.setAuthor("This song will no longer be looped...", msg.author.avatarURL);
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
-
     }
 
     static np (msg, bot) {
@@ -411,17 +410,15 @@ module.exports = class music {
         embed.setColor('GREEN')
         embed.setTitle("**:cd: Now Playing :**")
 
-        var desc = "[" + title[0] + "](" + queue[0] + ")";
+        var desc = `[${title[0]}](${queue[0]})`;
         if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable it";
         embed.setDescription(desc)
 
-        embed.setFooter("Length : " + timeString)
+        embed.setFooter(`Length : ${timeString}`)
         msg.channel.send(embed)
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Now Playing by " + msg.author.tag)
-
+        console.log(`info: nowplaying by ${msg.author.tag}`)
     }
-
 }
 
 
@@ -435,7 +432,8 @@ async function playSong (msg, voiceConnection, voiceChannel) {
 
     voiceConnection.then(connection => {
 
-        connection.playStream(video, {volume : volume, bitrate : 96000}).on('start', () => {
+        connection.playStream(video, {volume : volume, bitrate : 96000, passes: 3})
+        .on('start', () => {
             if(loop == 0) {
                 var date = new Date(null)
                 date.setSeconds(length[0])
@@ -443,11 +441,11 @@ async function playSong (msg, voiceConnection, voiceChannel) {
                 const embed = new Discord.RichEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("**:cd: Now Playing :**")
-                embed.setDescription("[" + title[0] + "](" + queue[0] + ")")
-                embed.setFooter("Length : " + timeString)
+                embed.setDescription(`[${title[0]}](${queue[0]})`)
+                embed.setFooter(`Length : ${timeString}`)
 
                 msg.channel.send(embed)
-                console.log("[" + new Date().toLocaleTimeString() + "] Playing " + title[0])
+                console.log(`musc: playing: ${title[0]}`)
             }
         }).on('end', () => {
 
