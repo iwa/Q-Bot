@@ -1,7 +1,7 @@
 let admin = {
     "embed": {
       "title": "**❯ Admin**",
-      "description": "`?sleep`\n`?resetbirthday (UID)`\n`?resetfc (UID)`",
+      "description": "`?sleep`\n`?resetbirthday (UID)`\n`?resetfc (UID)`\n`?read`",
       "color": 13632027
     }
   }
@@ -22,7 +22,7 @@ let member = {
       "fields": [
         {
             "name": "**👤 Profile**",
-            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan`"
+            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan` `boost`"
         },
         {
             "name": "**💕 Actions**",
@@ -30,19 +30,19 @@ let member = {
         },
         {
             "name": "**🕹 Games**",
-            "value": "`roll` `8ball` `8b` `flip` `rps`"
+            "value": "`roll` `8ball` `flip` `rps`"
         },
         {
             "name": "**💩 Memes**",
             "value": "`sonicsays`"
         },
         {
-            "name": "**🎶 Music**",
-            "value": "`play` `remove` `queue` `q` `skip` `clear` `stop` `quit` `leave` `loop` `nowplaying` `playing` `np`"
+            "name": "**🎶 Music** (only usable in #radio-lounge)",
+            "value": "`play` `remove` `queue` `skip` `clear` `stop` `loop` `nowplaying`"
         },
         {
             "name": "**🛠 Utility**",
-            "value": "`ping` `pong` `help` `commands` `info` `leaderboard` `lead` `role` `anime` `manga` `osu`"
+            "value": "`ping` `pong` `help` `info` `leaderboard` `lead` `role` `anime` `manga`"
         },
       ]
     }
@@ -60,10 +60,6 @@ module.exports = class help {
                     what = "```markdown\n< ping >\n\n# Usage\n?ping\n\n# Aliases\npong\n\n# Description\nThis will send you the ping between Q-Bot and Discord's Servers```";
                 break;
 
-                case "id":
-                    what = "```markdown\n< id >\n\n# Usage\n?id\n\n# Description\nThis will send you your Discord Unique ID```";
-                break;
-
                 case "roll":
                     what = "```markdown\n< roll >\n\n# Usage\n?roll [number]\n\n_will choose 100 if you don't precise any number_\n\n# Description\nThis will choose a number between 1 and the number you choose```";
                 break;
@@ -77,7 +73,6 @@ module.exports = class help {
                 break;
 
                 case "queue":
-                case "q":
                     what = "```markdown\n< queue >\n\n# Usage\n?queue\n\n# Aliases\nq\n\n# Description\nShow the queue```";
                 break;
 
@@ -93,7 +88,6 @@ module.exports = class help {
                     what = "```markdown\n< info >\n\n# Usage\n?info\n\n# Description\nShow some info about Q-Bot```";
                 break;
 
-                case "patpat":
                 case "pat":
                     what = "```markdown\n< patpat >\n\n# Usage\n?patpat (mention someone)\n\n# Aliases\npat\n\n# Description\nPat someone by mention him / her```";
                 break;
@@ -120,14 +114,11 @@ module.exports = class help {
                 break;
 
                 case "stop":
-                case "quit":
-                case "leave":
-                    what = "```markdown\n< stop >\n\n# Usage\n?stop\n\n# Aliases\nquit, leave\n\n# Description\nMake the bot stop playing music and disconnect it from the Qumu Radio```";
+                    what = "```markdown\n< stop >\n\n# Usage\n?stop\n\n# Description\nMake the bot stop playing music and disconnect it from the Qumu Radio```";
                 break;
 
                 case "loop":
-                case "repeat":
-                    what = "```markdown\n< loop >\n\n# Usage\n?loop\n\n# Aliases\nrepeat\n\n# Description\nEnable / Disable loop for the current song```";
+                    what = "```markdown\n< loop >\n\n# Usage\n?loop\n\n# Description\nEnable / Disable loop for the current song```";
                 break;
 
                 case "role":
@@ -135,7 +126,6 @@ module.exports = class help {
                 break;
 
                 case "8ball":
-                case "8b":
                     what = "```markdown\n< 8ball >\n\n# Usage\n?8ball (your question)\n\n# Description\nLet Q-Bot reply to all your questions, with a lot of honesty```";
                 break;
 
@@ -145,10 +135,6 @@ module.exports = class help {
 
                 case "setfc":
                     what = "```markdown\n< setfc >\n\n# Usage\n?setfc (your Switch FC)\n\n# Description\nRegister your Switch Friend Code to Q-Bot\nPlease enter your FC without 'SW-' at the beginning```";
-                break;
-
-                case "osu":
-                    what = "```markdown\n< osu >\n\n# Usage\n?osu (username)\n\n# Description\nShow osu standard stats of someone```";
                 break;
 
                 case "anime":
@@ -163,6 +149,10 @@ module.exports = class help {
                     what = "```markdown\n< boop >\n\n# Usage\n?boop (mention someone)\n\n# Description\nBoop someone by mention him / her```";
                 break;
 
+                case "slap":
+                    what = "```markdown\n< slap >\n\n# Usage\n?slap (mention someone)\n\n# Description\nSlap someone by mention him / her```";
+                break;
+
                 case "flip":
                     what = "```markdown\n< flip >\n\n# Usage\n?flip\n\n# Description\nFlip a coin```";
                 break;
@@ -172,7 +162,15 @@ module.exports = class help {
                 break;
 
                 case "sonicsays":
-                    what = "```markdown\n< rps >\n\n# Usage\n?sonicsays (text)\n\n# Description\nGenerate a Sonic Says meme```";
+                    what = "```markdown\n< sonicsays >\n\n# Usage\n?sonicsays (text)\n\n# Description\nGenerate a Sonic Says meme```";
+                break;
+
+                case "nowplaying":
+                    what = "```markdown\n< nowplaying >\n\n# Usage\n?nowplaying\n\n# Description\nShow the current playing song```";
+                break;
+
+                case "boost":
+                    what = "```markdown\n< boost >\n\n# Usage\n?boost\n\n# Description\nPut on or put off the Booster Color\n**only usable if you are a booster**```";
                 break;
 
                 default:
@@ -186,7 +184,7 @@ module.exports = class help {
         } else
             sendHelp(msg, isMod, adminList);
 
-        console.log("[" + new Date().toLocaleTimeString() + "] Help sent to " + author)
+        console.log(`info: help sent to ${author}`)
     }
 
 }
