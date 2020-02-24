@@ -10,6 +10,7 @@ module.exports = class letmein {
         if(user) {
             var lvl = utils.levelInfo(user.exp);
             if(lvl.level != 0) await msg.member.addRole(levels[lvl.level].id);
+            await db.get('user').find({ id: msg.author.id }).set({hidden: false}).write();
         }
 
         return await msg.member.addRole('606862164392673290').then(() => {

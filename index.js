@@ -141,6 +141,12 @@ bot.on('messageReactionAdd', async reaction => {
     }
 });
 
+bot.on('guildMemberRemove', async member => {
+    var user = await db.get('user').find({ id: member.id }).value();
+    if(user)
+        return await db.get('user').find({ id: member.id }).set({hidden: true}).write();
+})
+
 // Subs count, refresh every hour
 
 setInterval(async () => {
