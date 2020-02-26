@@ -20,7 +20,7 @@ module.exports = class utilities {
         }
 
         try {
-            console.log("[" + new Date().toLocaleTimeString() + "] Info sent to " + msg.author.tag)
+            console.log(`info: info: ${msg.author.tag}`)
             await msg.author.send(embed)
         } catch(ex) {
             return msg.channel.send("**:x: > Please open your DMs**")
