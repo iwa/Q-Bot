@@ -221,7 +221,7 @@ async function leaderboard (bot, msg, db, Discord, type) {
     leaderboard.forEach(async elem => {
         let user = await bot.fetchUser(elem.id)
         n++;
-        embed.addField(`**${n}. ${user.username}**`, `${elem.exp} ${type}s`)
+        embed.addField(`**${n}. ${user.username}**`, `${elem[type]} ${type}s`)
     })
 
     setTimeout(() => {

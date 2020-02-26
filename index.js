@@ -90,7 +90,7 @@ bot.on('message', async msg => {
         var user = await db.get('user').find({ id: msg.author.id }).value();
 
         if(!user)
-            await db.get('user').push({ id: msg.author.id, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0, birthday: null, fc: null }).write()
+            await db.get('user').push({ id: msg.author.id, birthday: null, fc: null, hidden: false, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0 }).write()
         else if(!cooldownXP[msg.author.id]) {
             user = await db.get('user').find({ id: msg.author.id }).update('exp', n => n + 1).write();
             levelCheck(msg, user.exp);
@@ -165,14 +165,14 @@ setInterval(async () => {
 // Check if a member no longer booster have the color
 
 setInterval(async () => {
-    var members = bot.guilds.find(val => val.id == process.env.GUILDID)
+    var guild = bot.guilds.find(val => val.id == process.env.GUILDID)
 
-    members.forEach(async elem => {
-        if(await elem.roles.find(val => val.id == process.env.BOOSTCOLOR) && await elem.roles.find(val => val.id != process.env.BOOSTROLE)) {
+    guild.members.forEach(async elem => {
+        if(elem.roles.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.find(val => val.id == process.env.BOOSTROLE))) {
             await elem.removeRole(process.env.BOOSTCOLOR);
         }
     });
-}, 60000);
+}, 300000);
 
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
 
