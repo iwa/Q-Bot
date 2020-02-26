@@ -11,7 +11,7 @@ module.exports = class utilities {
                 "description": "Q-Bot is developed and handled by <@125325519054045184>\n\nLanguage : `JavaScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still support me [here](https://paypal.me/nokushi)",
                 "color": 13002714,
                 "footer": {
-                  "text": "Created with ♥ by iwa | Copyright © iwa, v1.0.0"
+                  "text": "Created with ♥ by iwa | Copyright © iwa, v1.0.2"
                 },
                 "thumbnail": {
                   "url": iwaUrl
@@ -20,7 +20,7 @@ module.exports = class utilities {
         }
 
         try {
-            console.log("[" + new Date().toLocaleTimeString() + "] Info sent to " + msg.author.tag)
+            console.log(`info: info: ${msg.author.tag}`)
             await msg.author.send(embed)
         } catch(ex) {
             return msg.channel.send("**:x: > Please open your DMs**")
