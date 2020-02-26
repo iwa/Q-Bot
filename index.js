@@ -90,7 +90,7 @@ bot.on('message', async msg => {
         var user = await db.get('user').find({ id: msg.author.id }).value();
 
         if(!user)
-            await db.get('user').push({ id: msg.author.id, birthday: null, fc: null, hidden: false, exp: 1, pat: 0, hug: 0, boop: 0, slap: 0 }).write()
+            await db.get('user').push({ id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0 }).write()
         else if(!cooldownXP[msg.author.id]) {
             user = await db.get('user').find({ id: msg.author.id }).update('exp', n => n + 1).write();
             levelCheck(msg, user.exp);
