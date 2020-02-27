@@ -93,7 +93,7 @@ module.exports = class utilities {
         }
         for(var i = 1; i < 20; i++) {
             if(xp >= levels[i].amount && xp < levels[i+1].amount) {
-                return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i].amount - levels[i-1].amount)}
+                return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i+1].amount - levels[i].amount)}
             }
         }
         return {'level': 20, 'current': xp, 'max': levels[20].amount}
