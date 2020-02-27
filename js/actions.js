@@ -69,9 +69,10 @@ module.exports = class actions {
             mentionFirst = msg.mentions.users.first()
             mentionSecond = msg.mentions.users.last()
             if(!mentionFirst || !mentionSecond)return;
-            if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id) {
+            if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself !**`, "color": 13632027 }});
-            }
+            if(mentionFirst.id == mentionSecond.id)
+                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} twice the same person !**`, "color": 13632027 }});
 
             const embed = new Discord.RichEmbed();
             embed.setColor('#F2DEB0')
