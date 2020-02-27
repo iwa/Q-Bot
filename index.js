@@ -224,7 +224,7 @@ async function levelCheck(msg, xp) {
 async function imageLvl(msg, level) {
     var avatarURL = await msg.author.avatarURL
 
-    var html = await ejs.renderFile('views/level.ejs', { avatarURL });
+    var html = await ejs.renderFile('views/level.ejs', { avatarURL, level });
     var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
 
     try {
