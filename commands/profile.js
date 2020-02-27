@@ -22,9 +22,10 @@ module.exports.help = {
 
 async function profileImg(bot, msg, db, id) {
 
-    var user = await db.get('user').find({ id: id }).value();
+    var userDB = await db.get('user').find({ id: id }).value();
+    var user = {};
 
-    if(!user)return msg.channel.send(":x: > **You aren't registered into the database, you need to talk once in a channel to have your profile initialized**");
+    if(!userDB)return msg.channel.send(":x: > **You aren't registered into the database, you need to talk once in a channel to have your profile initialized**");
 
     msg.channel.startTyping();
 
@@ -41,17 +42,27 @@ async function profileImg(bot, msg, db, id) {
     else if(member.roles.find(val => val.id == process.env.MODROLE))
         user.icon = '<i class="fas fa-chess-rook"></i>'
 
+    user.exp = userDB.exp
+    user.pat = userDB.pat
+    user.hug = userDB.hug
+    user.boop = userDB.boop
+    user.slap = userDB.slap
+
     user.positionXP = await db.get('user').orderBy('exp', 'desc').findIndex(val => val.id == id).value()
     user.positionHug = await db.get('user').orderBy('hug', 'desc').findIndex(val => val.id == id).value()
     user.positionPat = await db.get('user').orderBy('pat', 'desc').findIndex(val => val.id == id).value()
     user.positionBoop = await db.get('user').orderBy('boop', 'desc').findIndex(val => val.id == id).value()
     user.positionSlap = await db.get('user').orderBy('slap', 'desc').findIndex(val => val.id == id).value()
 
-    if(user.birthday == null)
+    if(userDB.birthday == null)
         user.birthday = 'not registered yet';
+    else
+        user.birthday = userDB.birthday
 
-    if(user.fc == null)
+    if(userDB.fc == null)
         user.fc = 'not registered yet';
+    else
+        user.fc = userDB.fc
 
     var lvlInfo = await utils.levelInfo(user.exp);
     user.level = lvlInfo.level
