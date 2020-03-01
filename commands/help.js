@@ -79,7 +79,7 @@ async function sendHelp(msg) {
             console.log(ex)
             return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
-    else if (await utils.isMod(msg) == true || msg.author.id == process.env.QUMU)
+    else if (utils.isMod(msg) == true || msg.author.id == process.env.QUMU)
         try {
             await msg.author.send(member)
             await msg.author.send(mod)
