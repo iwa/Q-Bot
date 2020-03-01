@@ -59,7 +59,7 @@ module.exports.run = async (bot, msg, args) => {
             return await msg.channel.send(`\`\`\`markdown\n< ${cmd.help.name} >\n\n# Usage\n${cmd.help.usage}\n\n# Description\n${cmd.help.desc}\`\`\``);
         }
     } else
-        sendHelp(msg, utils.isMod);
+        sendHelp(msg);
     console.log(`info: help sent to ${msg.author.tag}`)
 }
 
@@ -69,7 +69,7 @@ module.exports.help = {
     desc: "Well... Obviously it send you the list of the commands"
 };
 
-async function sendHelp(msg, isMod) {
+async function sendHelp(msg) {
     if (msg.author.id == process.env.IWA)
         try {
             await msg.author.send(member)
@@ -79,7 +79,7 @@ async function sendHelp(msg, isMod) {
             console.log(ex)
             return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
-    else if (isMod(msg) == true || msg.author.id == process.env.QUMU)
+    else if (utils.isMod(msg) == true || msg.author.id == process.env.QUMU)
         try {
             await msg.author.send(member)
             await msg.author.send(mod)
