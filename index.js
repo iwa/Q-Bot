@@ -117,6 +117,7 @@ bot.on('message', async msg => {
 bot.on('messageReactionAdd', async reaction => {
     if(reaction.message.guild.id !== process.env.GUILDID)return;
     if(reaction.emoji.name !== '⭐')return;
+    if(reaction.message.channel.id == process.env.STARBOARDTC)return;
     if(reaction.users.find(val => val.id == bot.user.id))return;
     if(reaction.count >= 6) {
         var msg = reaction.message;
