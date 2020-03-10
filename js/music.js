@@ -57,7 +57,7 @@ module.exports = class music {
             if(emote != '✅')return;
 
             reply.delete()
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setTitle("Adding all the playlist's videos to the queue...")
             embed.setFooter(`Added by ${msg.author.username}`)
             embed.setColor('LUMINOUS_VIVID_PINK')
@@ -79,7 +79,7 @@ module.exports = class music {
                 }
             }
 
-            const embedDone = new Discord.RichEmbed();
+            const embedDone = new Discord.MessageEmbed();
             embedDone.setTitle("**Done !**")
             embedDone.setColor('LUMINOUS_VIVID_PINK')
 
@@ -124,7 +124,7 @@ module.exports = class music {
             }
 
             if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL);
                 embed.setDescription(`**${data.title}**`)
                 embed.setFooter(`Added by ${msg.author.username}`)
@@ -173,7 +173,7 @@ module.exports = class music {
             }
 
             if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL);
                 embed.setDescription(`**${data.title}**`)
                 embed.setFooter(`Added by ${msg.author.username}`)
@@ -204,7 +204,7 @@ module.exports = class music {
 
         if(isNaN(queueID)) return;
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
         embed.setAuthor('Removed from the queue :', msg.author.avatarURL);
         embed.setDescription(`**${title[queueID]}**`)
@@ -227,7 +227,7 @@ module.exports = class music {
 
         msg.channel.startTyping();
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
 
         if(queue.length <= 1)
@@ -261,7 +261,7 @@ module.exports = class music {
 
         let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("The bot is not playing")
             return msg.channel.send(embed);
@@ -271,7 +271,7 @@ module.exports = class music {
             skippers.push(msg.author.id);
             skipReq++;
 
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('GREEN')
             embed.setAuthor("Your voteskip has been registered !", msg.author.avatarURL)
             msg.channel.send(embed)
@@ -280,7 +280,7 @@ module.exports = class music {
 
             if(skipReq >= Math.ceil((voiceChannel.members.size - 1) / 2)) {
                 let dispatcher = voiceConnection.dispatcher
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("Half of the people have voted, skipping...")
                 msg.channel.send(embed)
@@ -288,13 +288,13 @@ module.exports = class music {
                 dispatcher.destroy()
                 console.log(`musc: skipping song`)
             } else {
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('BRIGHT_RED')
                 embed.setTitle("You need **" + (Math.ceil((voiceChannel.members.size - 1) / 2) - skipReq) + "** more skip vote to skip !")
                 msg.channel.send(embed)
             }
         } else {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("You already voted for skipping !")
             msg.channel.send(embed)
@@ -308,7 +308,7 @@ module.exports = class music {
         title = [];
         length = [];
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setAuthor("You've successfully cleared the queue.", msg.author.avatarURL);
         embed.setColor('GREEN')
         msg.channel.send(embed)
@@ -336,7 +336,7 @@ module.exports = class music {
 
         let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("The bot is not playing")
             return msg.channel.send(embed);
@@ -344,7 +344,7 @@ module.exports = class music {
 
         let dispatcher = voiceConnection.dispatcher
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
         embed.setAuthor("Forced skip...", msg.author.avatarURL);
         msg.channel.send(embed)
@@ -361,7 +361,7 @@ module.exports = class music {
         if(loop == 0) {
             loop = 1
             console.log(`info: loop enabled by ${msg.author.tag}`)
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setAuthor("Looping the current song...", msg.author.avatarURL);
             embed.setColor('GREEN')
             return msg.channel.send(embed)
@@ -369,7 +369,7 @@ module.exports = class music {
         else if (loop == 1) {
             loop = 0
             console.log(`info: loop disabled by ${msg.author.tag}`)
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setAuthor("This song will no longer be looped...", msg.author.avatarURL);
             embed.setColor('GREEN')
             return msg.channel.send(embed)
@@ -381,7 +381,7 @@ module.exports = class music {
 
         let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("The bot is not playing")
             return msg.channel.send(embed);
@@ -390,7 +390,7 @@ module.exports = class music {
         var date = new Date(null)
         date.setSeconds(length[0])
         var timeString = date.toISOString().substr(11, 8)
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
         embed.setTitle("**:cd: Now Playing :**")
 
@@ -421,7 +421,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
                 var date = new Date(null)
                 date.setSeconds(length[0])
                 var timeString = date.toISOString().substr(11, 8)
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("**:cd: Now Playing :**")
                 embed.setDescription(`[${title[0]}](${queue[0]})`)
@@ -438,7 +438,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
             }
 
             if(queue.length == 0) {
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("Queue finished. Disconnecting...")
 
