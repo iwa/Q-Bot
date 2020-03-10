@@ -37,7 +37,7 @@ module.exports = class actions {
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself !**`, "color": 13632027 }});
             }
 
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('#F2DEB0')
 
             if(mentionFirst.id == '606458989575667732' && type != 'slap') {
@@ -74,7 +74,7 @@ module.exports = class actions {
             if(mentionFirst.id == mentionSecond.id)
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} twice the same person !**`, "color": 13632027 }});
 
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('#F2DEB0')
 
             if((mentionFirst.id == '606458989575667732' || mentionSecond.id == '606458989575667732') && type != 'slap') {
