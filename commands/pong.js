@@ -1,5 +1,5 @@
 module.exports.run = async (bot, msg) => {
-    var ping = Math.ceil(bot.ping)
+    var ping = Math.ceil(bot.ws.ping)
     await msg.channel.send(`ping ! \`${ping}ms\``)
         .then(console.log(`info: ping : ${msg.author.tag}`))
         .catch(console.error);
