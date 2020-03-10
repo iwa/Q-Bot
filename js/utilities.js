@@ -100,7 +100,7 @@ module.exports = class utilities {
     }
 
     static isMod(msg) {
-        if(msg.member.roles.find(val => val.id == process.env.MODROLE)) { return true }
+        if(msg.member.roles.cache.find(val => val.id == process.env.MODROLE)) { return true }
         else { return false }
     }
 
