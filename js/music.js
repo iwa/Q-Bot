@@ -301,7 +301,7 @@ module.exports = class music {
         }
     }
 
-    static clear (msg) {
+    static async clear (msg) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         queue = [];
@@ -309,7 +309,8 @@ module.exports = class music {
         length = [];
 
         const embed = new Discord.MessageEmbed();
-        embed.setAuthor("You've successfully cleared the queue.", msg.author.avatarURL);
+        var avatar = await msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
+        embed.setAuthor("You've successfully cleared the queue.", avatar);
         embed.setColor('GREEN')
         msg.channel.send(embed)
 
