@@ -29,7 +29,6 @@ module.exports = class utilities {
     }
 
     static leaderboard (bot, msg, args, db) {
-
         if(args.length > 1)return;
 
         switch(args[0]) {
@@ -59,7 +58,6 @@ module.exports = class utilities {
                 msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
             break;
         }
-
     }
 
     static async role (msg, args) {
@@ -214,7 +212,7 @@ async function leaderboard (bot, msg, db, Discord, type) {
     msg.channel.startTyping()
     var title = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
 
-    const embed = new Discord.RichEmbed();
+    const embed = new Discord.MessageEmbed();
     embed.setColor(16114507)
     embed.setTitle(`:trophy: **${title} Leaderboard**`)
 
