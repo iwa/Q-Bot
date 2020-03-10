@@ -6,7 +6,7 @@ module.exports.run = async (bot, msg, args) => {
     if(await msg.channel.type != "text")return;
     if(args.length < 1)return;
     let r = Math.floor((Math.random() * reply.length));
-    const embed = new Discord.RichEmbed();
+    const embed = new Discord.MessageEmbed();
     embed.setTitle(`🎱 ${reply[r]}`)
     embed.setColor('GREY')
     console.log(`info: 8ball by ${msg.author.tag}`)
