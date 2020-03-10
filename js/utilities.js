@@ -217,7 +217,7 @@ async function leaderboard (bot, msg, db, Discord, type) {
     embed.setTitle(`:trophy: **${title} Leaderboard**`)
 
     leaderboard.forEach(async elem => {
-        let user = await bot.fetchUser(elem.id)
+        let user = await bot.users.fetch(elem.id)
         n++;
         embed.addField(`**${n}. ${user.username}**`, `${elem[type]} ${type}s`)
     })
