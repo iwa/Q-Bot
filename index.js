@@ -122,12 +122,18 @@ bot.on('messageReactionAdd', async reaction => {
     if(reaction.users.find(val => val.id == bot.user.id))return;
     if(reaction.count >= 6) {
         var msg = reaction.message;
+        var content;
+        if(!msg.cleanContent)
+            content = "*attachment only*\n"
+        else
+            content = `\`\`\`${msg.cleanContent}\`\`\``
+
         var channel = bot.channels.find(val => val.id == process.env.STARBOARDTC);
 
         await msg.react(reaction.emoji.name);
         await channel.send({
             "embed": {
-              "description": `\`\`\`${msg.content}\`\`\`[message link✉️](${msg.url})`,
+              "description": `${content}[message link✉️](${msg.url})`,
               "color": 14212956,
               "timestamp": msg.createdTimestamp,
               "footer": {
