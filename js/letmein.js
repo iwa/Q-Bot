@@ -8,8 +8,8 @@ module.exports = class letmein {
         var user = await db.get('user').find({ id: msg.author.id }).value();
 
         if(user) {
-            var lvl = utils.levelInfo(user.exp);
-            if(lvl.level != 0) await msg.member.addRole(levels[lvl.level].id);
+            var lvl = await utils.levelInfo(user.exp);
+            if(lvl.level != 0) await msg.member.roles.add(levels[lvl.level].id);
             await db.get('user').find({ id: msg.author.id }).set({hidden: false}).write();
         }
 
@@ -21,6 +21,5 @@ module.exports = class letmein {
                 console.error(err)
             }
         }).catch(console.error)
-
     }
 }
