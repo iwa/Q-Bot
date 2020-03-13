@@ -32,7 +32,7 @@ module.exports.run = (bot, msg, args) => {
         if(n == 1 && numReq == 3 || n == 2 && numReq == 1 || n == 3 && numReq == 2)
             res = "**I won !**";
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
 
         if(n == 1)
             embed.setTitle(":punch: **I play rock !**");
