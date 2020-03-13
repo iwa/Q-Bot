@@ -19,7 +19,7 @@ module.exports.run = async (bot, msg, args, db) => {
             var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
             var today = mm + '/' + dd;
             await db.get('user').find({ id: msg.author.id }).set('birthday', today).write();
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setAuthor("Your birthday is now set to : ", msg.author.avatarURL);
             embed.setTitle(`**${today}**`)
             embed.setColor('AQUA')

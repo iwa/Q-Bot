@@ -21,7 +21,6 @@ module.exports.help = {
 };
 
 async function profileImg(bot, msg, db, id) {
-
     var userDB = await db.get('user').find({ id: id }).value();
     var user = {};
 
@@ -29,17 +28,17 @@ async function profileImg(bot, msg, db, id) {
 
     msg.channel.startTyping();
 
-    let userDiscord = await bot.fetchUser(id)
-    user.avatar = userDiscord.avatarURL
+    let userDiscord = await bot.users.fetch(id)
+    user.avatar = userDiscord.avatarURL({ format: 'png', dynamic: false, size: 512 })
     user.username = userDiscord.username
     user.icon = null
 
-    let guild = await bot.guilds.find(val => val.id == process.env.GUILDID)
-    let member = await guild.members.find(val => val.id == id)
+    let guild = await bot.guilds.cache.find(val => val.id == process.env.GUILDID)
+    let member = await guild.members.cache.find(val => val.id == id)
 
     if(userDiscord.id == process.env.QUMU)
         user.icon = '<i class="fas fa-chess-king"></i>'
-    else if(member.roles.find(val => val.id == process.env.MODROLE))
+    else if(member.roles.cache.find(val => val.id == process.env.MODROLE))
         user.icon = '<i class="fas fa-chess-rook"></i>'
 
     user.exp = userDB.exp
@@ -80,7 +79,7 @@ async function profileImg(bot, msg, db, id) {
 
     var whichColor;
 
-    if(userDiscord.id == process.env.QUMU || member.roles.find(val => val.id == process.env.MODROLE))
+    if(userDiscord.id == process.env.QUMU || member.roles.cache.find(val => val.id == process.env.MODROLE))
         whichColor = 5
     else {
         whichColor = (utils.randomInt(5) - 1)

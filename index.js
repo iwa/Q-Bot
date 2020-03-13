@@ -122,12 +122,18 @@ bot.on('messageReactionAdd', async reaction => {
     if(reaction.users.find(val => val.id == bot.user.id))return;
     if(reaction.count >= 6) {
         var msg = reaction.message;
+        var content;
+        if(!msg.cleanContent)
+            content = "*attachment only*\n"
+        else
+            content = `\`\`\`${msg.cleanContent}\`\`\``
+
         var channel = bot.channels.find(val => val.id == process.env.STARBOARDTC);
 
         await msg.react(reaction.emoji.name);
         await channel.send({
             "embed": {
-              "description": `\`\`\`${msg.content}\`\`\`[message link✉️](${msg.url})`,
+              "description": `${content}[message link✉️](${msg.url})`,
               "color": 14212956,
               "timestamp": msg.createdTimestamp,
               "footer": {
@@ -152,7 +158,7 @@ bot.on('guildMemberRemove', async member => {
 // Subs count, refresh every hour
 
 setInterval(async () => {
-    let channel = bot.channels.find(val => val.id == process.env.SUBCOUNT)
+    let channel = bot.channels.cache.find(val => val.id == process.env.SUBCOUNT)
     let title = channel.name
     let newCount = title.replace(/\D/gim, '')
 
@@ -167,9 +173,9 @@ setInterval(async () => {
 // Check if a member no longer booster have the color
 
 setInterval(async () => {
-    var guild = bot.guilds.find(val => val.id == process.env.GUILDID)
+    var guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
 
-    guild.members.forEach(async elem => {
+    guild.members.cache.forEach(async elem => {
         if(elem.roles.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.find(val => val.id == process.env.BOOSTROLE))) {
             await elem.removeRole(process.env.BOOSTCOLOR);
         }
@@ -190,7 +196,7 @@ setInterval(async () => {
         var data = await db.get('user').filter({ birthday: today }).value();
 
         if(data.length >= 1) {
-            let channel = bot.channels.find(val => val.id == process.env.BIRTHDAYTC)
+            let channel = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
                 var userInfo = await bot.fetchUser(user.id)

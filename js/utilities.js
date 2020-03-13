@@ -11,7 +11,7 @@ module.exports = class utilities {
                 "description": "Q-Bot is developed and handled by <@125325519054045184>\n\nLanguage : `JavaScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still support me [here](https://paypal.me/nokushi)",
                 "color": 13002714,
                 "footer": {
-                  "text": "Created with ♥ by iwa | Copyright © iwa, v1.0.6"
+                  "text": "Created with ♥ by iwa | Copyright © iwa, v1.1.0"
                 },
                 "thumbnail": {
                   "url": iwaUrl
@@ -29,7 +29,6 @@ module.exports = class utilities {
     }
 
     static leaderboard (bot, msg, args, db) {
-
         if(args.length > 1)return;
 
         switch(args[0]) {
@@ -59,7 +58,6 @@ module.exports = class utilities {
                 msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
             break;
         }
-
     }
 
     static async role (msg, args) {
@@ -100,7 +98,7 @@ module.exports = class utilities {
     }
 
     static isMod(msg) {
-        if(msg.member.roles.find(val => val.id == process.env.MODROLE)) { return true }
+        if(msg.member.roles.cache.find(val => val.id == process.env.MODROLE)) { return true }
         else { return false }
     }
 
@@ -112,43 +110,43 @@ async function join (msg, game) {
     switch (game) {
         case "mariokart":
         case "mario kart":
-            if(! await msg.member.roles.find(val => val.id == '614445539693559820')) {
-                return msg.member.addRole('614445539693559820').then(msg.reply("you joined Mario Kart role !"))
+            if(! await msg.member.roles.cache.find(val => val.id == '614445539693559820')) {
+                return msg.member.roles.add('614445539693559820').then(msg.reply("you joined Mario Kart role !"))
             } break;
 
         case "smashbros":
         case "smash bros":
         case "smash":
-            if(! await msg.member.roles.find(val => val.id == '614445571045982228')) {
-                return msg.member.addRole('614445571045982228').then(msg.reply("you joined Smash Bros role !"))
+            if(! await msg.member.roles.cache.find(val => val.id == '614445571045982228')) {
+                return msg.member.roles.add('614445571045982228').then(msg.reply("you joined Smash Bros role !"))
             } break;
 
         case "splatoon":
         case "sploon":
-            if(! await msg.member.roles.find(val => val.id == '614445571276668930')) {
-                return msg.member.addRole('614445571276668930').then(msg.reply("you joined Splatoon role !"))
+            if(! await msg.member.roles.cache.find(val => val.id == '614445571276668930')) {
+                return msg.member.roles.add('614445571276668930').then(msg.reply("you joined Splatoon role !"))
             } break;
 
         case "mariomaker":
         case "mario maker":
-            if(! await msg.member.roles.find(val => val.id == '614445572199546880')) {
-                return msg.member.addRole('614445572199546880').then(msg.reply("you joined Mario Maker role !"))
+            if(! await msg.member.roles.cache.find(val => val.id == '614445572199546880')) {
+                return msg.member.roles.add('614445572199546880').then(msg.reply("you joined Mario Maker role !"))
             } break;
 
         case "pokemon":
         case "pokémon":
-            if(! await msg.member.roles.find(val => val.id == '662017803804475393')) {
-                return msg.member.addRole('662017803804475393').then(msg.reply("you joined Pokémon role !"))
+            if(! await msg.member.roles.cache.find(val => val.id == '662017803804475393')) {
+                return msg.member.roles.add('662017803804475393').then(msg.reply("you joined Pokémon role !"))
             } break;
 
         case "minecraft":
-            if(! await msg.member.roles.find(val => val.id == '681557797661442063')) {
-                return msg.member.addRole('681557797661442063').then(msg.reply("you joined Minecraft role !"))
+            if(! await msg.member.roles.cache.find(val => val.id == '681557797661442063')) {
+                return msg.member.roles.add('681557797661442063').then(msg.reply("you joined Minecraft role !"))
             } break;
 
         case "terraria":
-            if(! await msg.member.roles.find(val => val.id == '681557799725170718')) {
-                return msg.member.addRole('681557799725170718').then(msg.reply("you joined Terraria role !"))
+            if(! await msg.member.roles.cache.find(val => val.id == '681557799725170718')) {
+                return msg.member.roles.add('681557799725170718').then(msg.reply("you joined Terraria role !"))
             } break;
 
         default:
@@ -161,43 +159,43 @@ async function leave (msg, game) {
     switch (game) {
         case "mariokart":
         case "mario kart":
-            if(await msg.member.roles.find(val => val.id == '614445539693559820')) {
-                return msg.member.removeRole('614445539693559820').then(msg.reply("you leaved Mario Kart role !"))
+            if(await msg.member.roles.cache.find(val => val.id == '614445539693559820')) {
+                return msg.member.roles.remove('614445539693559820').then(msg.reply("you leaved Mario Kart role !"))
             } break;
 
         case "smashbros":
         case "smash bros":
         case "smash":
-            if(await msg.member.roles.find(val => val.id == '614445571045982228')) {
-                return msg.member.removeRole('614445571045982228').then(msg.reply("you leaved Smash Bros role !"))
+            if(await msg.member.roles.cache.find(val => val.id == '614445571045982228')) {
+                return msg.member.roles.remove('614445571045982228').then(msg.reply("you leaved Smash Bros role !"))
             } break;
 
         case "splatoon":
         case "sploon":
-            if(await msg.member.roles.find(val => val.id == '614445571276668930')) {
-                return msg.member.removeRole('614445571276668930').then(msg.reply("you leaved Splatoon role !"))
+            if(await msg.member.roles.cache.find(val => val.id == '614445571276668930')) {
+                return msg.member.roles.remove('614445571276668930').then(msg.reply("you leaved Splatoon role !"))
             } break;
 
         case "mariomaker":
         case "mario maker":
-            if(await msg.member.roles.find(val => val.id == '614445572199546880')) {
-                return msg.member.removeRole('614445572199546880').then(msg.reply("you leaved Mario Maker role !"))
+            if(await msg.member.roles.cache.find(val => val.id == '614445572199546880')) {
+                return msg.member.roles.remove('614445572199546880').then(msg.reply("you leaved Mario Maker role !"))
             } break;
 
         case "pokemon":
         case "pokémon":
-            if(await msg.member.roles.find(val => val.id == '662017803804475393')) {
-                return msg.member.removeRole('662017803804475393').then(msg.reply("you leaved Pokémon role !"))
+            if(await msg.member.roles.cache.find(val => val.id == '662017803804475393')) {
+                return msg.member.roles.remove('662017803804475393').then(msg.reply("you leaved Pokémon role !"))
             } break;
 
         case "minecraft":
-            if(await msg.member.roles.find(val => val.id == '681557797661442063')) {
-                return msg.member.removeRole('681557797661442063').then(msg.reply("you leaved Minecraft role !"))
+            if(await msg.member.roles.cache.find(val => val.id == '681557797661442063')) {
+                return msg.member.roles.remove('681557797661442063').then(msg.reply("you leaved Minecraft role !"))
             } break;
 
         case "terraria":
-            if(await msg.member.roles.find(val => val.id == '681557799725170718')) {
-                return msg.member.removeRole('681557799725170718').then(msg.reply("you leaved Terraria role !"))
+            if(await msg.member.roles.cache.find(val => val.id == '681557799725170718')) {
+                return msg.member.roles.remove('681557799725170718').then(msg.reply("you leaved Terraria role !"))
             } break;
 
         default:
@@ -214,12 +212,12 @@ async function leaderboard (bot, msg, db, Discord, type) {
     msg.channel.startTyping()
     var title = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
 
-    const embed = new Discord.RichEmbed();
+    const embed = new Discord.MessageEmbed();
     embed.setColor(16114507)
     embed.setTitle(`:trophy: **${title} Leaderboard**`)
 
     leaderboard.forEach(async elem => {
-        let user = await bot.fetchUser(elem.id)
+        let user = await bot.users.fetch(elem.id)
         n++;
         embed.addField(`**${n}. ${user.username}**`, `${elem[type]} ${type}s`)
     })

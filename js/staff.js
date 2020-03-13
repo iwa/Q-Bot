@@ -46,7 +46,7 @@ module.exports = class staff {
 
             time = time * 60000;
 
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle(`**${mention.user.username}**, you've been muted for ${args[1]} minutes by **${msg.author.username}**`)
 
@@ -55,7 +55,7 @@ module.exports = class staff {
                 var reply = await msg.channel.send(embed)
                 setTimeout(async () => {
                     await reply.delete()
-                    return mention.removeRole('636254696880734238')
+                    return mention.roles.remove('636254696880734238')
                 }, time)
             } catch(err) {
                 console.error(err);
@@ -65,18 +65,16 @@ module.exports = class staff {
 
     }
 
-    static sleep (bot, msg) {
+    static async sleep (bot, msg) {
         if(msg.author.id != process.env.IWA)return;
         if(process.env.SLEEP == 0) {
-            bot.user.setStatus("dnd")
-            bot.user.setActivity("being updated...", {type : 0})
+            await bot.user.setPresence({ activity: { name: "being updated...", type: 0 }, status: 'dnd' })
                 .then(msg.react("✅") , console.log("info: sleeping enabled"))
                 .catch(console.error);
             msg.channel.send("Sleeping Mode On !")
             return process.env.SLEEP = 1;
         } else {
-            bot.user.setStatus("online")
-            bot.user.setActivity("Qumu's Remixes | ?help", {type : 2})
+            await bot.user.setPresence({ activity: { name: "Qumu's Remixes | ?help", type: 2 }, status: 'online' })
                 .then(msg.react("✅") , console.log("info: sleeping disabled"))
                 .catch(console.error);
             msg.channel.send("Sleeping Mode Off !")
