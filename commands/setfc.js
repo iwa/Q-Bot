@@ -13,7 +13,7 @@ module.exports.run = async (bot, msg, args, db) => {
         }
 
         await db.get('user').find({ id: msg.author.id }).set('fc', content).write();
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setAuthor("Your Switch FC is now set to : ", msg.author.avatarURL);
         embed.setTitle(`**${content}**`)
         embed.setColor('AQUA')
