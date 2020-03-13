@@ -54,7 +54,7 @@ module.exports = class actions {
             msg.channel.startTyping()
 
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** !`)
-            embed.setImage(`https://iwa.sh/img/${type}/${n}.gif`)
+            embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
 
             user = await db.get('user').find({ id: msg.author.id }).update(type, n => n + 1).write();
 
