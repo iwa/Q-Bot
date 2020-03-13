@@ -8,7 +8,7 @@ module.exports.run = (bot, msg, args) => {
     Anilist.search('manga', req, 1, 1).then(async data => {
         var res = data.media[0];
         var info = await Anilist.media.manga(res.id)
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setTitle(`**${info.title.romaji} / ${info.title.english}**`)
         embed.setThumbnail(info.coverImage.large)
         embed.addField("Status", info.status, true)
@@ -24,7 +24,7 @@ module.exports.run = (bot, msg, args) => {
             desc = desc.substring(0, 1023)
         embed.addField("Description", desc, false)
         embed.setColor('BLUE')
-        console.log(`info: manga request : ${req} by ${msg.author.tag}`)
+        console.log(`info: manga request : '${req}' by ${msg.author.tag}`)
         return msg.channel.send(embed)
     }).catch(err => {
         console.error(err)
