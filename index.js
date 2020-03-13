@@ -158,7 +158,7 @@ bot.on('guildMemberRemove', async member => {
 // Subs count, refresh every hour
 
 setInterval(async () => {
-    let channel = bot.channels.find(val => val.id == process.env.SUBCOUNT)
+    let channel = bot.channels.cache.find(val => val.id == process.env.SUBCOUNT)
     let title = channel.name
     let newCount = title.replace(/\D/gim, '')
 
@@ -173,7 +173,7 @@ setInterval(async () => {
 // Check if a member no longer booster have the color
 
 setInterval(async () => {
-    var guild = bot.guilds.find(val => val.id == process.env.GUILDID)
+    var guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
 
     guild.members.forEach(async elem => {
         if(elem.roles.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.find(val => val.id == process.env.BOOSTROLE))) {
@@ -196,7 +196,7 @@ setInterval(async () => {
         var data = await db.get('user').filter({ birthday: today }).value();
 
         if(data.length >= 1) {
-            let channel = bot.channels.find(val => val.id == process.env.BIRTHDAYTC)
+            let channel = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
                 var userInfo = await bot.fetchUser(user.id)
