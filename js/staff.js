@@ -46,7 +46,7 @@ module.exports = class staff {
 
             time = time * 60000;
 
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle(`**${mention.user.username}**, you've been muted for ${args[1]} minutes by **${msg.author.username}**`)
 
@@ -55,7 +55,7 @@ module.exports = class staff {
                 var reply = await msg.channel.send(embed)
                 setTimeout(async () => {
                     await reply.delete()
-                    return mention.removeRole('636254696880734238')
+                    return mention.roles.remove('636254696880734238')
                 }, time)
             } catch(err) {
                 console.error(err);
