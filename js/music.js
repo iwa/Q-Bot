@@ -16,13 +16,13 @@ var loop = 0, volume = 1;
 
 module.exports = class music {
 
-    static async play (msg, args, yt) {
+    static async play (bot, msg, args, yt) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         if(!args[0])return;
 
-        let voiceChannel = msg.guild.channels.find(val => val.id == VC)
+        let voiceChannel = msg.guild.channels.cache.find(val => val.id == VC)
 
         if(voiceChannel == null)return;
 
@@ -57,9 +57,9 @@ module.exports = class music {
             if(emote != '✅')return;
 
             reply.delete()
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setTitle("Adding all the playlist's videos to the queue...")
-            embed.setFooter("Added by " + msg.author.username)
+            embed.setFooter(`Added by ${msg.author.username}`)
             embed.setColor('LUMINOUS_VIVID_PINK')
             msg.channel.send(embed)
 
@@ -79,7 +79,7 @@ module.exports = class music {
                 }
             }
 
-            const embedDone = new Discord.RichEmbed();
+            const embedDone = new Discord.MessageEmbed();
             embedDone.setTitle("**Done !**")
             embedDone.setColor('LUMINOUS_VIVID_PINK')
 
@@ -90,7 +90,7 @@ module.exports = class music {
             if(!voiceChannel.connection) {
                 try {
                     const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel, Discord);
+                    playSong(msg, voiceConnection, voiceChannel);
                 }
                 catch(ex) {
                     console.error(ex)
@@ -123,21 +123,21 @@ module.exports = class music {
                 return msg.channel.send(":x: > **This video is unavailable.**")
             }
 
-            if(voiceChannel.connection) {
-                const embed = new Discord.RichEmbed();
+            if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
+                const embed = new Discord.MessageEmbed();
                 embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL);
-                embed.setDescription("**" + data.title + "**")
-                embed.setFooter("Added by " + msg.author.username)
+                embed.setDescription(`**${data.title}**`)
+                embed.setFooter(`Added by ${msg.author.username}`)
                 embed.setColor('LUMINOUS_VIVID_PINK')
                 msg.channel.stopTyping()
                 msg.channel.send(embed)
-                console.log(`info: add to queue: ${msg.author.tag} added ${data.title}`)
+                console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
             }
             else {
                 msg.channel.stopTyping()
                 try {
                     const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel, Discord);
+                    playSong(msg, voiceConnection, voiceChannel);
                 }
                 catch(ex) {
                     console.error(ex)
@@ -172,15 +172,15 @@ module.exports = class music {
                 return msg.channel.send(":x: > **This video is unavailable.**")
             }
 
-            if(voiceChannel.connection) {
-                const embed = new Discord.RichEmbed();
+            if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
+                const embed = new Discord.MessageEmbed();
                 embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL);
-                embed.setDescription("**" + data.title + "**")
-                embed.setFooter("Added by " + msg.author.username)
+                embed.setDescription(`**${data.title}**`)
+                embed.setFooter(`Added by ${msg.author.username}`)
                 embed.setColor('LUMINOUS_VIVID_PINK')
                 msg.channel.stopTyping()
                 msg.channel.send(embed)
-                console.log(`info: add to queue: ${msg.author.tag} added ${data.title}`)
+                console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
             }
             else {
                 msg.channel.stopTyping()
@@ -204,7 +204,7 @@ module.exports = class music {
 
         if(isNaN(queueID)) return;
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
         embed.setAuthor('Removed from the queue :', msg.author.avatarURL);
         embed.setDescription(`**${title[queueID]}**`)
@@ -212,7 +212,7 @@ module.exports = class music {
 
         msg.channel.send(embed)
 
-        console.log(`info: remove from queue: ${msg.author.tag} removed ${title[queueID]}`)
+        console.log(`musc: remove from queue: ${msg.author.tag} removed ${title[queueID]}`)
 
         queue.splice(queueID, 1)
         title.splice(queueID, 1)
@@ -222,14 +222,12 @@ module.exports = class music {
     static list (msg, args) {
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
-
         if(args.length > 0)return;
-
         if(queue.length < 0)return;
 
         msg.channel.startTyping();
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
 
         if(queue.length <= 1)
@@ -238,36 +236,32 @@ module.exports = class music {
             embed.setTitle("**:cd: Here's the queue**")
 
             queue.forEach(async (item, index) => {
-
                 if(index == 0 || index > 10)return;
 
                 var date = new Date(null)
                 date.setSeconds(length[index])
                 var timeString = date.toISOString().substr(11, 8)
 
-                embed.addField(index + " : **" + title[index] + "**, *" + timeString + "*", item)
-
+                embed.addField(`${index} : **${title[index]}**, *${timeString}*`, item)
             })
-
         }
 
         if (queue.length > 10) embed.setFooter(`and ${(queue.length - 10)} more...`)
         msg.channel.stopTyping(true);
         msg.channel.send(embed);
 
-        console.log(`info: show queue by ${msg.author.tag}`)
+        console.log(`musc: show queue by ${msg.author.tag}`)
 
     }
 
-    static skip (bot, msg) {
-
+    static async skip (bot, msg) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceChannel = msg.guild.channels.find(val => val.id == VC)
+        let voiceChannel = msg.guild.channels.cache.find(val => val.id == VC)
 
-        let voiceConnection = bot.voiceConnections.find(val => val.channel.id == VC);
+        let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("The bot is not playing")
             return msg.channel.send(embed);
@@ -277,7 +271,7 @@ module.exports = class music {
             skippers.push(msg.author.id);
             skipReq++;
 
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('GREEN')
             embed.setAuthor("Your voteskip has been registered !", msg.author.avatarURL)
             msg.channel.send(embed)
@@ -286,71 +280,64 @@ module.exports = class music {
 
             if(skipReq >= Math.ceil((voiceChannel.members.size - 1) / 2)) {
                 let dispatcher = voiceConnection.dispatcher
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("Half of the people have voted, skipping...")
                 msg.channel.send(embed)
                 loop = 0;
-                dispatcher.end()
+                dispatcher.destroy()
                 console.log(`musc: skipping song`)
             } else {
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('BRIGHT_RED')
                 embed.setTitle("You need **" + (Math.ceil((voiceChannel.members.size - 1) / 2) - skipReq) + "** more skip vote to skip !")
                 msg.channel.send(embed)
             }
         } else {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("You already voted for skipping !")
             msg.channel.send(embed)
-
         }
-
     }
 
-    static clear (msg) {
-
+    static async clear (msg) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         queue = [];
         title = [];
         length = [];
 
-        const embed = new Discord.RichEmbed();
-        embed.setAuthor("You've successfully cleared the queue.", msg.author.avatarURL);
+        const embed = new Discord.MessageEmbed();
+        var avatar = await msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
+        embed.setAuthor("You've successfully cleared the queue.", avatar);
         embed.setColor('GREEN')
         msg.channel.send(embed)
 
         console.log(`musc: clear queue by ${msg.author.tag}`)
-
     }
 
-    static stop (msg) {
-
+    static async stop (msg) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceChannel = msg.guild.channels.find(val => val.id == VC)
+        let voiceChannel = msg.guild.channels.cache.find(val => val.id == VC)
 
         queue = [];
         title = [];
         length = [];
 
-        voiceChannel.leave()
-
+        await voiceChannel.leave()
         console.log(`musc: stop by ${msg.author.tag}`)
-
     }
 
-    static forceskip (bot, msg) {
-
-        if(utils.isMod(msg.author.id) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
+    static async forceskip (bot, msg) {
+        if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceConnection = bot.voiceConnections.find(val => val.channel.id == VC);
+        let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("The bot is not playing")
             return msg.channel.send(embed);
@@ -358,25 +345,24 @@ module.exports = class music {
 
         let dispatcher = voiceConnection.dispatcher
 
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
         embed.setAuthor("Forced skip...", msg.author.avatarURL);
         msg.channel.send(embed)
         loop = 0;
 
-        dispatcher.end()
+        dispatcher.destroy()
 
         return console.log(`musc: forceskip by ${msg.author.tag}`)
     }
 
     static loop (msg) {
-
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         if(loop == 0) {
             loop = 1
             console.log(`info: loop enabled by ${msg.author.tag}`)
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setAuthor("Looping the current song...", msg.author.avatarURL);
             embed.setColor('GREEN')
             return msg.channel.send(embed)
@@ -384,20 +370,19 @@ module.exports = class music {
         else if (loop == 1) {
             loop = 0
             console.log(`info: loop disabled by ${msg.author.tag}`)
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setAuthor("This song will no longer be looped...", msg.author.avatarURL);
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
     }
 
-    static np (msg, bot) {
-
+    static async np (msg, bot) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceConnection = bot.voiceConnections.find(val => val.channel.id == VC);
+        let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
             embed.setTitle("The bot is not playing")
             return msg.channel.send(embed);
@@ -406,7 +391,7 @@ module.exports = class music {
         var date = new Date(null)
         date.setSeconds(length[0])
         var timeString = date.toISOString().substr(11, 8)
-        const embed = new Discord.RichEmbed();
+        const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
         embed.setTitle("**:cd: Now Playing :**")
 
@@ -431,14 +416,13 @@ async function playSong (msg, voiceConnection, voiceChannel) {
     })
 
     voiceConnection.then(connection => {
-
-        connection.playStream(video, {volume : volume, bitrate : 96000, passes: 3})
+        connection.play(video, {volume : volume, bitrate : 96000, passes: 3, highWaterMark: 512})
         .on('start', () => {
             if(loop == 0) {
                 var date = new Date(null)
                 date.setSeconds(length[0])
                 var timeString = date.toISOString().substr(11, 8)
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("**:cd: Now Playing :**")
                 embed.setDescription(`[${title[0]}](${queue[0]})`)
@@ -447,8 +431,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
                 msg.channel.send(embed)
                 console.log(`musc: playing: ${title[0]}`)
             }
-        }).on('end', () => {
-
+        }).on('finish', () => {
             if(loop == 0) {
                 queue.shift()
                 title.shift()
@@ -456,7 +439,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
             }
 
             if(queue.length == 0) {
-                const embed = new Discord.RichEmbed();
+                const embed = new Discord.MessageEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("Queue finished. Disconnecting...")
 
@@ -472,6 +455,5 @@ async function playSong (msg, voiceConnection, voiceChannel) {
                 playSong(msg, voiceConnection, voiceChannel)
             }
         }).on('error', console.error);
-
     })
 }

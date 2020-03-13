@@ -3,7 +3,7 @@ const { YouTube } = require('better-youtube-api')
 const yt = new YouTube(process.env.YT_TOKEN)
 
 module.exports.run = (bot, msg, args) => {
-    music.play(msg, args, yt);
+    music.play(bot, msg, args, yt);
 };
 
 module.exports.help = {
