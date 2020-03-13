@@ -16,7 +16,7 @@ module.exports = class profile {
 
             await db.get('user').find({ id: msg.author.id }).set(type, null).write();
 
-            const embed = new Discord.RichEmbed();
+            const embed = new Discord.MessageEmbed();
             embed.setColor('AQUA')
             embed.setTitle(`${user.tag}'s ${type} is now reset`);
 
