@@ -29,7 +29,7 @@ fs.readdir('./commands/', (error, f) => {
 
 let levels = require('./lib/levels.json');
 
-const { YouTube } = require('better-youtube-api')
+const { YouTube } = require('popyt')
 const yt = new YouTube(process.env.YT_TOKEN)
 
 var cooldown = [], cooldownXP = [];

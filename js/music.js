@@ -147,7 +147,7 @@ module.exports = class music {
             let keywords = args.join(' ')
 
             var video = await yt.searchVideos(keywords, 1).then(data => {
-                return data[0].url
+                return data.results[0].url
             })
 
             if(!YoutubeStream.validateURL(video))return;

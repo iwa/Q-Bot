@@ -1,5 +1,5 @@
 const music = require('../js/music')
-const { YouTube } = require('better-youtube-api')
+const { YouTube } = require('popyt')
 const yt = new YouTube(process.env.YT_TOKEN)
 
 module.exports.run = (bot, msg, args) => {
