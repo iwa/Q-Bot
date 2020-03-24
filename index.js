@@ -128,7 +128,7 @@ bot.on('messageReactionAdd', async reaction => {
         else
             content = `\`\`\`${msg.cleanContent}\`\`\``
 
-        var channel = bot.channels.find(val => val.id == process.env.STARBOARDTC);
+        var channel = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
 
         await msg.react(reaction.emoji.name);
         await channel.send({
@@ -141,7 +141,7 @@ bot.on('messageReactionAdd', async reaction => {
               },
               "author": {
                 "name": msg.author.username,
-                "icon_url": msg.author.avatarURL
+                "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
               }
             }
           });
