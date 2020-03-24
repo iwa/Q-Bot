@@ -119,7 +119,7 @@ bot.on('messageReactionAdd', async reaction => {
     if(reaction.emoji.name !== '⭐')return;
     if(reaction.message.channel.id == process.env.STARBOARDTC)return;
     if(reaction.message.channel.id == process.env.ANNOUNCEMENTSTC)return;
-    if(reaction.users.find(val => val.id == bot.user.id))return;
+    if(reaction.users.cache.find(val => val.id == bot.user.id))return;
     if(reaction.count >= 6) {
         var msg = reaction.message;
         var content;
@@ -128,7 +128,7 @@ bot.on('messageReactionAdd', async reaction => {
         else
             content = `\`\`\`${msg.cleanContent}\`\`\``
 
-        var channel = bot.channels.find(val => val.id == process.env.STARBOARDTC);
+        var channel = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
 
         await msg.react(reaction.emoji.name);
         await channel.send({
@@ -141,7 +141,7 @@ bot.on('messageReactionAdd', async reaction => {
               },
               "author": {
                 "name": msg.author.username,
-                "icon_url": msg.author.avatarURL
+                "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
               }
             }
           });
@@ -177,7 +177,7 @@ setInterval(async () => {
 
     guild.members.cache.forEach(async elem => {
         if(elem.roles.cache.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.find(val => val.id == process.env.BOOSTROLE))) {
-            await elem.removeRole(process.env.BOOSTCOLOR);
+            await elem.roles.remove(process.env.BOOSTCOLOR);
         }
     });
 }, 300000);
