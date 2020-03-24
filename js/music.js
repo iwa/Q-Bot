@@ -125,7 +125,7 @@ module.exports = class music {
 
             if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
                 const embed = new Discord.MessageEmbed();
-                embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL);
+                embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
                 embed.setDescription(`**${data.title}**`)
                 embed.setFooter(`Added by ${msg.author.username}`)
                 embed.setColor('LUMINOUS_VIVID_PINK')
@@ -174,7 +174,7 @@ module.exports = class music {
 
             if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
                 const embed = new Discord.MessageEmbed();
-                embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL);
+                embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
                 embed.setDescription(`**${data.title}**`)
                 embed.setFooter(`Added by ${msg.author.username}`)
                 embed.setColor('LUMINOUS_VIVID_PINK')
@@ -206,7 +206,7 @@ module.exports = class music {
 
         const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
-        embed.setAuthor('Removed from the queue :', msg.author.avatarURL);
+        embed.setAuthor('Removed from the queue :', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         embed.setDescription(`**${title[queueID]}**`)
         embed.setFooter(`Removed by ${msg.author.username}`)
 
@@ -273,7 +273,7 @@ module.exports = class music {
 
             const embed = new Discord.MessageEmbed();
             embed.setColor('GREEN')
-            embed.setAuthor("Your voteskip has been registered !", msg.author.avatarURL)
+            embed.setAuthor("Your voteskip has been registered !", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
             msg.channel.send(embed)
 
             console.log(`info: voteskip by ${msg.author.tag}`)
@@ -347,7 +347,7 @@ module.exports = class music {
 
         const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
-        embed.setAuthor("Forced skip...", msg.author.avatarURL);
+        embed.setAuthor("Forced skip...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         msg.channel.send(embed)
         loop = 0;
 
@@ -363,7 +363,7 @@ module.exports = class music {
             loop = 1
             console.log(`info: loop enabled by ${msg.author.tag}`)
             const embed = new Discord.MessageEmbed();
-            embed.setAuthor("Looping the current song...", msg.author.avatarURL);
+            embed.setAuthor("Looping the current song...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
@@ -371,7 +371,7 @@ module.exports = class music {
             loop = 0
             console.log(`info: loop disabled by ${msg.author.tag}`)
             const embed = new Discord.MessageEmbed();
-            embed.setAuthor("This song will no longer be looped...", msg.author.avatarURL);
+            embed.setAuthor("This song will no longer be looped...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
