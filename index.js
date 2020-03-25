@@ -176,7 +176,7 @@ setInterval(async () => {
     var guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
 
     guild.members.cache.forEach(async elem => {
-        if(elem.roles.cache.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.find(val => val.id == process.env.BOOSTROLE))) {
+        if(elem.roles.cache.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.cache.find(val => val.id == process.env.BOOSTROLE))) {
             await elem.roles.remove(process.env.BOOSTCOLOR);
         }
     });
@@ -222,15 +222,15 @@ async function levelCheck(msg, xp) {
     for(var i = 1; i <= 20; i++) {
         if(xp == levels[i].amount) {
             if(i != 1)
-                await msg.member.removeRole(levels[i-1].id).catch(console.error);
-            await msg.member.addRole(levels[i].id).catch(console.error);
+                await msg.member.roles.remove(levels[i-1].id).catch(console.error);
+            await msg.member.roles.add(levels[i].id).catch(console.error);
             return imageLvl(msg, i);
         }
     }
 }
 
 async function imageLvl(msg, level) {
-    var avatarURL = await msg.author.avatarURL
+    var avatarURL = await msg.author.avatarURL({ format: 'png', dynamic: false, size: 512 })
 
     var html = await ejs.renderFile('views/level.ejs', { avatarURL, level });
     var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
