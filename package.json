@@ -23,7 +23,7 @@
     "discord.js": "^12.1.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.2",
-    "lowdb": "^1.0.0",
+    "mongodb": "^3.5.5",
     "popyt": "^3.0.0",
     "puppeteer": "^2.1.1",
     "ytdl-core": "^1.0.9"

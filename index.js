@@ -6,13 +6,8 @@ require('dotenv').config()
 const fs = require('fs');
 const ejs = require('ejs')
 
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-
-const adapter = new FileSync('lib/db.json');
-const db = low(adapter);
-
-db.defaults({ user: [] }).write();
+const mongo = require('mongodb').MongoClient;
+const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 const letmein = require('./js/letmein')
 const img = require('./js/img')
@@ -80,6 +75,9 @@ bot.on('message', async msg => {
         }, 1200000);
     }
 
+    let mongod = await mongo.connect(url, {'useUnifiedTopology': true});
+    let db = mongod.db(dbName);
+
     if(!msg.content.startsWith(process.env.PREFIX)) {
         if(msg.channel.id == '608630294261530624')return;
         if(msg.channel.id == process.env.SUGGESTIONTC) {
@@ -87,16 +85,18 @@ bot.on('message', async msg => {
             return await msg.react('❌');
         }
 
-        var user = await db.get('user').find({ id: msg.author.id }).value();
+        var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
 
         if(!user)
-            await db.get('user').push({ id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0 }).write()
+            await db.collection('user').insertOne({ _id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0 });
         else if(!cooldownXP[msg.author.id]) {
-            user = await db.get('user').find({ id: msg.author.id }).update('exp', n => n + 1).write();
+            await db.collection('user').updateOne({ _id: msg.author.id }, { $inc: { exp: 1 }});
             levelCheck(msg, user.exp);
             cooldownXP[msg.author.id] = 1;
             return setTimeout(async () => { delete cooldownXP[msg.author.id] }, 5000)
         }
+
+        return mongod.close();
     }
 
     let args = msg.content.slice(1).trim().split(/ +/g);
@@ -109,7 +109,7 @@ bot.on('message', async msg => {
     if(process.env.SLEEP === 1 && msg.author.id != process.env.IWA)return;
 
     if (!cmd) return;
-    else return cmd.run(bot, msg, args, db);
+    else cmd.run(bot, msg, args, db);
 });
 
 // Reactions Event
@@ -150,9 +150,14 @@ bot.on('messageReactionAdd', async reaction => {
 });
 
 bot.on('guildMemberRemove', async member => {
-    var user = await db.get('user').find({ id: member.id }).value();
+    var mongod = await mongo.connect(url, {'useUnifiedTopology': true});
+    var db = mongod.db(dbName);
+
+    var user = await db.collection('user').findOne({ '_id': { $eq: member.id } });
     if(user)
-        return await db.get('user').find({ id: member.id }).set({hidden: true}).write();
+        await db.collection('user').updateOne({ _id: member.id }, { $set: { hidden: true }});
+
+    return mongod.close();
 })
 
 // Subs count, refresh every hour
@@ -193,19 +198,23 @@ setInterval(async () => {
         var mm = String(today.getMonth() + 1).padStart(2, '0');
         today = mm + '/' + dd;
 
-        var data = await db.get('user').filter({ birthday: today }).value();
+        var mongod = await mongo.connect(url, {'useUnifiedTopology': true});
+        var db = mongod.db(dbName);
+
+        var data = await db.collection('user').find({ 'birthday': { $eq: today } }).toArray();
+        console.log(data)
 
         if(data.length >= 1) {
             let channel = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
-                var userInfo = await bot.fetchUser(user.id)
-                const embed = new Discord.RichEmbed();
+                var userInfo = await bot.users.fetch(user._id)
+                const embed = new Discord.MessageEmbed();
                 embed.setTitle(`**Happy Birthday, ${userInfo.username} ! 🎉🎉**`)
                 embed.setFooter(`Born on : ${today}`)
                 embed.setColor('#FFFF72')
                 embed.setThumbnail(userInfo.avatarURL)
-                channel.send(`<@${user.id}>`)
+                channel.send(`<@${user._id}>`)
                 channel.send(embed)
             });
         }

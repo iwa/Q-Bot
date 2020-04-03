@@ -206,7 +206,7 @@ async function leave (msg, game) {
 
 
 async function leaderboard (bot, msg, db, Discord, type) {
-    let leaderboard = await db.get('user').filter({hidden: false}).orderBy(type, 'desc').take(10).value()
+    let leaderboard = await db.collection('user').find({ hidden: false }).sort({[type]:-1}).limit(10).toArray();
     var n = 0;
 
     msg.channel.startTyping()
@@ -217,7 +217,7 @@ async function leaderboard (bot, msg, db, Discord, type) {
     embed.setTitle(`:trophy: **${title} Leaderboard**`)
 
     leaderboard.forEach(async elem => {
-        let user = await bot.users.fetch(elem.id)
+        let user = await bot.users.fetch(elem._id)
         n++;
         embed.addField(`**${n}. ${user.username}**`, `${elem[type]} ${type}s`)
     })
