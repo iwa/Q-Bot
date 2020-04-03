@@ -1,5 +1,5 @@
 module.exports.run = async (bot, msg, args, db) => {
-    var user = await db.get('user').find({ id: msg.author.id }).value();
+    var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
     var avatar = await msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
     if(!user.fc)
         return msg.channel.send({

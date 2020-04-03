@@ -7,7 +7,7 @@ module.exports.run = async (bot, msg, args, db) => {
             return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid ! Please enter your birthday like that :\n?setbirthday mm/dd**", "color": 13632027 }});
         }
 
-        var userDB = await db.get('user').find({ id: msg.author.id }).value();
+        var userDB = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
         if(userDB.birthday != null)
             return msg.channel.send({"embed": { "title": ":x: > **Sorry, you can't change your birthday date! Please contact <@125325519054045184> to change.**", "color": 13632027 }});
 
@@ -17,7 +17,7 @@ module.exports.run = async (bot, msg, args, db) => {
             var dd = String(date.getDate()).padStart(2, '0');
             var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
             var today = mm + '/' + dd;
-            await db.get('user').find({ id: msg.author.id }).set('birthday', today).write();
+            await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { birthday: today }});
             const embed = new Discord.MessageEmbed();
             embed.setAuthor("Your birthday is now set to: ", msg.author.avatarURL);
             embed.setTitle(`**${today}**`)
