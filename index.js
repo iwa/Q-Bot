@@ -67,11 +67,11 @@ bot.on('message', async msg => {
     if(cooldown[msg.author.id] == 4)
         return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
     else if(cooldown[msg.author.id] == 6) {
-        await msg.member.addRole('636254696880734238')
+        await msg.member.roles.add('636254696880734238')
         var msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
         setTimeout(async () => {
             await msgReply.delete()
-            return msg.member.removeRole('636254696880734238')
+            return msg.member.roles.remove('636254696880734238')
         }, 1200000);
     }
 
