@@ -29,12 +29,12 @@ module.exports.run = (bot, msg, args) => {
         return msg.channel.send(embed)
     }).catch(err => {
         console.error(err)
-        return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry later**" }})
+        return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry later.**" }})
     });
 };
 
 module.exports.help = {
     name: 'anime',
     usage: "?anime (title)",
-    desc: "See some info about an anime"
+    desc: "Get some info about an anime series."
 };
