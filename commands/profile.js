@@ -21,7 +21,7 @@ module.exports.help = {
 };
 
 async function profileImg(bot, msg, db, id) {
-    var userDB = await db.get('user').find({ id: id }).value();
+    var userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
     var user = {};
 
     if(!userDB)return msg.channel.send(":x: > **You aren't registered into the database. You need to talk once in a channel to have your profile created.**");
@@ -47,11 +47,17 @@ async function profileImg(bot, msg, db, id) {
     user.boop = userDB.boop
     user.slap = userDB.slap
 
-    user.positionXP = await db.get('user').orderBy('exp', 'desc').findIndex(val => val.id == id).value()
-    user.positionHug = await db.get('user').orderBy('hug', 'desc').findIndex(val => val.id == id).value()
-    user.positionPat = await db.get('user').orderBy('pat', 'desc').findIndex(val => val.id == id).value()
-    user.positionBoop = await db.get('user').orderBy('boop', 'desc').findIndex(val => val.id == id).value()
-    user.positionSlap = await db.get('user').orderBy('slap', 'desc').findIndex(val => val.id == id).value()
+    var leadXP = await db.collection('user').find().sort({exp:-1}).toArray();
+    var leadHug = await db.collection('user').find().sort({hug:-1}).toArray();
+    var leadPat = await db.collection('user').find().sort({pat:-1}).toArray();
+    var leadBoop = await db.collection('user').find().sort({boop:-1}).toArray();
+    var leadSlap = await db.collection('user').find().sort({boop:-1}).toArray();
+
+    user.positionXP = await leadXP.findIndex(val => val._id == id)+1;
+    user.positionHug = await leadHug.findIndex(val => val._id == id)+1;
+    user.positionPat = await leadPat.findIndex(val => val._id == id)+1;
+    user.positionBoop = await leadBoop.findIndex(val => val._id == id)+1;
+    user.positionSlap = await leadSlap.findIndex(val => val._id == id)+1;
 
     if(userDB.birthday == null)
         user.birthday = 'not registered yet';
