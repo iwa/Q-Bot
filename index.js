@@ -75,8 +75,8 @@ bot.on('message', async msg => {
         }, 1200000);
     }
 
-    var mongod = await mongo.connect(url, {'useUnifiedTopology': true});
-    var db = mongod.db(dbName);
+    let mongod = await mongo.connect(url, {'useUnifiedTopology': true});
+    let db = mongod.db(dbName);
 
     if(!msg.content.startsWith(process.env.PREFIX)) {
         if(msg.channel.id == '608630294261530624')return;
@@ -110,8 +110,6 @@ bot.on('message', async msg => {
 
     if (!cmd) return;
     else cmd.run(bot, msg, args, db);
-
-    return mongod.close();
 });
 
 // Reactions Event
