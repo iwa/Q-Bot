@@ -51,7 +51,7 @@ module.exports = class staff {
             embed.setTitle(`**${mention.user.username}**, you've been muted for ${args[1]} minutes by **${msg.author.username}**`)
 
             try {
-                await mention.addRole('636254696880734238')
+                await mention.roles.add('636254696880734238')
                 var reply = await msg.channel.send(embed)
                 setTimeout(async () => {
                     await reply.delete()
