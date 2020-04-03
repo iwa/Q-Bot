@@ -1,4 +1,4 @@
-![](https://iwa.sh/img/q-bot_logo.png)
+![](https://cdn.iwa.sh/img/q-bot_logo.png)
 
 ## About
 
@@ -6,4 +6,3 @@
 
 - Language used : `JavaScript, with NodeJS`
 - Library used : `discord.js`
-- Dependencies used : `discord.js lowdb node-opus ytdl-core better-youtube-api node-fetch anilist-node puppeteer`
