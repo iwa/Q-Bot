@@ -8,13 +8,13 @@ module.exports = class profile {
 
             let id = args[0]
 
-            var userDB = await db.get('user').find({ id: id }).value()
+            var userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
             if(!userDB)
                 return msg.channel.send({"embed": { "title": ":x: > **The user you entered isn't registered in the database yet!**", "color": 13632027 }});
 
-            let user = await bot.fetchUser(userDB.id)
+            let user = await bot.users.fetch(userDB._id)
 
-            await db.get('user').find({ id: msg.author.id }).set(type, null).write();
+            await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { [type]: null }});
 
             const embed = new Discord.MessageEmbed();
             embed.setColor('AQUA')
