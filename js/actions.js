@@ -101,7 +101,7 @@ module.exports = class actions {
             .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
             .catch(console.error);
         } else if(args.length > 2) {
-            if(type == hug) { // Technically speaking, even with two arms you can fit more than two people in a hug, so uhhh... Custom dialog, perhaps? - Hy~
+            if(type == "hug") { // Technically speaking, even with two arms you can fit more than two people in a hug, so uhhh... Custom dialog, perhaps? - Hy~
                 msg.reply(`You can't ${type} them all, you can't fit more than two people in a hug! :(`)
             }
             else {
