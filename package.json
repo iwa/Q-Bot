@@ -4,7 +4,7 @@
   "description": "Discord Bot for Qumu's Discord Server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update": "git fetch origin master && git pull origin master"
   },
   "repository": {
     "type": "git",
