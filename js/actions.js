@@ -34,7 +34,7 @@ module.exports = class actions {
             mentionFirst = msg.mentions.users.first()
             if(!mentionFirst)return;
             if(mentionFirst.id == msg.author.id) {
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself !**`, "color": 13632027 }});
+                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
             }
 
             const embed = new Discord.MessageEmbed();
@@ -53,12 +53,12 @@ module.exports = class actions {
 
             msg.channel.startTyping()
 
-            embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** !`)
+            embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
             embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
 
             user = await db.get('user').find({ id: msg.author.id }).update(type, n => n + 1).write();
 
-            embed.setFooter(`you have given ${user[type]} ${type}s`)
+            embed.setFooter(`You have given ${user[type]} ${type}s`)
 
             return msg.channel.send(embed)
             .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
@@ -72,7 +72,7 @@ module.exports = class actions {
             if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself !**`, "color": 13632027 }});
             if(mentionFirst.id == mentionSecond.id)
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} twice the same person !**`, "color": 13632027 }});
+                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
 
             const embed = new Discord.MessageEmbed();
             embed.setColor('#F2DEB0')
@@ -95,7 +95,7 @@ module.exports = class actions {
 
             user = await db.get('user').find({ id: msg.author.id }).update(type, n => n + 2).write();
 
-            embed.setFooter(`you have given ${user[type]} ${type}s`)
+            embed.setFooter(`You have given ${user[type]} ${type}s`)
 
             return msg.channel.send(embed)
             .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
@@ -105,7 +105,7 @@ module.exports = class actions {
                 msg.reply(`You can't ${type} them all, you can't fit more than two people in a hug! :(`)
             }
             else {
-                msg.reply(`You can't ${type} them all, you only have 2 arms ! :(`)
+                msg.reply(`You can't ${type} them all, you only have 2 arms! :(`)
             }
         }
     }
