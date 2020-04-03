@@ -8,9 +8,8 @@ module.exports.run = async (bot, msg, args, db) => {
         }
 
         var userDB = await db.get('user').find({ id: msg.author.id }).value();
-        if(userDB.birthday != null) {
-            return msg.channel.send({"embed": { "title": ":x: > **You can't change your birthday date ! Contact iwa for any demand of change.**", "color": 13632027 }});
-        }
+        if(userDB.birthday != null)
+            return msg.channel.send({"embed": { "title": ":x: > **Sorry, you can't change your birthday date! Please contact <@125325519054045184> to change.**", "color": 13632027 }});
 
         var date = new Date(content);
 
@@ -20,7 +19,7 @@ module.exports.run = async (bot, msg, args, db) => {
             var today = mm + '/' + dd;
             await db.get('user').find({ id: msg.author.id }).set('birthday', today).write();
             const embed = new Discord.MessageEmbed();
-            embed.setAuthor("Your birthday is now set to : ", msg.author.avatarURL);
+            embed.setAuthor("Your birthday is now set to: ", msg.author.avatarURL);
             embed.setTitle(`**${today}**`)
             embed.setColor('AQUA')
 
@@ -31,14 +30,14 @@ module.exports.run = async (bot, msg, args, db) => {
                 console.error(err);
             }
         } else
-            return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid ! Please enter your birthday like that : mm/dd**", "color": 13632027 }});
+            return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid! Please enter your birthday in mm/dd format.", "color": 13632027 }});
 
     } else
-        return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid ! Please enter your birthday like that : mm/dd**", "color": 13632027 }});
+        return msg.channel.send({"embed": { "title": ":x: > **Date format is invalid! Please enter your birthday in mm/dd format.", "color": 13632027 }});
 };
 
 module.exports.help = {
     name: 'setbirthday',
     usage: "?setbirthday (your birthday, mm/dd)",
-    desc: "Register your birthday to Q-Bot\nPlease use this format : **mm/dd**\nThis use UTC timezone"
+    desc: "Register your birthday to Q-Bot\nPlease enter in **mm/dd** format.\nThis uses UTC timezone."
 };

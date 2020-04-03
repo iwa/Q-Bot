@@ -36,7 +36,7 @@ module.exports = class music {
 
             const playlist = await yt.getPlaylistByUrl(video_url[0]).catch(console.error)
 
-            var reply = await msg.channel.send("Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
+            var reply = await msg.channel.send(":warning: Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
             await reply.react('✅');
             await reply.react('❌');
 
@@ -48,7 +48,7 @@ module.exports = class music {
             }
             if(collected.find(val => val.emoji.name == '✅') && collected.find(val => val.emoji.name == '❌')) {
                 reply.delete()
-                return msg.channel.send(":x: > **You must choose only one of both reactions !**")
+                return msg.channel.send(":x: > **You must choose only one of both reactions!**")
             }
 
             var emote = collected.first().emoji.name
@@ -80,10 +80,10 @@ module.exports = class music {
             }
 
             const embedDone = new Discord.MessageEmbed();
-            embedDone.setTitle("**Done !**")
+            embedDone.setTitle("**Done!**")
             embedDone.setColor('LUMINOUS_VIVID_PINK')
 
-            if(errors > 0) embedDone.setDescription("Some videos are unavailable yet :(");
+            if(errors > 0) embedDone.setDescription("Some videos are unavailable :(");
 
             msg.channel.send(embedDone)
 
@@ -115,17 +115,17 @@ module.exports = class music {
                 }
             } else {
                 msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is already in the queue !**")
+                return msg.channel.send(":x: > **This video is already in the queue!**")
             }
 
             if(error) {
                 msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is unavailable.**")
+                return msg.channel.send(":x: > **This video is unavailable :(**")
             }
 
             if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
                 const embed = new Discord.MessageEmbed();
-                embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+                embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
                 embed.setDescription(`**${data.title}**`)
                 embed.setFooter(`Added by ${msg.author.username}`)
                 embed.setColor('LUMINOUS_VIVID_PINK')
@@ -164,17 +164,17 @@ module.exports = class music {
                 }
             } else {
                 msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is already in the queue !**")
+                return msg.channel.send(":x: > **This video is already in the queue!**")
             }
 
             if(error) {
                 msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is unavailable.**")
+                return msg.channel.send(":x: > **This video is unavailable :(**")
             }
 
             if(bot.voice.connections.find(con => con.channel.id == voiceChannel.id)) {
                 const embed = new Discord.MessageEmbed();
-                embed.setAuthor('Successfully added to the queue :', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+                embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
                 embed.setDescription(`**${data.title}**`)
                 embed.setFooter(`Added by ${msg.author.username}`)
                 embed.setColor('LUMINOUS_VIVID_PINK')
@@ -206,7 +206,7 @@ module.exports = class music {
 
         const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
-        embed.setAuthor('Removed from the queue :', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+        embed.setAuthor('Removed from the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         embed.setDescription(`**${title[queueID]}**`)
         embed.setFooter(`Removed by ${msg.author.username}`)
 
@@ -231,9 +231,9 @@ module.exports = class music {
         embed.setColor('GREEN')
 
         if(queue.length <= 1)
-            embed.setTitle("**:cd: The queue is empty**")
+            embed.setTitle("**:cd: The queue is empty.**")
         else {
-            embed.setTitle("**:cd: Here's the queue**")
+            embed.setTitle("**:cd: Here's the queue:**")
 
             queue.forEach(async (item, index) => {
                 if(index == 0 || index > 10)return;
@@ -263,7 +263,7 @@ module.exports = class music {
         if(!voiceConnection) {
             const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
-            embed.setTitle("The bot is not playing")
+            embed.setTitle("I'm not playing anything right now!")
             return msg.channel.send(embed);
         }
 
@@ -273,7 +273,7 @@ module.exports = class music {
 
             const embed = new Discord.MessageEmbed();
             embed.setColor('GREEN')
-            embed.setAuthor("Your voteskip has been registered !", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
+            embed.setAuthor("Your voteskip has been registered!", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
             msg.channel.send(embed)
 
             console.log(`info: voteskip by ${msg.author.tag}`)
@@ -290,13 +290,13 @@ module.exports = class music {
             } else {
                 const embed = new Discord.MessageEmbed();
                 embed.setColor('BRIGHT_RED')
-                embed.setTitle("You need **" + (Math.ceil((voiceChannel.members.size - 1) / 2) - skipReq) + "** more skip vote to skip !")
+                embed.setTitle("You need **" + (Math.ceil((voiceChannel.members.size - 1) / 2) - skipReq) + "** more skip vote to skip!")
                 msg.channel.send(embed)
             }
         } else {
             const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
-            embed.setTitle("You already voted for skipping !")
+            embed.setTitle("You already voted for skipping!")
             msg.channel.send(embed)
         }
     }
@@ -339,7 +339,7 @@ module.exports = class music {
         if(!voiceConnection) {
             const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
-            embed.setTitle("The bot is not playing")
+            embed.setTitle("I'm not playing anything right now!")
             return msg.channel.send(embed);
         }
 
@@ -384,7 +384,7 @@ module.exports = class music {
         if(!voiceConnection) {
             const embed = new Discord.MessageEmbed();
             embed.setColor('RED')
-            embed.setTitle("The bot is not playing")
+            embed.setTitle("I'm not playing anything right now!")
             return msg.channel.send(embed);
         }
 
@@ -393,10 +393,10 @@ module.exports = class music {
         var timeString = date.toISOString().substr(11, 8)
         const embed = new Discord.MessageEmbed();
         embed.setColor('GREEN')
-        embed.setTitle("**:cd: Now Playing :**")
+        embed.setTitle("**:cd: Now Playing:**")
 
         var desc = `[${title[0]}](${queue[0]})`;
-        if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable it";
+        if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable";
         embed.setDescription(desc)
 
         embed.setFooter(`Length : ${timeString}`)
@@ -412,7 +412,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
     const video = YoutubeStream(queue[0], {filter: "audioonly", quality: "highestaudio"});
 
     video.on('error', () => {
-        return msg.channel.send(":x: > **There was an unexpected error with the video, please retry later**")
+        return msg.channel.send(":x: > **There was an unexpected error with playing the video, please retry later**")
     })
 
     voiceConnection.then(connection => {
@@ -424,7 +424,7 @@ async function playSong (msg, voiceConnection, voiceChannel) {
                 var timeString = date.toISOString().substr(11, 8)
                 const embed = new Discord.MessageEmbed();
                 embed.setColor('GREEN')
-                embed.setTitle("**:cd: Now Playing :**")
+                embed.setTitle("**:cd: Now Playing:**")
                 embed.setDescription(`[${title[0]}](${queue[0]})`)
                 embed.setFooter(`Length : ${timeString}`)
 
