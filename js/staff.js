@@ -16,7 +16,7 @@ module.exports = class staff {
             }
         }
         else
-            return msg.channel.send({"embed": { "title": ":x: > **Incomplete command**", "color": 13632027 }});
+            return msg.channel.send({"embed": { "title": ":x: > **Incomplete command.**", "color": 13632027 }});
 
     }
 
@@ -71,13 +71,13 @@ module.exports = class staff {
             await bot.user.setPresence({ activity: { name: "being updated...", type: 0 }, status: 'dnd' })
                 .then(msg.react("✅") , console.log("info: sleeping enabled"))
                 .catch(console.error);
-            msg.channel.send("Sleeping Mode On !")
+            msg.channel.send("Sleeping Mode On!")
             return process.env.SLEEP = 1;
         } else {
             await bot.user.setPresence({ activity: { name: "Qumu's Remixes | ?help", type: 2 }, status: 'online' })
                 .then(msg.react("✅") , console.log("info: sleeping disabled"))
                 .catch(console.error);
-            msg.channel.send("Sleeping Mode Off !")
+            msg.channel.send("Sleeping Mode Off!")
             return process.env.SLEEP = 0;
         }
     }
