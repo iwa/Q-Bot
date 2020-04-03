@@ -4,12 +4,12 @@ module.exports.run = async (bot, msg, args, db) => {
     if(args.length == 1) {
         var content = args[0]
         if(content.length != 14 || content.search(/\d\d\d\d-\d\d\d\d-\d\d\d\d/gi) == -1) {
-            return msg.channel.send({"embed": { "title": ":x: > **Switch Friend Code format invalid ! Please enter your FC without the 'SW-' at the beginning**", "color": 13632027 }});
+            return msg.channel.send({"embed": { "title": ":x: > **Switch Friend Code format invalid! Please enter your FC without the 'SW-' at the beginning**", "color": 13632027 }});
         }
 
         var userDB = await db.get('user').find({ id: msg.author.id }).value();
         if(userDB.fc != null) {
-            return msg.channel.send({"embed": { "title": ":x: > **You can't change your FC !**", "description": "**Contact <@125325519054045184> for any demand of change.**", "color": 13632027 }});
+            return msg.channel.send({"embed": { "title": ":x: > **Sorry, you can't change your FC!**", "description": "**Please contact <@125325519054045184> to change.**", "color": 13632027 }});
         }
 
         await db.get('user').find({ id: msg.author.id }).set('fc', content).write();
@@ -29,5 +29,5 @@ module.exports.run = async (bot, msg, args, db) => {
 module.exports.help = {
     name: 'setfc',
     usage: "?setfc (your Switch FC)",
-    desc: "Register your Switch Friend Code to Q-Bot\nPlease enter your FC without 'SW-' at the beginning"
+    desc: "Register your Switch Friend Code to Q-Bot.\nPlease enter your FC without 'SW-' at the beginning"
 };

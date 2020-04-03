@@ -28,12 +28,12 @@ module.exports.run = (bot, msg, args) => {
         return msg.channel.send(embed)
     }).catch(err => {
         console.error(err)
-        return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry**" }})
+        return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry later.**" }})
     });
 };
 
 module.exports.help = {
     name: 'manga',
     usage: "?manga (title)",
-    desc: "See some info about a manga"
+    desc: "See some info about a manga series."
 };

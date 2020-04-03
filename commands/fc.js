@@ -4,10 +4,10 @@ module.exports.run = async (bot, msg, args, db) => {
     if(!user.fc)
         return msg.channel.send({
             "embed": {
-              "title": "Do `?setfc 1234-4567-7890` to register it",
+              "title": "Do `?setfc 1234-4567-7890` to register it.",
               "color": 15802940,
               "author": {
-                "name": "You didn't register your Switch FC !",
+                "name": "It looks like you haven't yet registered your Switch FC!",
                 "icon_url": avatar
               }
             }
@@ -28,5 +28,5 @@ module.exports.run = async (bot, msg, args, db) => {
 module.exports.help = {
     name: 'fc',
     usage: "?fc",
-    desc: "Print your Switch Friend Code in the channel you sent the command"
+    desc: "Print your Switch Friend Code in the channel you sent the command."
 };

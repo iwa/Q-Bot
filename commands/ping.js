@@ -1,6 +1,6 @@
 module.exports.run = async (bot, msg) => {
     var ping = Math.ceil(bot.ws.ping)
-    await msg.channel.send(`pong ! \`${ping}ms\``)
+    await msg.channel.send(`:ping_pong: Pong ! \`${ping}ms\``)
         .then(console.log(`info: ping : ${msg.author.tag}`))
         .catch(console.error);
 };
@@ -8,5 +8,5 @@ module.exports.run = async (bot, msg) => {
 module.exports.help = {
     name: 'ping',
     usage: "?ping",
-    desc: "This will send you the ping between Q-Bot and Discord's Servers"
+    desc: "Get response time between Q-Bot and Discord servers."
 };
