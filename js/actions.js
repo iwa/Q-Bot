@@ -56,9 +56,10 @@ module.exports = class actions {
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
             embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
 
-            user = await db.get('user').find({ id: msg.author.id }).update(type, n => n + 1).write();
+            user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
+            await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 1 }});
 
-            embed.setFooter(`You have given ${user[type]} ${type}s`)
+            embed.setFooter(`You have given ${user[type] + 1} ${type}s`)
 
             return msg.channel.send(embed)
             .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
@@ -93,9 +94,10 @@ module.exports = class actions {
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}** !`)
             embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
 
-            user = await db.get('user').find({ id: msg.author.id }).update(type, n => n + 2).write();
+            user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
+            await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 2 }});
 
-            embed.setFooter(`You have given ${user[type]} ${type}s`)
+            embed.setFooter(`You have given ${user[type] + 2} ${type}s`)
 
             return msg.channel.send(embed)
             .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
