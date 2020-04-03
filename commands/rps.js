@@ -26,20 +26,20 @@ module.exports.run = (bot, msg, args) => {
         var n = utils.randomInt(3);
 
         if(n == 1 && numReq == 1 || n == 2 && numReq == 2 || n == 3 && numReq == 3)
-            res = "**Draw !**";
+            res = "**Draw!**";
         if(n == 1 && numReq == 2 || n == 2 && numReq == 3 || n == 3 && numReq == 1)
-            res = "**You won !**";
+            res = "**You won!**";
         if(n == 1 && numReq == 3 || n == 2 && numReq == 1 || n == 3 && numReq == 2)
-            res = "**I won !**";
+            res = "**I won!**";
 
         const embed = new Discord.MessageEmbed();
 
         if(n == 1)
-            embed.setTitle(":punch: **I play rock !**");
+            embed.setTitle(":punch: **I play rock!**");
         if(n == 2)
-            embed.setTitle(":hand_splayed: **I play paper !**");
+            embed.setTitle(":hand_splayed: **I play paper!**");
         if(n == 3)
-            embed.setTitle(":v: **I play scissors !**");
+            embed.setTitle(":v: **I play scissors!**");
 
         embed.setDescription(res);
 
@@ -50,5 +50,5 @@ module.exports.run = (bot, msg, args) => {
 module.exports.help = {
     name: 'rps',
     usage: "?rps (rock | paper | scissors)",
-    desc: "Play to Rock-Paper-Scissors with me"
+    desc: "Play Rock-Paper-Scissors with me"
 };
