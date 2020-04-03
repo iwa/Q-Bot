@@ -70,7 +70,7 @@ module.exports = class actions {
             mentionSecond = msg.mentions.users.last()
             if(!mentionFirst || !mentionSecond)return;
             if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself !**`, "color": 13632027 }});
+                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
             if(mentionFirst.id == mentionSecond.id)
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
 
