@@ -7,12 +7,12 @@ module.exports.run = async (bot, msg, args, db) => {
             return msg.channel.send({"embed": { "title": ":x: > **Switch Friend Code format invalid! Please enter your FC without the 'SW-' at the beginning**", "color": 13632027 }});
         }
 
-        var userDB = await db.get('user').find({ id: msg.author.id }).value();
+        var userDB = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
         if(userDB.fc != null) {
             return msg.channel.send({"embed": { "title": ":x: > **Sorry, you can't change your FC!**", "description": "**Please contact <@125325519054045184> to change.**", "color": 13632027 }});
         }
 
-        await db.get('user').find({ id: msg.author.id }).set('fc', content).write();
+        await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { fc: content }});
         const embed = new Discord.MessageEmbed();
         embed.setAuthor("Your Switch FC is now set to : ", msg.author.avatarURL);
         embed.setTitle(`**${content}**`)
