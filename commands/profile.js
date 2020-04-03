@@ -24,7 +24,7 @@ async function profileImg(bot, msg, db, id) {
     var userDB = await db.get('user').find({ id: id }).value();
     var user = {};
 
-    if(!userDB)return msg.channel.send(":x: > **You aren't registered into the database, you need to talk once in a channel to have your profile initialized**");
+    if(!userDB)return msg.channel.send(":x: > **You aren't registered into the database. You need to talk once in a channel to have your profile created.**");
 
     msg.channel.startTyping();
 

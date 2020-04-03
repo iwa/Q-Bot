@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 
-let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not"]
+let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not", "Reply hazy, try again", "Take a guess"]
 
 module.exports.run = async (bot, msg, args) => {
     if(await msg.channel.type != "text")return;
