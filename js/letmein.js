@@ -5,12 +5,12 @@ module.exports = class letmein {
     static async action (msg, levels, db) {
         if(msg.channel.id != process.env.LOBBY)return;
 
-        var user = await db.get('user').find({ id: msg.author.id }).value();
+        var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
 
         if(user) {
             var lvl = await utils.levelInfo(user.exp);
             if(lvl.level != 0) await msg.member.roles.add(levels[lvl.level].id);
-            await db.get('user').find({ id: msg.author.id }).set({hidden: false}).write();
+            await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { hidden: false }});
         }
 
         return await msg.member.roles.add('606862164392673290').then(() => {
