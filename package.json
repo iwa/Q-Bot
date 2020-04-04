@@ -2,7 +2,7 @@
   "name": "q-bot",
   "version": "1.1.0",
   "description": "Discord Bot for Qumu's Discord Server",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "update": "git fetch origin master && git pull origin master"
   },
