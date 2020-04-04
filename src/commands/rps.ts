@@ -1,7 +1,7 @@
-const Discord = require('discord.js')
+import { Client, Message } from 'discord.js'
 const utils = require('../js/utilities')
 
-module.exports.run = (bot, msg, args) => {
+module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     if(args.length < 1)return;
         var req = args[0].toLowerCase(), numReq, res;
 

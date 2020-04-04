@@ -1,6 +1,7 @@
+import { Client, Message } from 'discord.js'
 const staff = require('../js/staff')
 
-module.exports.run = (bot, msg, args) => {
+module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     staff.mute(bot, msg, args);
 };
 

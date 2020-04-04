@@ -1,7 +1,8 @@
-const ejs = require('ejs')
+import { Client, Message } from 'discord.js'
+import * as ejs from 'ejs'
 const img = require('../js/img')
 
-module.exports.run = async (bot, msg, args) => {
+module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
     if(msg.channel.id != '606165780215889960')return;
     if(args.length > 0) {
         msg.channel.startTyping();
@@ -13,7 +14,8 @@ module.exports.run = async (bot, msg, args) => {
 
         try {
             console.log(`info: sonicsays by ${msg.author.tag}`)
-            return msg.channel.send('', {files: [file]}).then(msg.channel.stopTyping(true));
+            return msg.channel.send('', {files: [file]})
+                .then(() => { msg.channel.stopTyping(true) });
         } catch(err) {
             console.error(err)
         }

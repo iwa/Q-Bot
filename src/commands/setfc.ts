@@ -1,6 +1,7 @@
-const Discord = require('discord.js')
+import { Client, Message } from 'discord.js'
+import { Db } from 'mongodb'
 
-module.exports.run = async (bot, msg, args, db) => {
+module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     if(args.length == 1) {
         var content = args[0]
         if(content.length != 14 || content.search(/\d\d\d\d-\d\d\d\d-\d\d\d\d/gi) == -1) {
@@ -19,7 +20,7 @@ module.exports.run = async (bot, msg, args, db) => {
         embed.setColor('AQUA')
         try {
             console.log(`info: switch fc of ${msg.author.tag} set`)
-            return await msg.channel.send(embed).then(msg.delete())
+            return await msg.channel.send(embed).then(() => { msg.delete() })
         } catch(err) {
             console.error(err);
         }
