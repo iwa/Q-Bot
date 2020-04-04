@@ -2,7 +2,7 @@
   "name": "q-bot",
   "version": "1.1.0",
   "description": "Discord Bot for Qumu's Discord Server",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "update": "git fetch origin master && git pull origin master"
   },
@@ -19,6 +19,11 @@
   },
   "devDependencies": {
     "@discordjs/opus": "^0.1.0",
+    "@types/ejs": "^3.0.2",
+    "@types/mongodb": "^3.5.4",
+    "@types/node": "^13.11.0",
+    "@types/puppeteer": "^2.0.1",
+    "@types/ws": "^7.2.3",
     "anilist-node": "^1.3.1",
     "discord.js": "^12.1.1",
     "dotenv": "^8.2.0",

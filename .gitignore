@@ -1,10 +1,12 @@
-keys.json
-lib/db.json
-settings.json
+# macOS Spotlight file
 .DS_Store
+
+# Node files
 node_modules/
-logs/
-draft.txt
-.save/
+
+# Q-Bot internals
 image/
 .env
+
+# TypeScript
+build/
