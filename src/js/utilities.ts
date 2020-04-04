@@ -1,9 +1,11 @@
-const Discord = require('discord.js')
-let levels = require('../lib/levels.json')
+import * as Discord from "discord.js";
+import { Db } from 'mongodb';
+
+let levels = require('../../lib/levels.json')
 
 module.exports = class utilities {
 
-    static async info (msg, iwaUrl) {
+    static async info (msg:Discord.Message, iwaUrl:string) {
 
         var embed = {
             "embed": {
@@ -28,31 +30,31 @@ module.exports = class utilities {
 
     }
 
-    static leaderboard (bot, msg, args, db) {
+    static leaderboard (bot:Discord.Client, msg:Discord.Message, args:string[], db:Db) {
         if(args.length > 1)return;
 
         switch(args[0]) {
             case "xp":
             case "exp":
-                return leaderboard(bot, msg, db, Discord, 'exp')
+                return leaderboard(bot, msg, db, 'exp')
 
             case "pat":
             case "pats":
             case "patpat":
             case "patpats":
-                return leaderboard(bot, msg, db, Discord, 'pat')
+                return leaderboard(bot, msg, db, 'pat')
 
             case "hug":
             case "hugs":
-                return leaderboard(bot, msg, db, Discord, 'hug')
+                return leaderboard(bot, msg, db, 'hug')
 
             case "boop":
             case "boops":
-                return leaderboard(bot, msg, db, Discord, 'boop')
+                return leaderboard(bot, msg, db, 'boop')
 
             case "slap":
             case "slaps":
-                return leaderboard(bot, msg, db, Discord, 'slap')
+                return leaderboard(bot, msg, db, 'slap')
 
             default:
                 msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
@@ -60,9 +62,9 @@ module.exports = class utilities {
         }
     }
 
-    static async role (msg, args) {
-        if(await msg.channel.type != "text")return;
-        if(await msg.channel.id != "611349541685559316")return;
+    static async role (msg:Discord.Message, args:string[]) {
+        if(msg.channel.type != "text")return;
+        if(msg.channel.id != "611349541685559316")return;
 
         if(args.length < 2)return;
 
@@ -81,11 +83,11 @@ module.exports = class utilities {
     }
 
 
-    static randomInt(max) {
+    static randomInt(max:number) {
         return Math.floor(Math.random() * Math.floor(max) + 1);
     }
 
-    static async levelInfo(xp) {
+    static async levelInfo(xp:number) {
         if(xp < levels[1].amount) {
             return {'level': 0, 'current': xp, 'max': levels[1].amount}
         }
@@ -97,7 +99,7 @@ module.exports = class utilities {
         return {'level': 20, 'current': xp, 'max': levels[20].amount}
     }
 
-    static isMod(msg) {
+    static isMod(msg:Discord.Message) {
         if(msg.member.roles.cache.find(val => val.id == process.env.MODROLE)) { return true }
         else { return false }
     }
@@ -106,47 +108,68 @@ module.exports = class utilities {
 
 // Functions
 
-async function join (msg, game) {
+async function join (msg:Discord.Message, game:string) {
     switch (game) {
         case "mariokart":
         case "mario kart":
             if(! await msg.member.roles.cache.find(val => val.id == '614445539693559820')) {
-                return msg.member.roles.add('614445539693559820').then(msg.reply("you joined the Mario Kart role !"))
+                return msg.member.roles.add('614445539693559820')
+                .then(() => {
+                    msg.reply("you joined the Mario Kart role !")
+                })
             } break;
 
         case "smashbros":
         case "smash bros":
         case "smash":
             if(! await msg.member.roles.cache.find(val => val.id == '614445571045982228')) {
-                return msg.member.roles.add('614445571045982228').then(msg.reply("you joined the Smash Bros role !"))
+                return msg.member.roles.add('614445571045982228')
+                .then(() => {
+                    msg.reply("you joined the Smash Bros role !")
+                })
             } break;
 
         case "splatoon":
         case "sploon":
             if(! await msg.member.roles.cache.find(val => val.id == '614445571276668930')) {
-                return msg.member.roles.add('614445571276668930').then(msg.reply("you joined the Splatoon role !"))
+                return msg.member.roles.add('614445571276668930')
+                .then(() => {
+                    msg.reply("you joined the Splatoon role !")
+                })
             } break;
 
         case "mariomaker":
         case "mario maker":
             if(! await msg.member.roles.cache.find(val => val.id == '614445572199546880')) {
-                return msg.member.roles.add('614445572199546880').then(msg.reply("you joined the Mario Maker role !"))
+                return msg.member.roles.add('614445572199546880')
+                .then(() => {
+                    msg.reply("you joined the Mario Maker role !")
+                })
             } break;
 
         case "pokemon":
         case "pokémon":
             if(! await msg.member.roles.cache.find(val => val.id == '662017803804475393')) {
-                return msg.member.roles.add('662017803804475393').then(msg.reply("you joined the Pokémon role !"))
+                return msg.member.roles.add('662017803804475393')
+                .then(() => {
+                    msg.reply("you joined the Pokémon role !")
+                })
             } break;
 
         case "minecraft":
             if(! await msg.member.roles.cache.find(val => val.id == '681557797661442063')) {
-                return msg.member.roles.add('681557797661442063').then(msg.reply("you joined the Minecraft role !"))
+                return msg.member.roles.add('681557797661442063')
+                .then(() => {
+                    msg.reply("you joined the Minecraft role !")
+                })
             } break;
 
         case "terraria":
             if(! await msg.member.roles.cache.find(val => val.id == '681557799725170718')) {
-                return msg.member.roles.add('681557799725170718').then(msg.reply("you joined the Terraria role !"))
+                return msg.member.roles.add('681557799725170718')
+                .then(() => {
+                    msg.reply("you joined the Terraria role !")
+                })
             } break;
 
         default:
@@ -155,47 +178,61 @@ async function join (msg, game) {
     }
 }
 
-async function leave (msg, game) {
+async function leave (msg:Discord.Message, game:string) {
     switch (game) {
         case "mariokart":
         case "mario kart":
             if(await msg.member.roles.cache.find(val => val.id == '614445539693559820')) {
-                return msg.member.roles.remove('614445539693559820').then(msg.reply("you left the Mario Kart role !"))
+                return msg.member.roles.remove('614445539693559820').then(() => {
+                    msg.reply("you left the Mario Kart role !")
+                })
             } break;
 
         case "smashbros":
         case "smash bros":
         case "smash":
             if(await msg.member.roles.cache.find(val => val.id == '614445571045982228')) {
-                return msg.member.roles.remove('614445571045982228').then(msg.reply("you left the Smash Bros role !"))
+                return msg.member.roles.remove('614445571045982228').then(() => {
+                    msg.reply("you left the Smash Bros role !")
+                })
             } break;
 
         case "splatoon":
         case "sploon":
             if(await msg.member.roles.cache.find(val => val.id == '614445571276668930')) {
-                return msg.member.roles.remove('614445571276668930').then(msg.reply("you left the Splatoon role !"))
+                return msg.member.roles.remove('614445571276668930').then(() => {
+                    msg.reply("you left the Splatoon role !")
+                })
             } break;
 
         case "mariomaker":
         case "mario maker":
             if(await msg.member.roles.cache.find(val => val.id == '614445572199546880')) {
-                return msg.member.roles.remove('614445572199546880').then(msg.reply("you left the Mario Maker role !"))
+                return msg.member.roles.remove('614445572199546880').then(() => {
+                    msg.reply("you left the Mario Maker role !")
+                })
             } break;
 
         case "pokemon":
         case "pokémon":
             if(await msg.member.roles.cache.find(val => val.id == '662017803804475393')) {
-                return msg.member.roles.remove('662017803804475393').then(msg.reply("you left the Pokémon role !"))
+                return msg.member.roles.remove('662017803804475393').then(() => {
+                    msg.reply("you left the Pokémon role !")
+                })
             } break;
 
         case "minecraft":
             if(await msg.member.roles.cache.find(val => val.id == '681557797661442063')) {
-                return msg.member.roles.remove('681557797661442063').then(msg.reply("you left the Minecraft role !"))
+                return msg.member.roles.remove('681557797661442063').then(() => {
+                    msg.reply("you left the Minecraft role !")
+                })
             } break;
 
         case "terraria":
             if(await msg.member.roles.cache.find(val => val.id == '681557799725170718')) {
-                return msg.member.roles.remove('681557799725170718').then(msg.reply("you left the Terraria role !"))
+                return msg.member.roles.remove('681557799725170718').then(() => {
+                    msg.reply("you left the Terraria role !")
+                })
             } break;
 
         default:
@@ -205,7 +242,7 @@ async function leave (msg, game) {
 }
 
 
-async function leaderboard (bot, msg, db, Discord, type) {
+async function leaderboard(bot:Discord.Client, msg:Discord.Message, db:Db, type:string) {
     let leaderboard = await db.collection('user').find({ hidden: false }).sort({[type]:-1}).limit(10).toArray();
     var n = 0;
 
@@ -223,6 +260,10 @@ async function leaderboard (bot, msg, db, Discord, type) {
     })
 
     setTimeout(() => {
-        msg.channel.send(embed).then(console.log(`info: ${type} leaderboard: ${msg.author.tag}`), msg.channel.stopTyping()).catch(console.error)
+        msg.channel.send(embed)
+        .then(() => {
+            console.log(`info: ${type} leaderboard: ${msg.author.tag}`);
+            msg.channel.stopTyping()
+        }).catch(console.error)
     }, 1500)
 }
