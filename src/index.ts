@@ -18,8 +18,8 @@ const levels = require('../lib/levels.json');
 import { YouTube } from 'popyt';
 const yt = new YouTube(process.env.YT_TOKEN)
 
-let cooldown:cooldownType, cooldownXP:cooldownType;
-interface cooldownType {
+let cooldown:stringKeyArray, cooldownXP:stringKeyArray;
+interface stringKeyArray {
 	[index:string]: any;
 }
 
