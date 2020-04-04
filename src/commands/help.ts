@@ -1,3 +1,5 @@
+import { Client, Message, Collection } from 'discord.js';
+import { Db } from 'mongodb';
 const utils = require('../js/utilities')
 
 let admin = {
@@ -50,9 +52,9 @@ let member = {
     }
   }
 
-module.exports.run = async (bot, msg, args) => {
+module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db, commands:Collection<any, any>) => {
     if(args.length == 1) {
-        let cmd = bot.commands.get(args[0]);
+        let cmd = commands.get(args[0]);
         if (!cmd || !cmd.help.usage) return;
         else {
             await msg.channel.send("`Syntax : ( ) is needed argument, [ ] is optional argument`")
@@ -69,7 +71,7 @@ module.exports.help = {
     desc: "Well... Obviously it send you the list of the commands"
 };
 
-async function sendHelp(msg) {
+async function sendHelp(msg:Message) {
     if (msg.author.id == process.env.IWA)
         try {
             await msg.author.send(member)

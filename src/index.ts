@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 const bot = new Discord.Client()
-const commands = new Discord.Collection();
+const commands:Discord.Collection<any, any> = new Discord.Collection();
 
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -114,7 +114,7 @@ bot.on('message', async (msg:Discord.Message) => {
     if(process.env.SLEEP === '1' && msg.author.id != process.env.IWA)return;
 
     if (!cmd) return;
-    else cmd.run(bot, msg, args, db);
+    else cmd.run(bot, msg, args, db, commands);
 });
 
 // Reactions Event
