@@ -1,4 +1,7 @@
-module.exports.run = async (bot, msg, args, db) => {
+import { Client, Message } from 'discord.js'
+import { Db } from 'mongodb'
+
+module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
     var avatar = await msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
     if(!user.fc)

@@ -1,6 +1,8 @@
+import { Client, Message } from 'discord.js'
+import { Db } from 'mongodb'
 const Discord = require('discord.js')
 
-module.exports.run = async (bot, msg, args, db) => {
+module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     if(args.length == 1) {
         var content = args[0]
         if(content.length > 5 || content.length < 3) {
@@ -13,7 +15,7 @@ module.exports.run = async (bot, msg, args, db) => {
 
         var date = new Date(content);
 
-        if(date && date != "Invalid Date") {
+        if(date) {
             var dd = String(date.getDate()).padStart(2, '0');
             var mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
             var today = mm + '/' + dd;
@@ -25,7 +27,7 @@ module.exports.run = async (bot, msg, args, db) => {
 
             try {
                 console.log(`info: birthday of ${msg.author.tag} set on ${today}`)
-                return await msg.channel.send(embed).then(msg.delete())
+                return await msg.channel.send(embed).then(() => { msg.delete() })
             } catch(err) {
                 console.error(err);
             }

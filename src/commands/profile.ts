@@ -1,9 +1,11 @@
-const ejs = require('ejs')
+import { Client, Message } from 'discord.js'
+import { Db } from 'mongodb'
+import * as ejs from 'ejs';
 const img = require('../js/img')
 const utils = require('../js/utilities')
-var lastComboColor;
+let lastComboColor:number;
 
-module.exports.run = (bot, msg, args, db) => {
+module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
     if(args.length == 1) {
         if(msg.mentions.everyone)return;
         var mention = msg.mentions.users.first()
@@ -20,32 +22,17 @@ module.exports.help = {
     desc: "Print your or someone's profile"
 };
 
-async function profileImg(bot, msg, db, id) {
+async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     var userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
-    var user = {};
 
     if(!userDB)return msg.channel.send(":x: > **You aren't registered into the database. You need to talk once in a channel to have your profile created.**");
 
     msg.channel.startTyping();
 
     let userDiscord = await bot.users.fetch(id)
-    user.avatar = userDiscord.avatarURL({ format: 'png', dynamic: false, size: 512 })
-    user.username = userDiscord.username
-    user.icon = null
 
-    let guild = await bot.guilds.cache.find(val => val.id == process.env.GUILDID)
-    let member = await guild.members.cache.find(val => val.id == id)
-
-    if(userDiscord.id == process.env.QUMU)
-        user.icon = '<i class="fas fa-chess-king"></i>'
-    else if(member.roles.cache.find(val => val.id == process.env.MODROLE))
-        user.icon = '<i class="fas fa-chess-rook"></i>'
-
-    user.exp = userDB.exp
-    user.pat = userDB.pat
-    user.hug = userDB.hug
-    user.boop = userDB.boop
-    user.slap = userDB.slap
+    let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
+    let member = guild.members.cache.find(val => val.id == id)
 
     var leadXP = await db.collection('user').find().sort({exp:-1}).toArray();
     var leadHug = await db.collection('user').find().sort({hug:-1}).toArray();
@@ -53,11 +40,31 @@ async function profileImg(bot, msg, db, id) {
     var leadBoop = await db.collection('user').find().sort({boop:-1}).toArray();
     var leadSlap = await db.collection('user').find().sort({boop:-1}).toArray();
 
-    user.positionXP = await leadXP.findIndex(val => val._id == id)+1;
-    user.positionHug = await leadHug.findIndex(val => val._id == id)+1;
-    user.positionPat = await leadPat.findIndex(val => val._id == id)+1;
-    user.positionBoop = await leadBoop.findIndex(val => val._id == id)+1;
-    user.positionSlap = await leadSlap.findIndex(val => val._id == id)+1;
+    let user = {
+        avatar: userDiscord.avatarURL({ format: 'png', dynamic: false, size: 512 }),
+        username: userDiscord.username,
+        icon: "",
+        exp: userDB.exp,
+        pat: userDB.pat,
+        hug: userDB.hug,
+        boop: userDB.boop,
+        slap: userDB.slap,
+        positionXP: leadXP.findIndex(val => val._id == id)+1,
+        positionPat: leadPat.findIndex(val => val._id == id)+1,
+        positionHug: leadHug.findIndex(val => val._id == id)+1,
+        positionBoop: leadBoop.findIndex(val => val._id == id)+1,
+        positionSlap: leadSlap.findIndex(val => val._id == id)+1,
+        birthday: "",
+        fc: "",
+        level: 0,
+        current: 0,
+        max: 0
+    }
+
+    if(userDiscord.id == process.env.QUMU)
+        user.icon = '<i class="fas fa-chess-king"></i>'
+    else if(member.roles.cache.find(val => val.id == process.env.MODROLE))
+        user.icon = '<i class="fas fa-chess-rook"></i>'
 
     if(userDB.birthday == null)
         user.birthday = 'not registered yet';
@@ -74,7 +81,7 @@ async function profileImg(bot, msg, db, id) {
     user.current = lvlInfo.current
     user.max = lvlInfo.max
 
-    var colors = [
+    let colors:string[][] = [
         ['#8BC6EC', '#9599E2'],
         ['#FFFFD5', '#86DFBC'],
         ['#FFE5E5', '#C8BDFF'],
@@ -105,7 +112,8 @@ async function profileImg(bot, msg, db, id) {
 
     try {
         console.log(`info: profile by ${msg.author.tag}`)
-        return await msg.channel.send('', {files: [file]}).then(msg.channel.stopTyping(true));
+        return await msg.channel.send('', {files: [file]})
+            .then(() => { msg.channel.stopTyping(true) });
     } catch(err) {
         console.error(err)
         return msg.channel.send("An error occured, please contact <@125325519054045184>")

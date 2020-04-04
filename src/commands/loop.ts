@@ -1,6 +1,8 @@
+import { Client, Message } from 'discord.js'
+
 const music = require('../js/music')
 
-module.exports.run = (bot, msg) => {
+module.exports.run = (bot:Client, msg:Message) => {
     music.loop(msg);
 };
 

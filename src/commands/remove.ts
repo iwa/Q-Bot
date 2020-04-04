@@ -1,6 +1,7 @@
+import { Client, Message } from 'discord.js'
 const music = require('../js/music')
 
-module.exports.run = (bot, msg, args) => {
+module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     music.remove(msg, args);
 };
 
