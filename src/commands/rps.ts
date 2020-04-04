@@ -1,4 +1,4 @@
-import { Client, Message } from 'discord.js'
+import { Client, Message, MessageEmbed } from 'discord.js'
 const utils = require('../js/utilities')
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
@@ -32,7 +32,7 @@ module.exports.run = (bot:Client, msg:Message, args:string[]) => {
         if(n == 1 && numReq == 3 || n == 2 && numReq == 1 || n == 3 && numReq == 2)
             res = "**I won!**";
 
-        const embed = new Discord.MessageEmbed();
+        const embed = new MessageEmbed();
 
         if(n == 1)
             embed.setTitle(":punch: **I play rock!**");

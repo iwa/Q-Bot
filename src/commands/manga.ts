@@ -8,7 +8,7 @@ module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     Anilist.search('manga', req, 1, 1).then(async (data: { media: any[]; }) => {
         var res = data.media[0];
         var info = await Anilist.media.manga(res.id)
-        const embed = new Discord.MessageEmbed();
+        const embed = new MessageEmbed();
         embed.setTitle(`**${info.title.romaji} / ${info.title.english}**`)
         embed.setThumbnail(info.coverImage.large)
         embed.addField("Status", info.status, true)
