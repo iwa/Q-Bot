@@ -1,4 +1,4 @@
-import { Client, Message } from 'discord.js'
+import { Client, Message, MessageEmbed } from 'discord.js'
 import { Db } from 'mongodb'
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
@@ -14,8 +14,8 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
         }
 
         await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { fc: content }});
-        const embed = new Discord.MessageEmbed();
-        embed.setAuthor("Your Switch FC is now set to : ", msg.author.avatarURL);
+        const embed = new MessageEmbed();
+        embed.setAuthor("Your Switch FC is now set to : ", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         embed.setTitle(`**${content}**`)
         embed.setColor('AQUA')
         try {
