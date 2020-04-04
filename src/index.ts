@@ -81,15 +81,16 @@ bot.on('message', async (msg:Discord.Message) => {
         }, 1200000);
     }
 
+    if(msg.channel.id == process.env.SUGGESTIONTC) {
+        await msg.react('✅');
+        return await msg.react('❌');
+    }
+
     let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
     let db = mongod.db(dbName);
 
     if(!msg.content.startsWith(process.env.PREFIX)) {
         if(msg.channel.id == '608630294261530624')return;
-        if(msg.channel.id == process.env.SUGGESTIONTC) {
-            await msg.react('✅');
-            return await msg.react('❌');
-        }
 
         var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
 
