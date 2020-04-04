@@ -1,9 +1,8 @@
+import { Client, Message } from 'discord.js'
 const music = require('../js/music')
-const { YouTube } = require('popyt')
-const yt = new YouTube(process.env.YT_TOKEN)
 
-module.exports.run = (bot, msg, args) => {
-    music.play(bot, msg, args, yt);
+module.exports.run = (bot:Client, msg:Message, args:string[]) => {
+    music.play(bot, msg, args);
 };
 
 module.exports.help = {
