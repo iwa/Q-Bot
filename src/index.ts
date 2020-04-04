@@ -43,11 +43,14 @@ bot.on('shardError', console.error)
 
 bot.on('shardDisconnect', () => console.log("warn: bot disconnected"))
 
-bot.on('shardReconnecting', async () => {
-    await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
-    await bot.user.setStatus("online").catch(console.error)
+bot.on('shardReconnecting', () => {
     console.log("info: bot reconnecting...")
 });
+
+bot.on('shardResume', async () => {
+    await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
+    await bot.user.setStatus("online").catch(console.error)
+})
 
 bot.on('shardReady', async () => {
     await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
