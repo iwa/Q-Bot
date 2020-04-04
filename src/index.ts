@@ -120,6 +120,10 @@ bot.on('message', async (msg:Discord.Message) => {
 
     if (!cmd) return;
     else cmd.run(bot, msg, args, db, commands);
+
+    return setTimeout(async () => {
+        await mongod.close()
+    }, 1000);
 });
 
 // Reactions Event
