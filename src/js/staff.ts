@@ -1,17 +1,20 @@
-const Discord = require('discord.js')
+import { Client, Message, MessageEmbed } from 'discord.js'
 const utils = require('./utilities')
 
 module.exports = class staff {
 
-    static async bulk (msg, args) {
+    static async bulk (msg:Message, args:string[]) {
         if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(args.length !== 0) {
+            let channel:any = msg.channel
             if(msg.channel.type !== "dm") {
                 msg.delete().catch(console.error);
                 var nb = parseInt(args[0])
                 msg.channel.bulkDelete(nb)
-                    .then(console.log(`info: bulk delete: ${nb} in #${msg.channel.name} by ${msg.author.tag}`))
+                    .then(() => {
+                        console.log(`info: bulk delete: ${nb} in #${channel.name} by ${msg.author.tag}`)
+                    })
                     .catch(console.error);
             }
         }
@@ -20,7 +23,7 @@ module.exports = class staff {
 
     }
 
-    static async mute (bot, msg, args) {
+    static async mute (bot:Client, msg:Message, args:string[]) {
 
         if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
@@ -32,7 +35,7 @@ module.exports = class staff {
             if(!mention)return;
             if(mention.id == msg.author.id || mention.id == bot.user.id)return;
 
-            if((msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) && mention.roles.find(val => val.id == process.env.MODROLE) > -1)return;
+            if((msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) && mention.roles.cache.find(val => val.id == process.env.MODROLE))return;
 
             try {
                 msg.delete();
@@ -40,13 +43,13 @@ module.exports = class staff {
                 console.error(error);
             }
 
-            var time = args[1]
+            var time = parseInt(args[1])
 
             if(time <= 0 || time > 1440)return;
 
             time = time * 60000;
 
-            const embed = new Discord.MessageEmbed();
+            const embed = new MessageEmbed();
             embed.setColor('RED')
             embed.setTitle(`**${mention.user.username}**, you've been muted for ${args[1]} minutes by **${msg.author.username}**`)
 
@@ -65,21 +68,26 @@ module.exports = class staff {
 
     }
 
-    static async sleep (bot, msg) {
+    static async sleep (bot:Client, msg:Message) {
         if(msg.author.id != process.env.IWA)return;
-        if(process.env.SLEEP == 0) {
+        if(process.env.SLEEP == '0') {
             await bot.user.setPresence({ activity: { name: "being updated...", type: 0 }, status: 'dnd' })
-                .then(msg.react("✅") , console.log("info: sleeping enabled"))
+                .then(() => {
+                    msg.react("✅");
+                    console.log("info: sleeping enabled")
+                })
                 .catch(console.error);
             msg.channel.send("Sleeping Mode On!")
-            return process.env.SLEEP = 1;
+            return process.env.SLEEP = '1';
         } else {
             await bot.user.setPresence({ activity: { name: "Qumu's Remixes | ?help", type: 2 }, status: 'online' })
-                .then(msg.react("✅") , console.log("info: sleeping disabled"))
+                .then(() => {
+                    msg.react("✅");
+                    console.log("info: sleeping disabled")
+                })
                 .catch(console.error);
             msg.channel.send("Sleeping Mode Off!")
-            return process.env.SLEEP = 0;
+            return process.env.SLEEP = '0';
         }
     }
-
 }
