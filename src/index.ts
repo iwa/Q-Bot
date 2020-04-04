@@ -18,7 +18,7 @@ const levels = require('../lib/levels.json');
 import { YouTube } from 'popyt';
 const yt = new YouTube(process.env.YT_TOKEN)
 
-let cooldown:stringKeyArray, cooldownXP:stringKeyArray;
+let cooldown:stringKeyArray = [], cooldownXP:stringKeyArray = [];
 interface stringKeyArray {
 	[index:string]: any;
 }
@@ -60,9 +60,9 @@ bot.on('shardReady', async () => {
 bot.on('message', async (msg:Discord.Message) => {
 
     if(!msg)return;
-    if(!msg.guild.available)return;
     if(msg.author.bot)return;
     if(msg.channel.type != "text")return;
+    if(!msg.guild.available)return;
 
     if(!cooldown[msg.author.id]) {
         cooldown[msg.author.id] = 1;
@@ -217,7 +217,7 @@ setInterval(async () => {
                 var userInfo = await bot.users.fetch(user._id)
                 const embed = new Discord.MessageEmbed();
                 embed.setTitle(`**Happy Birthday, ${userInfo.username} ! 🎉🎉**`)
-                embed.setFooter(`Born on : ${today}`)
+                embed.setFooter(`Born on : ${todayString}`)
                 embed.setColor('#FFFF72')
                 embed.setThumbnail(userInfo.avatarURL({ format: 'png', dynamic: false, size: 128 }))
                 channel.send(`<@${user._id}>`)
