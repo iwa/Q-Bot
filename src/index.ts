@@ -60,6 +60,7 @@ bot.on('shardReady', async () => {
 bot.on('message', async (msg:Discord.Message) => {
 
     if(!msg)return;
+    if(!msg.guild.available)return;
     if(msg.author.bot)return;
     if(msg.channel.type != "text")return;
 
