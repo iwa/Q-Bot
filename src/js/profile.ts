@@ -1,8 +1,9 @@
-const Discord = require('discord.js')
+import { Client, Message, MessageEmbed } from 'discord.js'
+import { Db } from 'mongodb'
 
 module.exports = class profile {
 
-    static async reset (bot, msg, args, db, type) {
+    static async reset (bot:Client, msg:Message, args:string[], db:Db, type:string) {
         if(msg.author.id != process.env.IWA)return;
         if(args.length == 1) {
 
@@ -16,7 +17,7 @@ module.exports = class profile {
 
             await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { [type]: null }});
 
-            const embed = new Discord.MessageEmbed();
+            const embed = new MessageEmbed();
             embed.setColor('AQUA')
             embed.setTitle(`${user.tag}'s ${type} is now reset.`);
 
