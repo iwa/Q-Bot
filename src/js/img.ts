@@ -1,8 +1,8 @@
-const puppeteer = require('puppeteer')
+import * as puppeteer from 'puppeteer';
 
 module.exports = class img {
 
-    static async generator(width, height, content, tag, prefix) {
+    static async generator(width:number, height:number, content:string, tag:string, prefix:string) {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.setViewport({width: width, height: height, deviceScaleFactor: 2})
