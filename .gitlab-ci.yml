@@ -1,8 +1,13 @@
 image: node:latest
 
 stages:
+  - dependencies
   - build
   - lint
+
+install:
+  stage: dependencies
+  script: npm install --only=dev
 
 compile:
   stage: build
