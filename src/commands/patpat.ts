@@ -1,4 +1,5 @@
-module.exports.run = (bot, msg) => {
+import { Client, Message } from 'discord.js'
+module.exports.run = (bot:Client, msg:Message) => {
     msg.reply('**Deprecated** -> use `?pat` instead');
 };
 
