@@ -10,7 +10,6 @@ module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
         if(msg.mentions.everyone)return;
         var mention = msg.mentions.users.first()
         if(!mention)return;
-        if(mention.id == msg.author.id || mention.id == bot.user.id)return;
         return profileImg(bot, msg, db, mention.id);
     } else
         return profileImg(bot, msg, db, msg.author.id);
@@ -61,10 +60,12 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
         max: 0
     }
 
-    if(userDiscord.id == process.env.QUMU)
+    if(id == process.env.QUMU)
         user.icon = '<i class="fas fa-chess-king"></i>'
     else if(member.roles.cache.find(val => val.id == process.env.MODROLE))
         user.icon = '<i class="fas fa-chess-rook"></i>'
+    else if (id == bot.user.id)
+        user.icon = '<i class="fas fa-chess-knight"></i>'
 
     if(userDB.birthday == null)
         user.birthday = 'not registered yet';
@@ -102,9 +103,13 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     }
 
     var html, file;
-    if(userDiscord.id == process.env.QUMU) {
+    if(id == process.env.QUMU) {
         html = await ejs.renderFile('views/profileQumu.ejs', { user, colors, whichColor });
         file = await img.generator(508, 288, html, msg.author.tag, 'prof')
+    } else if(id == bot.user.id) {
+        let thanksiwa:number = userDB.thanksiwa
+        html = await ejs.renderFile('views/profileBot.ejs', { user, colors, whichColor, thanksiwa });
+        file = await img.generator(508, 358, html, msg.author.tag, 'prof')
     } else {
         html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
         file = await img.generator(508, 428, html, msg.author.tag, 'prof')
