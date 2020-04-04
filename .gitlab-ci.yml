@@ -2,9 +2,16 @@ image: node:latest
 
 stages:
   - build
+  - lint
 
 compile:
   stage: build
   script:
     - npm install -g typescript
     - tsc
+
+eslint:
+  stage: lint
+  script:
+    - npm install -g eslint
+    - eslint build/**/*.js
