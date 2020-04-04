@@ -1,12 +1,12 @@
-const Discord = require('discord.js')
+import { Client, Message, MessageEmbed } from 'discord.js'
 
 let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not", "Reply hazy, try again", "Take a guess"]
 
-module.exports.run = async (bot, msg, args) => {
+module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
     if(await msg.channel.type != "text")return;
     if(args.length < 1)return;
     let r = Math.floor((Math.random() * reply.length));
-    const embed = new Discord.MessageEmbed();
+    const embed = new MessageEmbed();
     embed.setTitle(`🎱 ${reply[r]}`)
     embed.setColor('GREY')
     console.log(`info: 8ball by ${msg.author.tag}`)
