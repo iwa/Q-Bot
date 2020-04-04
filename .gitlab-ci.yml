@@ -1,22 +1,24 @@
 image: node:latest
 
 stages:
-  - dependencies
   - build
   - lint
-
-install:
-  stage: dependencies
-  script: npm install --only=dev
 
 compile:
   stage: build
   script:
+    - npm install --only=dev
     - npm install -g typescript
     - tsc
+  artifacts:
+    expire_in: 5min
+    paths:
+      - build/
 
 eslint:
   stage: lint
   script:
     - npm install -g eslint
     - eslint build/**/*.js
+  dependencies:
+    - compile
