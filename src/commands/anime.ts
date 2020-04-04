@@ -1,14 +1,14 @@
-const Discord = require('discord.js')
+import { Client, Message, MessageEmbed } from 'discord.js'
 const al = require('anilist-node');
 const Anilist = new al();
 
-module.exports.run = (bot, msg, args) => {
+module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     if(args.length < 1)return;
     var req = args.join(' ');
-    Anilist.search('anime', req, 1, 1).then(async data => {
+    Anilist.search('anime', req, 1, 1).then(async (data: { media: any[]; }) => {
         var res = data.media[0];
         var info = await Anilist.media.anime(res.id)
-        const embed = new Discord.MessageEmbed();
+        const embed = new MessageEmbed();
         embed.setTitle(`**${info.title.romaji} / ${info.title.english}**`)
         embed.setThumbnail(info.coverImage.large)
         embed.addField("Status", info.status, true)
@@ -27,7 +27,7 @@ module.exports.run = (bot, msg, args) => {
         embed.setColor('BLUE')
         console.log(`info: anime request : ${req} by ${msg.author.tag}`)
         return msg.channel.send(embed)
-    }).catch(err => {
+    }).catch((err: any) => {
         console.error(err)
         return msg.channel.send({'embed': { 'title': ":x: > **An error occured, please retry later.**" }})
     });
