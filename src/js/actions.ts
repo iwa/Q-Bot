@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Client, Message, MessageEmbed } from 'discord.js';
 import { Db } from 'mongodb';
 const util = require('../js/utilities')
 
@@ -24,7 +24,7 @@ let count:stringKeyArray = {
 
 module.exports = class actions {
 
-    static async run (msg:Message, args:string[], db:Db, type:string) {
+    static async run (bot:Client, msg:Message, args:string[], db:Db, type:string) {
         var n = util.randomInt(count[type])
         while(lastGif[type] == n) {
             n = util.randomInt(count[type]);
@@ -63,6 +63,7 @@ module.exports = class actions {
 
             user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
             await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 1 }});
+            await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { [type]: 1 }});
 
             embed.setFooter(`You have given ${user[type] + 1} ${type}s`)
 
@@ -104,6 +105,7 @@ module.exports = class actions {
 
             user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
             await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 2 }});
+            await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { [type]: 2 }});
 
             embed.setFooter(`You have given ${user[type] + 2} ${type}s`)
 

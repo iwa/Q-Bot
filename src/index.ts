@@ -43,11 +43,14 @@ bot.on('shardError', console.error)
 
 bot.on('shardDisconnect', () => console.log("warn: bot disconnected"))
 
-bot.on('shardReconnecting', async () => {
-    await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
-    await bot.user.setStatus("online").catch(console.error)
+bot.on('shardReconnecting', () => {
     console.log("info: bot reconnecting...")
 });
+
+bot.on('shardResume', async () => {
+    await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
+    await bot.user.setStatus("online").catch(console.error)
+})
 
 bot.on('shardReady', async () => {
     await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
@@ -81,15 +84,16 @@ bot.on('message', async (msg:Discord.Message) => {
         }, 1200000);
     }
 
+    if(msg.channel.id == process.env.SUGGESTIONTC) {
+        await msg.react('✅');
+        return await msg.react('❌');
+    }
+
     let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
     let db = mongod.db(dbName);
 
     if(!msg.content.startsWith(process.env.PREFIX)) {
         if(msg.channel.id == '608630294261530624')return;
-        if(msg.channel.id == process.env.SUGGESTIONTC) {
-            await msg.react('✅');
-            return await msg.react('❌');
-        }
 
         var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
 
@@ -116,6 +120,10 @@ bot.on('message', async (msg:Discord.Message) => {
 
     if (!cmd) return;
     else cmd.run(bot, msg, args, db, commands);
+
+    return setTimeout(async () => {
+        await mongod.close()
+    }, 1000);
 });
 
 // Reactions Event
