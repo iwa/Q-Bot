@@ -1,16 +1,21 @@
-const Discord = require('discord.js')
+import { Message, MessageEmbed } from 'discord.js';
+import { Db } from 'mongodb';
 const util = require('../js/utilities')
 
 let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so cute with me ?", "omg", "<3", "so cuuuute c:", "c:", "c;", ":3", "QT af :O", "oh yeaaaah ;3"]
 
-var lastGif = {
+interface stringKeyArray {
+	[index:string]: any;
+}
+
+let lastGif:stringKeyArray = {
     'pat': 0,
     'hug': 0,
     'boop': 0,
     'slap': 0
 };
 
-let count = {
+let count:stringKeyArray = {
     'pat': 46,
     'hug': 47,
     'boop': 15,
@@ -19,7 +24,7 @@ let count = {
 
 module.exports = class actions {
 
-    static async run (msg, args, db, type) {
+    static async run (msg:Message, args:string[], db:Db, type:string) {
         var n = util.randomInt(count[type])
         while(lastGif[type] == n) {
             n = util.randomInt(count[type]);
@@ -37,7 +42,7 @@ module.exports = class actions {
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
             }
 
-            const embed = new Discord.MessageEmbed();
+            const embed = new MessageEmbed();
             embed.setColor('#F2DEB0')
 
             if(mentionFirst.id == '606458989575667732' && type != 'slap') {
@@ -62,7 +67,10 @@ module.exports = class actions {
             embed.setFooter(`You have given ${user[type] + 1} ${type}s`)
 
             return msg.channel.send(embed)
-            .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
+            .then(() => {
+                console.log(`info: ${type} sent by ${msg.author.tag}`);
+                msg.channel.stopTyping(true)
+            })
             .catch(console.error);
         } else if(args.length == 2) {
             if(msg.mentions.everyone)return;
@@ -75,7 +83,7 @@ module.exports = class actions {
             if(mentionFirst.id == mentionSecond.id)
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
 
-            const embed = new Discord.MessageEmbed();
+            const embed = new MessageEmbed();
             embed.setColor('#F2DEB0')
 
             if((mentionFirst.id == '606458989575667732' || mentionSecond.id == '606458989575667732') && type != 'slap') {
@@ -100,7 +108,10 @@ module.exports = class actions {
             embed.setFooter(`You have given ${user[type] + 2} ${type}s`)
 
             return msg.channel.send(embed)
-            .then(console.log(`info: ${type} sent by ${msg.author.tag}`), msg.channel.stopTyping(true))
+            .then(() => {
+                console.log(`info: ${type} sent by ${msg.author.tag}`);
+                msg.channel.stopTyping(true)
+            })
             .catch(console.error);
         } else if(args.length > 2) {
             if(type == "hug") { // Technically speaking, even with two arms you can fit more than two people in a hug, so uhhh... Custom dialog, perhaps? - Hy~
