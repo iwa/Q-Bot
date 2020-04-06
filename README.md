@@ -4,7 +4,7 @@
 
 **Q-Bot is entirely developed and handled by iwa**
 
-- Language used : `JavaScript, with NodeJS`
+- Language used : `TypeScript, with NodeJS`
 - Library used : `discord.js`
 
 ## How to contribute
