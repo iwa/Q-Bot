@@ -87,7 +87,7 @@ module.exports = class utilities {
         return Math.floor(Math.random() * Math.floor(max) + 1);
     }
 
-    static async levelInfo(xp:number) {
+    static levelInfo(xp:number):{'level':number, 'current':number, 'max':number} {
         if(xp < levels[1].amount) {
             return {'level': 0, 'current': xp, 'max': levels[1].amount}
         }
