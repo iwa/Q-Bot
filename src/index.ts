@@ -101,7 +101,7 @@ bot.on('message', async (msg:Discord.Message) => {
             await db.collection('user').insertOne({ _id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0 });
         else if(!cooldownXP[msg.author.id]) {
             await db.collection('user').updateOne({ _id: msg.author.id }, { $inc: { exp: 1 }});
-            levelCheck(msg, user.exp);
+            levelCheck(msg, (user.exp+1));
             cooldownXP[msg.author.id] = 1;
             return setTimeout(async () => { delete cooldownXP[msg.author.id] }, 5000)
         }
@@ -216,7 +216,6 @@ setInterval(async () => {
         var db = mongod.db(dbName);
 
         var data = await db.collection('user').find({ 'birthday': { $eq: today } }).toArray();
-        console.log(data)
 
         if(data.length >= 1) {
             let channel:any = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
@@ -259,7 +258,9 @@ async function imageLvl(msg:Discord.Message, level:number) {
     var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
 
     try {
-        return msg.reply('', {files: [file]})
+        await msg.reply('', {files: [file]})
+        if(level % 2 == 0)
+            return await msg.channel.send("*hey, you've unlocked a new color, do `?color` in #commands to discover it!*")
     } catch(err) {
         console.error(err)
         return msg.reply(`You're now level ${level} ! Congrats !`)
