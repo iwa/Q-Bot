@@ -216,7 +216,6 @@ setInterval(async () => {
         var db = mongod.db(dbName);
 
         var data = await db.collection('user').find({ 'birthday': { $eq: today } }).toArray();
-        console.log(data)
 
         if(data.length >= 1) {
             let channel:any = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
