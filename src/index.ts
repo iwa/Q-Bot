@@ -101,7 +101,7 @@ bot.on('message', async (msg:Discord.Message) => {
             await db.collection('user').insertOne({ _id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0 });
         else if(!cooldownXP[msg.author.id]) {
             await db.collection('user').updateOne({ _id: msg.author.id }, { $inc: { exp: 1 }});
-            levelCheck(msg, user.exp);
+            levelCheck(msg, (user.exp+1));
             cooldownXP[msg.author.id] = 1;
             return setTimeout(async () => { delete cooldownXP[msg.author.id] }, 5000)
         }
