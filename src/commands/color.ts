@@ -15,6 +15,9 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
                 return await msg.reply("you take off your color!")
             }
         } else if(Number.isInteger(parseInt(args[0]))) {
+            let role = msg.member.roles.cache.find(val => colors.indexOf(val.id) > -1)
+            if(role)
+                await msg.member.roles.remove(role)
             let choice:number = parseInt(args[0]) - 1;
             if(choice > i || choice < 0) return msg.reply(":x: impossible choice")
             await msg.member.roles.add(colors[choice]);
