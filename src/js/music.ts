@@ -8,7 +8,7 @@ let TC = process.env.MUSICTC;
 let VC = process.env.MUSICVC;
 
 let queue:string[] = [], title:string[] = [], length:string[] = [], skippers:string[] = [];
-let skipReq = 0, loop = 0, volume = 1;
+let skipReq = 0, loop = 0;
 
 module.exports = class music {
 
@@ -411,43 +411,39 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
         return msg.channel.send(":x: > **There was an unexpected error with playing the video, please retry later**")
     })
 
-        voiceConnection.play(video, {volume : volume, bitrate : 96000, highWaterMark: 512})
-        .on('start', () => {
-            if(loop == 0) {
-                var date = new Date(null)
-                date.setSeconds(parseInt(length[0]))
-                var timeString = date.toISOString().substr(11, 8)
-                const embed = new MessageEmbed();
-                embed.setColor('GREEN')
-                embed.setTitle("**:cd: Now Playing:**")
-                embed.setDescription(`[${title[0]}](${queue[0]})`)
-                embed.setFooter(`Length : ${timeString}`)
-
-                msg.channel.send(embed)
-                console.log(`musc: playing: ${title[0]}`)
-            }
-        }).on('finish', () => {
-            if(loop == 0) {
-                queue.shift()
-                title.shift()
-                length.shift()
-            }
-
-            if(queue.length == 0) {
-                const embed = new MessageEmbed();
-                embed.setColor('GREEN')
-                embed.setTitle("Queue finished. Disconnecting...")
-
-                skipReq = 0;
-                skippers = [];
-                loop = 0;
-
-                msg.channel.send(embed)
-                voiceChannel.leave();
-            } else {
-                skipReq = 0;
-                skippers = [];
-                playSong(msg, voiceConnection, voiceChannel)
-            }
-        }).on('error', console.error);
+    voiceConnection.play(video, {volume : 0.8, bitrate : 96000, highWaterMark: 512})
+    .on('start', () => {
+        if(loop == 0) {
+            var date = new Date(null)
+            date.setSeconds(parseInt(length[0]))
+            var timeString = date.toISOString().substr(11, 8)
+            const embed = new MessageEmbed();
+            embed.setColor('GREEN')
+            embed.setTitle("**:cd: Now Playing:**")
+            embed.setDescription(`[${title[0]}](${queue[0]})`)
+            embed.setFooter(`Length : ${timeString}`)
+            msg.channel.send(embed)
+            console.log(`musc: playing: ${title[0]}`)
+        }
+    }).on('finish', () => {
+        if(loop == 0) {
+            queue.shift()
+            title.shift()
+            length.shift()
+        }
+        if(queue.length == 0) {
+            const embed = new MessageEmbed();
+            embed.setColor('GREEN')
+            embed.setTitle("Queue finished. Disconnecting...")
+            skipReq = 0;
+            skippers = [];
+            loop = 0;
+            msg.channel.send(embed)
+            voiceChannel.leave();
+        } else {
+            skipReq = 0;
+            skippers = [];
+            playSong(msg, voiceConnection, voiceChannel)
+        }
+    }).on('error', console.error);
 }
