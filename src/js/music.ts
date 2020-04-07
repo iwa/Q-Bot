@@ -281,7 +281,7 @@ module.exports = class music {
                 embed.setTitle("Half of the people have voted, skipping...")
                 msg.channel.send(embed)
                 loop = 0;
-                dispatcher.destroy()
+                dispatcher.end()
                 console.log(`musc: skipping song`)
             } else {
                 const embed = new MessageEmbed();
