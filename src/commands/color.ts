@@ -23,9 +23,6 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
                   })
             }
         } else if(Number.isInteger(parseInt(args[0]))) {
-            let role = msg.member.roles.cache.find(val => colors.indexOf(val.id) > -1)
-            if(role)
-                await msg.member.roles.remove(role)
             let choice:number = parseInt(args[0]) - 1;
             if(choice > i || choice < 0) return msg.channel.send({
                 "embed": {
@@ -36,6 +33,9 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
                   }
                 }
               })
+            let role = msg.member.roles.cache.find(val => colors.indexOf(val.id) > -1)
+            if(role)
+                await msg.member.roles.remove(role)
             await msg.member.roles.add(colors[choice]);
             msg.channel.send({
                 "embed": {
