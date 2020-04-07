@@ -93,7 +93,7 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
 
     var whichColor;
 
-    if(userDiscord.id == process.env.QUMU || member.roles.cache.find(val => val.id == process.env.MODROLE))
+    if(id == process.env.QUMU || id == bot.user.id || member.roles.cache.find(val => val.id == process.env.MODROLE))
         whichColor = 5
     else {
         whichColor = (utils.randomInt(5) - 1)
