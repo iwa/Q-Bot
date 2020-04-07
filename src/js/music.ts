@@ -132,7 +132,7 @@ module.exports = class music {
             else {
                 msg.channel.stopTyping()
                 try {
-                    const voiceConnection = voiceChannel.join();
+                    const voiceConnection = await voiceChannel.join();
                     playSong(msg, voiceConnection, voiceChannel);
                 }
                 catch(ex) {
@@ -181,7 +181,7 @@ module.exports = class music {
             else {
                 msg.channel.stopTyping()
                 try {
-                    const voiceConnection = voiceChannel.join();
+                    const voiceConnection = await voiceChannel.join();
                     playSong(msg, voiceConnection, voiceChannel);
                 }
                 catch(ex) {
