@@ -56,8 +56,6 @@ module.exports = class actions {
                 msg.delete().catch(console.error)
             }
 
-            msg.channel.startTyping()
-
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
             embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
 
@@ -70,7 +68,6 @@ module.exports = class actions {
             return msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} sent by ${msg.author.tag}`);
-                msg.channel.stopTyping(true)
             })
             .catch(console.error);
         } else if(args.length == 2) {
@@ -98,8 +95,6 @@ module.exports = class actions {
                 msg.delete().catch(console.error)
             }
 
-            msg.channel.startTyping()
-
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}** !`)
             embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
 
@@ -112,7 +107,6 @@ module.exports = class actions {
             return msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} sent by ${msg.author.tag}`);
-                msg.channel.stopTyping(true)
             })
             .catch(console.error);
         } else if(args.length > 2) {
