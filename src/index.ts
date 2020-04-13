@@ -134,7 +134,7 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
     if(reaction.message.channel.id == process.env.ANNOUNCEMENTSTC)return;
     if(reaction.users.cache.find(val => val.id == bot.user.id))return;
     if(reaction.emoji.name == '⭐') {
-        if(reaction.count >= 6) {
+        if(reaction.count >= 5) {
             var msg = reaction.message;
             var content;
             if(!msg.cleanContent)
