@@ -396,6 +396,11 @@ module.exports = class music {
         embed.setDescription(desc)
 
         embed.setFooter(`Length : ${timeString}`)
+
+        let infos = await yt.getVideo(queue[0]);
+        let thumbnail = infos.thumbnails
+        embed.setThumbnail(thumbnail.high.url)
+
         msg.channel.send(embed)
 
         console.log(`info: nowplaying by ${msg.author.tag}`)
@@ -446,7 +451,7 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
     })
 
     voiceConnection.play(video, {volume : 0.8, bitrate : 96000, highWaterMark: 512})
-    .on('start', () => {
+    .on('start', async () => {
         if(loop == 0) {
             var date = new Date(null)
             date.setSeconds(parseInt(length[0]))
@@ -456,6 +461,9 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
             embed.setTitle("**:cd: Now Playing:**")
             embed.setDescription(`[${title[0]}](${queue[0]})`)
             embed.setFooter(`Length : ${timeString}`)
+            let infos = await yt.getVideo(queue[0]);
+            let thumbnail = infos.thumbnails
+            embed.setThumbnail(thumbnail.high.url)
             msg.channel.send(embed)
             console.log(`musc: playing: ${title[0]}`)
         }
