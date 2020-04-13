@@ -400,6 +400,40 @@ module.exports = class music {
 
         console.log(`info: nowplaying by ${msg.author.tag}`)
     }
+
+    static async pause (bot:Client, msg:Message) {
+        if(msg.channel.type != "text" || msg.channel.id != TC)return;
+
+        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
+        if(!voiceConnection) {
+            const embed = new MessageEmbed();
+            embed.setColor('RED')
+            embed.setTitle("I'm not playing anything right now!")
+            return msg.channel.send(embed);
+        }
+
+        let dispatcher = voiceConnection.dispatcher;
+        dispatcher.pause(false);
+
+        await msg.react('✅');
+    }
+
+    static async resume (bot:Client, msg:Message) {
+        if(msg.channel.type != "text" || msg.channel.id != TC)return;
+
+        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
+        if(!voiceConnection) {
+            const embed = new MessageEmbed();
+            embed.setColor('RED')
+            embed.setTitle("I'm not playing anything right now!")
+            return msg.channel.send(embed);
+        }
+
+        let dispatcher = voiceConnection.dispatcher;
+        dispatcher.resume();
+
+        await msg.react('✅');
+    }
 }
 
 
