@@ -396,9 +396,48 @@ module.exports = class music {
         embed.setDescription(desc)
 
         embed.setFooter(`Length : ${timeString}`)
+
+        let infos = await yt.getVideo(queue[0]);
+        let thumbnail = infos.thumbnails
+        embed.setThumbnail(thumbnail.high.url)
+
         msg.channel.send(embed)
 
         console.log(`info: nowplaying by ${msg.author.tag}`)
+    }
+
+    static async pause (bot:Client, msg:Message) {
+        if(msg.channel.type != "text" || msg.channel.id != TC)return;
+
+        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
+        if(!voiceConnection) {
+            const embed = new MessageEmbed();
+            embed.setColor('RED')
+            embed.setTitle("I'm not playing anything right now!")
+            return msg.channel.send(embed);
+        }
+
+        let dispatcher = voiceConnection.dispatcher;
+        dispatcher.pause(false);
+
+        await msg.react('✅');
+    }
+
+    static async resume (bot:Client, msg:Message) {
+        if(msg.channel.type != "text" || msg.channel.id != TC)return;
+
+        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
+        if(!voiceConnection) {
+            const embed = new MessageEmbed();
+            embed.setColor('RED')
+            embed.setTitle("I'm not playing anything right now!")
+            return msg.channel.send(embed);
+        }
+
+        let dispatcher = voiceConnection.dispatcher;
+        dispatcher.resume();
+
+        await msg.react('✅');
     }
 }
 
@@ -412,7 +451,7 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
     })
 
     voiceConnection.play(video, {volume : 0.8, bitrate : 96000, highWaterMark: 512})
-    .on('start', () => {
+    .on('start', async () => {
         if(loop == 0) {
             var date = new Date(null)
             date.setSeconds(parseInt(length[0]))
@@ -422,6 +461,9 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
             embed.setTitle("**:cd: Now Playing:**")
             embed.setDescription(`[${title[0]}](${queue[0]})`)
             embed.setFooter(`Length : ${timeString}`)
+            let infos = await yt.getVideo(queue[0]);
+            let thumbnail = infos.thumbnails
+            embed.setThumbnail(thumbnail.high.url)
             msg.channel.send(embed)
             console.log(`musc: playing: ${title[0]}`)
         }
