@@ -149,8 +149,8 @@ async function join (msg:Discord.Message, game:string) {
 
         case "pokemon":
         case "pokémon":
-            if(! await msg.member.roles.cache.find(val => val.id == '662017803804475393')) {
-                return msg.member.roles.add('662017803804475393')
+            if(! await msg.member.roles.cache.find(val => val.id == '662017645117440030')) {
+                return msg.member.roles.add('662017645117440030')
                 .then(() => {
                     msg.reply("you joined the Pokémon role !")
                 })
@@ -215,8 +215,8 @@ async function leave (msg:Discord.Message, game:string) {
 
         case "pokemon":
         case "pokémon":
-            if(await msg.member.roles.cache.find(val => val.id == '662017803804475393')) {
-                return msg.member.roles.remove('662017803804475393').then(() => {
+            if(await msg.member.roles.cache.find(val => val.id == '662017645117440030')) {
+                return msg.member.roles.remove('662017645117440030').then(() => {
                     msg.reply("you left the Pokémon role !")
                 })
             } break;
