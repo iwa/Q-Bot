@@ -24,8 +24,7 @@ module.exports = class staff {
     }
 
     static async mute (bot:Client, msg:Message, args:string[]) {
-
-        if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
+        if(utils.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
 
         if(args.length == 2 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;
@@ -63,7 +62,6 @@ module.exports = class staff {
             } catch(err) {
                 console.error(err);
             }
-
         }
 
     }
