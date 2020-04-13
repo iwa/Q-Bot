@@ -128,22 +128,48 @@ bot.on('message', async (msg:Discord.Message) => {
 
 // Reactions Event
 
-bot.on('messageReactionAdd', async reaction => {
+bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
     if(reaction.message.guild.id !== process.env.GUILDID)return;
-    if(reaction.emoji.name !== '⭐')return;
     if(reaction.message.channel.id == process.env.STARBOARDTC)return;
     if(reaction.message.channel.id == process.env.ANNOUNCEMENTSTC)return;
     if(reaction.users.cache.find(val => val.id == bot.user.id))return;
-    if(reaction.count >= 6) {
-        var msg = reaction.message;
-        var content;
+    if(reaction.emoji.name == '⭐') {
+        if(reaction.count >= 6) {
+            var msg = reaction.message;
+            var content;
+            if(!msg.cleanContent)
+                content = "*attachment only*\n"
+            else
+                content = `\`\`\`${msg.cleanContent}\`\`\``
+
+            var channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
+
+            await msg.react(reaction.emoji.name);
+            await channel.send({
+                "embed": {
+                  "description": `${content}[message link✉️](${msg.url})`,
+                  "color": 14212956,
+                  "timestamp": msg.createdTimestamp,
+                  "footer": {
+                    "text": "New starboard entry ⭐️"
+                  },
+                  "author": {
+                    "name": msg.author.username,
+                    "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
+                  }
+                }
+              });
+            return console.log(`info: new message into starboard (author: ${msg.author.tag})`);
+        }
+    } else if(reaction.emoji.name == '🌟' && author.id == process.env.IWA) {
+        let msg = reaction.message;
+        let content;
         if(!msg.cleanContent)
             content = "*attachment only*\n"
         else
             content = `\`\`\`${msg.cleanContent}\`\`\``
 
-        var channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
-
+        let channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
         await msg.react(reaction.emoji.name);
         await channel.send({
             "embed": {
