@@ -1,4 +1,4 @@
-image: node:latest
+image: node:lts-stretch
 
 stages:
   - build
@@ -6,19 +6,22 @@ stages:
 
 compile:
   stage: build
+  before_script:
+    - yarn install --dev
   script:
-    - npm install --only=dev
-    - npm install -g typescript
+    - yarn global add typescript
     - tsc
-  artifacts:
-    expire_in: 5min
+  cache:
     paths:
-      - build/
+    - build/
+    policy: push
 
 eslint:
   stage: lint
   script:
-    - npm install -g eslint
+    - yarn global add eslint
     - eslint build/**/*.js
-  dependencies:
-    - compile
+  cache:
+    paths:
+    - build/
+    policy: pull
