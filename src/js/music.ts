@@ -395,7 +395,8 @@ module.exports = class music {
         if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable";
         embed.setDescription(desc)
 
-        embed.setFooter(`Length : ${timeString}`)
+        let time = new Date(voiceConnection.dispatcher.streamTime).toISOString().slice(11,19)
+        embed.setFooter(`${time} / ${timeString}`)
 
         let infos = await yt.getVideo(queue[0]);
         let thumbnail = infos.thumbnails
