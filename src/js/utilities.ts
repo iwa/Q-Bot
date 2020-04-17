@@ -103,7 +103,6 @@ module.exports = class utilities {
         if(msg.member.roles.cache.find(val => val.id == process.env.MODROLE)) { return true }
         else { return false }
     }
-
 }
 
 // Functions
