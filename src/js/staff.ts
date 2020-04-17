@@ -50,7 +50,7 @@ module.exports = class staff {
 
             const embed = new MessageEmbed();
             embed.setColor('RED')
-            embed.setTitle(`**${mention.user.username}**, you've been muted for ${args[1]} minutes by **${msg.author.username}**`)
+            embed.setTitle(`:octagonal_sign: **${mention.user.username}**, you've been muted for ${args[1]} minutes by **${msg.author.username}**`)
 
             try {
                 await mention.roles.add('636254696880734238')
