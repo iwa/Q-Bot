@@ -33,11 +33,11 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
     let member = guild.members.cache.find(val => val.id == id)
 
-    var leadXP = await db.collection('user').find().sort({exp:-1}).toArray();
-    var leadHug = await db.collection('user').find().sort({hug:-1}).toArray();
-    var leadPat = await db.collection('user').find().sort({pat:-1}).toArray();
-    var leadBoop = await db.collection('user').find().sort({boop:-1}).toArray();
-    var leadSlap = await db.collection('user').find().sort({boop:-1}).toArray();
+    var leadXP = await db.collection('user').find({ hidden: false }).sort({exp:-1}).toArray();
+    var leadHug = await db.collection('user').find({ hidden: false }).sort({hug:-1}).toArray();
+    var leadPat = await db.collection('user').find({ hidden: false }).sort({pat:-1}).toArray();
+    var leadBoop = await db.collection('user').find({ hidden: false }).sort({boop:-1}).toArray();
+    var leadSlap = await db.collection('user').find({ hidden: false }).sort({boop:-1}).toArray();
 
     let user = {
         avatar: userDiscord.avatarURL({ format: 'png', dynamic: false, size: 512 }),
@@ -48,11 +48,11 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
         hug: userDB.hug,
         boop: userDB.boop,
         slap: userDB.slap,
-        positionXP: leadXP.findIndex(val => val._id == id)+1,
-        positionPat: leadPat.findIndex(val => val._id == id)+1,
-        positionHug: leadHug.findIndex(val => val._id == id)+1,
-        positionBoop: leadBoop.findIndex(val => val._id == id)+1,
-        positionSlap: leadSlap.findIndex(val => val._id == id)+1,
+        positionXP: leadXP.findIndex(val => val._id == id),
+        positionPat: leadPat.findIndex(val => val._id == id),
+        positionHug: leadHug.findIndex(val => val._id == id),
+        positionBoop: leadBoop.findIndex(val => val._id == id),
+        positionSlap: leadSlap.findIndex(val => val._id == id),
         birthday: "",
         fc: "",
         level: 0,
