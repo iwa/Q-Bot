@@ -77,7 +77,7 @@ bot.on('message', async (msg:Discord.Message) => {
         return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
     else if(cooldown[msg.author.id] == 6) {
         await msg.member.roles.add('636254696880734238')
-        var msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
+        let msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
         setTimeout(async () => {
             await msgReply.delete()
             return msg.member.roles.remove('636254696880734238')
@@ -91,8 +91,10 @@ bot.on('message', async (msg:Discord.Message) => {
 
     let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
     let db = mongod.db(dbName);
+    let date:string = new Date().toISOString().slice(0,10)
 
     if(!msg.content.startsWith(process.env.PREFIX)) {
+        await db.collection('stats').updateOne({ _id: date }, { $inc: { msg: 1 } }, { upsert: true })
         if(msg.channel.id == '608630294261530624')return;
 
         var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
@@ -120,6 +122,8 @@ bot.on('message', async (msg:Discord.Message) => {
 
     if (!cmd) return;
     else cmd.run(bot, msg, args, db, commands);
+
+    await db.collection('stats').updateOne({ _id: date }, { $inc: { cmd: 1 } }, { upsert: true })
 
     return setTimeout(async () => {
         await mongod.close()

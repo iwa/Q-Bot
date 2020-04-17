@@ -15,6 +15,9 @@ module.exports = class letmein {
             await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { hidden: false }});
         }
 
+        let date:string = new Date().toISOString().slice(0,10)
+        await db.collection('stats').updateOne({ _id: date }, { $inc: { letmein: 1 } }, { upsert: true })
+
         return await msg.member.roles.add('606862164392673290').then(() => {
             msg.delete().catch(console.error)
             try {
