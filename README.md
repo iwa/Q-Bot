@@ -1,4 +1,12 @@
-![](https://cdn.iwa.sh/img/q-bot_logo.png)
+<div align="center">
+<p align="center">
+    <img src="https://cdn.iwa.sh/img/q-bot_logo.png" alt="logo"/>
+
+  <p align="center">
+    Custom Discord bot for <a href="https://discord.gg/BU6cPff">Qumu's Discord server</a>.
+  </p>
+</p>
+</div>
 
 ## About
 
@@ -19,7 +27,7 @@
 #### 1. Add remote from original repository in your forked repository:
 
     cd into/cloned/fork-repo
-    git remote add upstream https://gitlab.com/iwaQwQ/Q-Bot.git
+    git remote add upstream https://gitlab.com/iwa/Q-Bot.git
     git fetch upstream
 
 #### 2. Updating your fork from original repo to keep up with their changes:
