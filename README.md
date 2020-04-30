@@ -15,6 +15,8 @@
 - Language used : `TypeScript, with NodeJS`
 - Library used : `discord.js`
 
+[![BCH compliance](https://bettercodehub.com/edge/badge/iwaQwQ/Q-Bot?branch=master)](https://bettercodehub.com/)
+
 ## How to contribute
 
 #### 1. Make a fork and clone it
