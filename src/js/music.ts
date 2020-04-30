@@ -329,15 +329,7 @@ module.exports = class music {
     static async pause (bot:Client, msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
-        if(!voiceConnection) {
-            const embed = new MessageEmbed();
-            embed.setColor('RED')
-            embed.setTitle("I'm not playing anything right now!")
-            return msg.channel.send(embed);
-        }
-
-        let dispatcher = voiceConnection.dispatcher;
+        let dispatcher = await fetchDispatcher(bot, msg);
         dispatcher.pause(false);
 
         await msg.react('✅');
@@ -346,15 +338,7 @@ module.exports = class music {
     static async resume (bot:Client, msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
-        if(!voiceConnection) {
-            const embed = new MessageEmbed();
-            embed.setColor('RED')
-            embed.setTitle("I'm not playing anything right now!")
-            return msg.channel.send(embed);
-        }
-
-        let dispatcher = voiceConnection.dispatcher;
+        let dispatcher = await fetchDispatcher(bot, msg);
         dispatcher.resume();
 
         await msg.react('✅');
@@ -449,5 +433,18 @@ async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:stri
         catch(ex) {
             console.error(ex)
         }
+    }
+}
+
+async function fetchDispatcher(bot:Client, msg:Message) {
+    let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
+    if(!voiceConnection) {
+        const embed = new MessageEmbed();
+        embed.setColor('RED')
+        embed.setTitle("I'm not playing anything right now!")
+        await msg.channel.send(embed);
+    } else {
+        let dispatcher = voiceConnection.dispatcher;
+        return dispatcher;
     }
 }
