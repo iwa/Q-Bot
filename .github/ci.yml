@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master, dev ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: install dependencies
+      run: yarn install --dev
+
+    - name: run tsc
+      run: |
+        sudo yarn global add typescript
+        tsc
+
+    - name: run eslint
+      run: |
+        sudo yarn global add eslint
+        eslint build/**/*.js
