@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js'
-const utils = require('../js/utilities')
+const utils = require('../../js/utilities')
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     utils.role(msg, args);
