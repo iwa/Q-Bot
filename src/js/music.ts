@@ -223,11 +223,7 @@ module.exports = class music {
         title = [];
         length = [];
 
-        const embed = new MessageEmbed();
-        var avatar = msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
-        embed.setAuthor("You've successfully cleared the queue.", avatar);
-        embed.setColor('GREEN')
-        msg.channel.send(embed)
+        await msg.react('✅');
 
         console.log(`musc: clear queue by ${msg.author.tag}`)
     }
@@ -241,6 +237,7 @@ module.exports = class music {
         title = [];
         length = [];
 
+        await msg.react('✅');
         await voiceChannel.leave()
         console.log(`musc: stop by ${msg.author.tag}`)
     }
