@@ -1,6 +1,6 @@
 import { Client, Message, Collection } from 'discord.js';
 import { Db } from 'mongodb';
-const utils = require('../js/utilities')
+const utils = require('../../js/utilities')
 
 let admin = {
     "embed": {

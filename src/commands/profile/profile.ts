@@ -1,8 +1,8 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
 import * as ejs from 'ejs';
-const img = require('../js/img')
-const utils = require('../js/utilities')
+const img = require('../../js/img')
+const utils = require('../../js/utilities')
 let lastComboColor:number;
 
 module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
