@@ -13,7 +13,6 @@ let skipReq = 0, loop = 0;
 module.exports = class music {
 
     static async play (bot:Client, msg:Message, args:string[]) {
-
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         if(!args[0])return;
@@ -108,11 +107,9 @@ module.exports = class music {
 
             launchPlay(msg, voiceChannel, video, data)
         }
-
     }
 
     static remove (msg:Message, args:string[]) {
-
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         var queueID:number = parseInt(args[0]);
@@ -131,11 +128,9 @@ module.exports = class music {
 
         queue.splice(queueID, 1)
         title.splice(queueID, 1)
-
     }
 
     static list (msg:Message, args:string[]) {
-
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
         if(args.length > 0)return;
         if(queue.length < 0)return;
@@ -166,7 +161,6 @@ module.exports = class music {
         msg.channel.send(embed);
 
         console.log(`musc: show queue by ${msg.author.tag}`)
-
     }
 
     static async skip (bot:Client, msg:Message) {
