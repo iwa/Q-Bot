@@ -23,13 +23,21 @@ interface stringKeyArray {
 	[index:string]: any;
 }
 
-fs.readdir('./build/commands/', (error, f) => {
+fs.readdir('./build/commands/', { withFileTypes:true }, (error, f) => {
     if (error) return console.error(error);
-    let commandes = f.filter(f => f.split('.').pop() === 'js');
-    if (commandes.length <= 0) return console.log('warn: no commands found');
-    commandes.forEach((f) => {
-        let commande = require(`./commands/${f}`);
-        commands.set(commande.help.name, commande);
+    f.forEach((f) => {
+        if(f.isDirectory()) {
+            fs.readdir(`./build/commands/${f.name}/`, (error, fi) => {
+                if (error) return console.error(error);
+                fi.forEach((fi) => {
+                    let commande = require(`./commands/${f.name}/${fi}`);
+                    commands.set(commande.help.name, commande);
+                })
+            })
+        } else {
+            let commande = require(`./commands/${f.name}`);
+            commands.set(commande.help.name, commande);
+        }
     });
 });
 
