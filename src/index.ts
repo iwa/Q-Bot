@@ -13,6 +13,7 @@ const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 const letmein = require('./js/letmein')
 const img = require('./js/img')
+const starboard = require('./js/starboard');
 const levels = require('../lib/levels.json');
 
 import { YouTube } from 'popyt';
@@ -173,24 +174,7 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
             else
                 content = `\`\`\`${msg.cleanContent}\`\`\``
 
-            var channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
-
-            await msg.react(reaction.emoji.name);
-            await channel.send({
-                "embed": {
-                  "description": `${content}[message link✉️](${msg.url})`,
-                  "color": 14212956,
-                  "timestamp": msg.createdTimestamp,
-                  "footer": {
-                    "text": "New starboard entry ⭐️"
-                  },
-                  "author": {
-                    "name": msg.author.username,
-                    "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
-                  }
-                }
-              });
-            return console.log(`info: new message into starboard (author: ${msg.author.tag})`);
+            return starboard.send(bot, msg, reaction, content);
         }
     } else if(reaction.emoji.name == '🌟' && author.id == process.env.IWA) {
         let msg = reaction.message;
@@ -200,23 +184,7 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
         else
             content = `\`\`\`${msg.cleanContent}\`\`\``
 
-        let channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
-        await msg.react(reaction.emoji.name);
-        await channel.send({
-            "embed": {
-              "description": `${content}[message link✉️](${msg.url})`,
-              "color": 14212956,
-              "timestamp": msg.createdTimestamp,
-              "footer": {
-                "text": "New starboard entry ⭐️"
-              },
-              "author": {
-                "name": msg.author.username,
-                "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
-              }
-            }
-          });
-        return console.log(`info: new message into starboard (author: ${msg.author.tag})`);
+        return starboard.send(bot, msg, reaction, content);
     }
 });
 
