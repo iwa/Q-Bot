@@ -27,7 +27,7 @@
 #### 1. Add remote from original repository in your forked repository:
 
     cd into/cloned/fork-repo
-    git remote add upstream https://gitlab.com/iwa/Q-Bot.git
+    git remote add upstream https://github.com/iwaQwQ/Q-Bot.git
     git fetch upstream
 
 #### 2. Updating your fork from original repo to keep up with their changes:
