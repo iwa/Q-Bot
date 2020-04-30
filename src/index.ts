@@ -23,13 +23,21 @@ interface stringKeyArray {
 	[index:string]: any;
 }
 
-fs.readdir('./build/commands/', (error, f) => {
+fs.readdir('./build/commands/', { withFileTypes:true }, (error, f) => {
     if (error) return console.error(error);
-    let commandes = f.filter(f => f.split('.').pop() === 'js');
-    if (commandes.length <= 0) return console.log('warn: no commands found');
-    commandes.forEach((f) => {
-        let commande = require(`./commands/${f}`);
-        commands.set(commande.help.name, commande);
+    f.forEach((f) => {
+        if(f.isDirectory()) {
+            fs.readdir(`./build/commands/${f.name}/`, (error, fi) => {
+                if (error) return console.error(error);
+                fi.forEach((fi) => {
+                    let commande = require(`./commands/${f.name}/${fi}`);
+                    commands.set(commande.help.name, commande);
+                })
+            })
+        } else {
+            let commande = require(`./commands/${f.name}`);
+            commands.set(commande.help.name, commande);
+        }
     });
 });
 
@@ -50,11 +58,30 @@ bot.on('shardReconnecting', () => {
 bot.on('shardResume', async () => {
     await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
     await bot.user.setStatus("online").catch(console.error)
+
+    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+    let db = mongod.db(dbName);
+
+    let allMsg = db.collection('msg').find()
+    allMsg.forEach(async elem => {
+        let channel:any = await bot.channels.fetch(elem.channel)
+        await channel.messages.fetch(elem._id, true)
+    });
 })
 
 bot.on('shardReady', async () => {
     await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
     await bot.user.setStatus("online").catch(console.error)
+
+    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+    let db = mongod.db(dbName);
+
+    let allMsg = db.collection('msg').find()
+    allMsg.forEach(async elem => {
+        let channel:any = await bot.channels.fetch(elem.channel)
+        await channel.messages.fetch(elem._id, true)
+    });
+
     console.log(`info: logged in as ${bot.user.username}`);
 });
 
@@ -203,6 +230,40 @@ bot.on('guildMemberRemove', async member => {
 
     return mongod.close();
 })
+
+bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
+    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+    let db = mongod.db(dbName);
+
+    let msg = await db.collection('msg').findOne({ _id: reaction.message.id })
+    if(!msg)return mongod.close();
+
+    let role = msg.roles.find((val:any) => val.emote == reaction.emoji.name)
+    if(!role)return mongod.close();
+
+    let member = reaction.message.guild.member(author)
+    if(!member)return mongod.close();
+    await member.roles.add(role.id)
+
+    return mongod.close();
+});
+
+bot.on('messageReactionRemove', async (reaction:Discord.MessageReaction, author:Discord.User) => {
+    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+    let db = mongod.db(dbName);
+
+    let msg = await db.collection('msg').findOne({ _id: reaction.message.id })
+    if(!msg)return mongod.close();
+
+    let role = msg.roles.find((val:any) => val.emote == reaction.emoji.name)
+    if(!role)return mongod.close();
+
+    let member = reaction.message.guild.member(author)
+    if(!member)return mongod.close();
+    await member.roles.remove(role.id)
+
+    return mongod.close();
+});
 
 // Subs count, refresh every hour
 

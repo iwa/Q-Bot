@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js'
-const utils = require('../js/utilities')
+const utils = require('../../js/utilities')
 
 module.exports.run = async (bot:Client, msg:Message) => {
     var iwa = await bot.users.fetch(process.env.IWA);

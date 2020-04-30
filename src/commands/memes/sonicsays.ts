@@ -1,6 +1,6 @@
 import { Client, Message } from 'discord.js'
 import * as ejs from 'ejs'
-const img = require('../js/img')
+const img = require('../../js/img')
 
 module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
     if(msg.channel.id != '606165780215889960')return;
