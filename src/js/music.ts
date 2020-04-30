@@ -174,7 +174,7 @@ module.exports = class music {
 
         let voiceChannel = msg.guild.channels.cache.find(val => val.id == VC)
 
-        let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
+        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
             const embed = new MessageEmbed();
             embed.setColor('RED')
