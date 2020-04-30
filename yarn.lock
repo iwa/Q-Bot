@@ -685,10 +685,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-popyt@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/popyt/-/popyt-3.0.0.tgz#e1a0f1ff0052f2334cef25775201d5e88fbba604"
-  integrity sha512-MQ+p0kLXxtTbHyQ77z1Dt3HOiTrzlEkTsTBQYtV5cur/Imt88aFHF6vEhDKLND17HxEUKPURnfqc3LD2JB2oQg==
+popyt@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/popyt/-/popyt-3.1.0.tgz#eb215fc4cede0cabaeff24af3624f38d2cd756ae"
+  integrity sha512-oOk0m2MHzbntU0Odoo80RRFBwAJm5jHFwUBJAUAjvUdsroJK3U5fTuZiNLj9QB7yvGzkrsCeTOKqFfYlVeKMkw==
 
 prism-media@^1.2.0:
   version "1.2.1"
