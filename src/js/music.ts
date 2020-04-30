@@ -92,34 +92,11 @@ module.exports = class music {
                     console.error(ex)
                 }
             }
-
             return;
-
         }
 
         if(YoutubeStream.validateURL(video_url[0])) {
-
-            msg.channel.startTyping()
-            error = false;
-
-            if(queue.indexOf(video_url[0]) == -1) {
-                data = await YoutubeStream.getInfo(video_url[0]).catch(() => { error = true; })
-                if(!error && data) {
-                    queue.push(video_url[0])
-                    title.push(Util.escapeMarkdown(data.title))
-                    length.push(data.length_seconds)
-                }
-            } else {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is already in the queue!**")
-            }
-
-            if(error) {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is unavailable :(**")
-            }
-
-            launchPlay(msg, voiceChannel, queue[0], video_url[0], data)
+            launchPlay(msg, voiceChannel, video_url[0], data)
         } else {
             let keywords = args.join(' ')
 
@@ -129,27 +106,7 @@ module.exports = class music {
 
             if(!YoutubeStream.validateURL(video))return;
 
-            msg.channel.startTyping();
-            error = false;
-
-            if(queue.indexOf(video) == -1) {
-                data = await YoutubeStream.getInfo(video).catch(() => { error = true; })
-                if(!error && data) {
-                    queue.push(video)
-                    title.push(Util.escapeMarkdown(data.title))
-                    length.push(data.length_seconds)
-                }
-            } else {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is already in the queue!**")
-            }
-
-            if(error) {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is unavailable :(**")
-            }
-
-            launchPlay(msg, voiceChannel, queue[0], video, data)
+            launchPlay(msg, voiceChannel, video, data)
         }
 
     }
@@ -453,8 +410,27 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
     }).on('error', console.error);
 }
 
-async function launchPlay(msg:Message, voiceChannel:VoiceChannel, queue0:string, video_url:string, data:void | YoutubeStream.videoInfo) {
-    if(queue0 != video_url && data) {
+async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:string, data:void | YoutubeStream.videoInfo) {
+    msg.channel.startTyping();
+    let error = false;
+    if(queue.indexOf(video_url) == -1) {
+        data = await YoutubeStream.getInfo(video_url).catch(() => { error = true; })
+        if(!error && data) {
+            queue.push(video_url)
+            title.push(Util.escapeMarkdown(data.title))
+            length.push(data.length_seconds)
+        }
+    } else {
+        msg.channel.stopTyping()
+        return msg.channel.send(":x: > **This video is already in the queue!**")
+    }
+
+    if(error) {
+        msg.channel.stopTyping()
+        return msg.channel.send(":x: > **This video is unavailable :(**")
+    }
+
+    if(queue[0] != video_url && data) {
         const embed = new MessageEmbed();
         embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         embed.setDescription(`**${data.title}**`)
