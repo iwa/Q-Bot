@@ -119,26 +119,7 @@ module.exports = class music {
                 return msg.channel.send(":x: > **This video is unavailable :(**")
             }
 
-            if(queue[0] != video_url[0] && data) {
-                const embed = new MessageEmbed();
-                embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
-                embed.setDescription(`**${data.title}**`)
-                embed.setFooter(`Added by ${msg.author.username}`)
-                embed.setColor('LUMINOUS_VIVID_PINK')
-                msg.channel.stopTyping()
-                msg.channel.send(embed)
-                console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
-            }
-            else {
-                msg.channel.stopTyping()
-                try {
-                    const voiceConnection = await voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel);
-                }
-                catch(ex) {
-                    console.error(ex)
-                }
-            }
+            launchPlay(msg, voiceChannel, queue[0], video_url[0], data)
         } else {
             let keywords = args.join(' ')
 
@@ -168,26 +149,7 @@ module.exports = class music {
                 return msg.channel.send(":x: > **This video is unavailable :(**")
             }
 
-            if(queue[0] != video && data) {
-                const embed = new MessageEmbed();
-                embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
-                embed.setDescription(`**${data.title}**`)
-                embed.setFooter(`Added by ${msg.author.username}`)
-                embed.setColor('LUMINOUS_VIVID_PINK')
-                msg.channel.stopTyping()
-                msg.channel.send(embed)
-                console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
-            }
-            else {
-                msg.channel.stopTyping()
-                try {
-                    const voiceConnection = await voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel);
-                }
-                catch(ex) {
-                    console.error(ex)
-                }
-            }
+            launchPlay(msg, voiceChannel, queue[0], video, data)
         }
 
     }
@@ -489,4 +451,27 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
             playSong(msg, voiceConnection, voiceChannel)
         }
     }).on('error', console.error);
+}
+
+async function launchPlay(msg:Message, voiceChannel:VoiceChannel, queue0:string, video_url:string, data:void | YoutubeStream.videoInfo) {
+    if(queue0 != video_url && data) {
+        const embed = new MessageEmbed();
+        embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+        embed.setDescription(`**${data.title}**`)
+        embed.setFooter(`Added by ${msg.author.username}`)
+        embed.setColor('LUMINOUS_VIVID_PINK')
+        msg.channel.stopTyping()
+        await msg.channel.send(embed)
+        console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
+    }
+    else {
+        msg.channel.stopTyping()
+        try {
+            const voiceConnection = await voiceChannel.join();
+            playSong(msg, voiceConnection, voiceChannel);
+        }
+        catch(ex) {
+            console.error(ex)
+        }
+    }
 }
