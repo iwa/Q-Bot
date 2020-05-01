@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ master, dev ]
+    branches: [ master, dev, feature/* ]
   pull_request:
     branches: [ master, dev ]
 
@@ -13,13 +13,37 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install Node v12
+      uses: actions/setup-node@v1.4.2
+      with:
+        node-version: 12
+
     - name: install dependencies
-      run: yarn install --dev
+      run: sudo yarn
 
     - name: run tsc
       run: |
         sudo yarn global add typescript
         tsc
+
+    - name: caching build files
+      uses: actions/cache@v1.1.2
+      with:
+        path: build/
+        key: ${{ runner.os }}-build
+
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: restoring cache
+      uses: actions/cache@v1.1.2
+      with:
+        path: build/
+        key: ${{ runner.os }}-build
 
     - name: run eslint
       run: |
