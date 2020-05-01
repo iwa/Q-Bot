@@ -1,54 +1,56 @@
 import { Client, Message, Collection } from 'discord.js';
 import { Db } from 'mongodb';
 const utils = require('../../js/utilities')
+let commands:stringKeyArray = [];
+let member = {};
+interface stringKeyArray {
+	[index:string]: any;
+}
 
-let admin = {
-    "embed": {
-      "title": "**❯ Admin**",
-      "description": "`?sleep`\n`?resetbd (UID)`\n`?resetfc (UID)`\n`?read`",
-      "color": 13632027
-    }
-  }
+import * as fs from 'fs';
+
+readDirs()
+setTimeout(() => {
+    member = {
+        "embed": {
+          "title": "__**Commands**__",
+          "description": "Prefix : `?`\nUse `?help (command)` to have more info about a specific command",
+          "color": 3852663,
+          "fields": [
+            {
+                "name": "**👤 Profile**",
+                "value": commands["profile"]
+            },
+            {
+                "name": "**💕 Actions**",
+                "value": commands["actions"]
+            },
+            {
+                "name": "**🕹 Games**",
+                "value": commands["games"]
+            },
+            {
+                "name": "**💩 Memes**",
+                "value": commands["memes"]
+            },
+            {
+                "name": "**🎶 Music** (only usable in #radio-lounge)",
+                "value": commands["music"]
+            },
+            {
+                "name": "**🛠 Utility**",
+                "value": commands["utility"]
+            },
+          ]
+        }
+      }
+}, 5000)
 
 let mod = {
     "embed": {
       "title": "**⚔️ Mods**",
       "description": "`?forceskip`\n`?bulk (amount of messages to delete)`\n`?mute (mention someone) (length in minutes)`",
       "color": 4886754
-    }
-  }
-
-let member = {
-    "embed": {
-      "title": "__**Commands**__",
-      "description": "Prefix : `?`\nUse `?help (command)` to have more info about a specific command",
-      "color": 3852663,
-      "fields": [
-        {
-            "name": "**👤 Profile**",
-            "value": "`profile` `setbirthday` `setfc` `becomefan` `leavefan` `fc`"
-        },
-        {
-            "name": "**💕 Actions**",
-            "value": "`pat` `hug` `boop` `slap`"
-        },
-        {
-            "name": "**🕹 Games**",
-            "value": "`roll` `8ball` `flip` `rps`"
-        },
-        {
-            "name": "**💩 Memes**",
-            "value": "`sonicsays`"
-        },
-        {
-            "name": "**🎶 Music** (only usable in #radio-lounge)",
-            "value": "`play` `remove` `queue` `skip` `clear` `stop` `leave` `loop` `nowplaying`"
-        },
-        {
-            "name": "**🛠 Utility**",
-            "value": "`ping` `pong` `help` `info` `leaderboard` `lead` `role` `anime` `manga` `boostcolor` `thanksiwa`"
-        },
-      ]
     }
   }
 
@@ -68,27 +70,39 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db, comma
 module.exports.help = {
     name: 'help',
     usage: "?help",
-    desc: "Well... Obviously it send you the list of the commands"
+    desc: "Well... Obviously it sends you the list of the commands"
 };
 
 async function sendHelp(msg:Message) {
-    if (msg.author.id == process.env.IWA)
-        try {
-            await msg.author.send(member)
-            await msg.author.send(mod)
-            await msg.author.send(admin)
-        } catch(ex) {
-            console.log(ex)
-            return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
-        }
-    else if (utils.isMod(msg) == true || msg.author.id == process.env.QUMU)
+    if(utils.isMod(msg) == true || msg.author.id == process.env.QUMU)
         try {
             await msg.author.send(member)
             await msg.author.send(mod)
         } catch(ex) {
-            console.log(ex)
             return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
     else
-        return await msg.channel.send(member)
+        try {
+            await msg.channel.send(member)
+        } catch {
+            return msg.channel.send(":x: > **Commands list loading, redo the commands in a few seconds!**")
+        }
+}
+
+async function readDirs() {
+    fs.readdir('./build/commands/', { withFileTypes:true }, async (error, f) => {
+        if (error) return console.error(error);
+        f.forEach((f) => {
+            if(f.isDirectory()) {
+                fs.readdir(`./build/commands/${f.name}/`, async (error, fi) => {
+                    if (error) return console.error(error);
+                    let string:string = "";
+                    fi.forEach(async (fi) => {
+                        string = `${string}\`${fi.slice(0, -3)}\` `;
+                    })
+                    commands[f.name] = string;
+                })
+            }
+        });
+    });
 }
