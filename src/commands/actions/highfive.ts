@@ -66,7 +66,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
 
         const embed = new MessageEmbed();
         embed.setColor('#F2DEB0')
-        embed.setDescription(`**<@${msg.author.id}>...**`)
+        embed.setDescription(`**<@${msg.author.id}>**...`)
         embed.setImage(`https://cdn.iwa.sh/img/highfive/fail/${n}.gif`)
         return msg.channel.send(embed)
     }, 5000)
