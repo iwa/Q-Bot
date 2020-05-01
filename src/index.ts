@@ -155,7 +155,7 @@ bot.on('message', async (msg:Discord.Message) => {
 
     return setTimeout(async () => {
         await mongod.close()
-    }, 1000);
+    }, 31000);
 });
 
 // Reactions Event
