@@ -8,30 +8,28 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/iwaQwQ/Q-Bot.git"
+    "url": "https://github.com/iwaQwQ/Q-Bot.git"
   },
   "author": "iwa",
   "license": "ISC",
   "dependencies": {
-    "bufferutil": "^4.0.1",
-    "node-pre-gyp": "^0.14.0",
-    "sodium": "^3.0.2",
-    "utf-8-validate": "^5.0.2"
-  },
-  "devDependencies": {
     "@discordjs/opus": "^0.2.1",
     "@types/ejs": "^3.0.3",
     "@types/mongodb": "^3.5.14",
     "@types/node": "^13.13.4",
     "@types/puppeteer": "^2.0.1",
-    "@types/ws": "^7.2.3",
+    "@types/ws": "^7.2.4",
     "anilist-node": "^1.4.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.2",
     "mongodb": "^3.5.7",
+    "node-gyp": "^6.1.0",
+    "node-pre-gyp": "^0.14.0",
     "popyt": "3.0.0",
     "puppeteer": "^3.0.2",
-    "ytdl-core": "^2.1.1"
+    "sodium": "^3.0.2",
+    "ytdl-core": "^2.1.1",
+    "zlib-sync": "^0.1.6"
   }
 }
