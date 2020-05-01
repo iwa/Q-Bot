@@ -20,7 +20,7 @@
   "devDependencies": {
     "@discordjs/opus": "^0.1.0",
     "@types/ejs": "^3.0.3",
-    "@types/mongodb": "^3.5.5",
+    "@types/mongodb": "^3.5.14",
     "@types/node": "^13.13.4",
     "@types/puppeteer": "^2.0.1",
     "@types/ws": "^7.2.3",
