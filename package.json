@@ -31,6 +31,6 @@
     "mongodb": "^3.5.7",
     "popyt": "3.0.0",
     "puppeteer": "^3.0.2",
-    "ytdl-core": "^2.0.1"
+    "ytdl-core": "^2.1.1"
   }
 }
