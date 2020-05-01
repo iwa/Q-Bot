@@ -85,10 +85,10 @@ agent-base@5:
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-5.1.1.tgz#e8fb3f242959db44d63be665db7a8e739537a32c"
   integrity sha512-TMeqbNl2fMW0nMjTEPOwe3J/PRFP4vqeoNuQMG0HlMrtm5QxKqdvAkZ1pRBQ/ulIyDD5Yq0nJ7YbdD8ey0TO3g==
 
-anilist-node@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/anilist-node/-/anilist-node-1.3.1.tgz#52c35f40ceb859db80091c152d154948f0eb907e"
-  integrity sha512-cmlGnXAldV0JcXaQ4RENIJumFtApMtXggXbPvQngA/f1JkSNH6iSOpf18rTbvlpU1udy5lk3M6SpGa6kjvx9JQ==
+anilist-node@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/anilist-node/-/anilist-node-1.4.0.tgz#37cd0b5b275163d13a27f2cdae6b35b4c7ef658b"
+  integrity sha512-41BNk/wv8uX3JUZRQKu1zd0Mq0hfuwIZa3OtPs5hYzpYl8SGJkes+Ia7X6H2n5uxsONTTRD+xg2vmnKDx93bXQ==
   dependencies:
     node-fetch "^2.6.0"
 
