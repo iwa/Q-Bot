@@ -18,7 +18,7 @@
     "utf-8-validate": "^5.0.2"
   },
   "devDependencies": {
-    "@discordjs/opus": "^0.1.0",
+    "@discordjs/opus": "^0.2.1",
     "@types/ejs": "^3.0.3",
     "@types/mongodb": "^3.5.14",
     "@types/node": "^13.13.4",
