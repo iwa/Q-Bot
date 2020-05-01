@@ -23,7 +23,6 @@
 #### 2. Make your modifications on the `master` branch
 #### 3. Create a Merge Request, with `dev` as target branch
 
-
 ## How to keep your fork up to date
 
 #### 1. Add remote from original repository in your forked repository:
@@ -45,4 +44,4 @@ Keep upstream/master always unedited since it'll be your fresh copy from the ori
 - Always check for an update of the upstream before begin your work
 - Create another branch from upstream/master so you can keep upstream/master clean
 - Make your own edits
-- Create a MR
+- Create a PR
