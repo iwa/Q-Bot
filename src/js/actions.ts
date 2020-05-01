@@ -25,13 +25,13 @@ let count:stringKeyArray = {
 module.exports = class actions {
 
     static async run (bot:Client, msg:Message, args:string[], db:Db, type:string) {
-        var n = util.randomInt(count[type])
+        let n = util.randomInt(count[type])
         while(lastGif[type] == n) {
             n = util.randomInt(count[type]);
         }
         lastGif[type] = n;
-        var r = util.randomInt(reply.length)
-        var mentionFirst, mentionSecond, user
+        let r = util.randomInt(reply.length)
+        let mentionFirst, mentionSecond, user;
 
         if(args.length == 1) {
             if(msg.mentions.everyone)return;
