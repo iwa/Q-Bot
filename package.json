@@ -13,7 +13,7 @@
   "author": "iwa",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/opus": "^0.2.1",
+    "@discordjs/opus": "^0.3.2",
     "@types/ejs": "^3.0.3",
     "@types/mongodb": "^3.5.14",
     "@types/node": "^13.13.4",
