@@ -1,6 +1,6 @@
 import { Client, Message, Collection } from 'discord.js';
 import { Db } from 'mongodb';
-const utils = require('../../js/utilities')
+import utilities from '../../js/utilities'
 let commands:stringKeyArray = [];
 let member = {};
 interface stringKeyArray {
@@ -74,7 +74,7 @@ module.exports.help = {
 };
 
 async function sendHelp(msg:Message) {
-    if(utils.isMod(msg) == true || msg.author.id == process.env.QUMU)
+    if(utilities.isMod(msg) == true || msg.author.id == process.env.QUMU)
         try {
             await msg.author.send(member)
             await msg.author.send(mod)

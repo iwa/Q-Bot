@@ -2,7 +2,7 @@ import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
 import * as ejs from 'ejs';
 const img = require('../../js/img')
-const utils = require('../../js/utilities')
+import utilities from '../../js/utilities'
 let lastComboColor:number;
 
 module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
@@ -77,7 +77,7 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     else
         user.fc = userDB.fc
 
-    var lvlInfo = await utils.levelInfo(user.exp);
+    var lvlInfo = await utilities.levelInfo(user.exp);
     user.level = lvlInfo.level
     user.current = lvlInfo.current
     user.max = lvlInfo.max
@@ -96,9 +96,9 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     if(id == process.env.QUMU || id == bot.user.id || member.roles.cache.find(val => val.id == process.env.MODROLE))
         whichColor = 5
     else {
-        whichColor = (utils.randomInt(5) - 1)
+        whichColor = (utilities.randomInt(5) - 1)
         while(lastComboColor == whichColor)
-            whichColor = (utils.randomInt(5) - 1)
+            whichColor = (utilities.randomInt(5) - 1)
         lastComboColor = whichColor
     }
 

@@ -1,4 +1,4 @@
-const utils = require('./utilities')
+import utilities from './utilities'
 import { Message } from 'discord.js';
 import { Db } from 'mongodb';
 
@@ -10,7 +10,7 @@ module.exports = class letmein {
         let user:any = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
 
         if(user) {
-            let lvl = await utils.levelInfo(user.exp);
+            let lvl = await utilities.levelInfo(user.exp);
             if(lvl.level != 0) await msg.member.roles.add(levels[lvl.level].id);
             await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { hidden: false }});
         }
