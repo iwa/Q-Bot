@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-const bot = new Discord.Client()
+const bot:Discord.Client = new Discord.Client()
 const commands:Discord.Collection<any, any> = new Discord.Collection();
 
 import * as dotenv from "dotenv";
