@@ -1,11 +1,11 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
-const utils = require('../../js/utilities')
+import utilities from '../../js/utilities'
 const colors = require('../../../lib/colors.json')
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
-    let level = utils.levelInfo(user.exp)
+    let level = utilities.levelInfo(user.exp)
     let i:number = Math.floor(level.level / 2);
     if(args.length == 1) {
         if(args[0] == "off") {

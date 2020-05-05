@@ -3,9 +3,9 @@ import { Db } from 'mongodb';
 
 let levels = require('../../lib/levels.json')
 
-module.exports = class utilities {
+export default class utilities {
 
-    static async info (msg:Discord.Message, iwaUrl:string) {
+    public static async info (msg:Discord.Message, iwaUrl:string):Promise<Discord.Message> {
 
         var embed = {
             "embed": {
@@ -30,7 +30,7 @@ module.exports = class utilities {
 
     }
 
-    static leaderboard (bot:Discord.Client, msg:Discord.Message, args:string[], db:Db) {
+    static leaderboard (bot:Discord.Client, msg:Discord.Message, args:string[], db:Db):Promise<void> {
         if(args.length > 1)return;
 
         switch(args[0]) {
@@ -62,7 +62,7 @@ module.exports = class utilities {
         }
     }
 
-    static randomInt(max:number) {
+    static randomInt(max:number):number {
         return Math.floor(Math.random() * Math.floor(max) + 1);
     }
 
@@ -78,7 +78,7 @@ module.exports = class utilities {
         return {'level': 20, 'current': xp, 'max': levels[20].amount}
     }
 
-    static isMod(msg:Discord.Message) {
+    static isMod(msg:Discord.Message):boolean {
         if(msg.member.roles.cache.find(val => val.id == process.env.MODROLE)) { return true }
         else { return false }
     }

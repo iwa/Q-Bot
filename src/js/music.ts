@@ -2,7 +2,7 @@ import { Client, Message, MessageEmbed, Util, VoiceChannel, VoiceConnection } fr
 import * as YoutubeStream from 'ytdl-core';
 const { YouTube } = require('popyt')
 const yt = new YouTube(process.env.YT_TOKEN)
-const utils = require('./utilities')
+import utilities from './utilities'
 
 let TC = process.env.MUSICTC;
 let VC = process.env.MUSICVC;
@@ -237,7 +237,7 @@ module.exports = class music {
     }
 
     static async forceskip (bot:Client, msg:Message) {
-        if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
+        if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
