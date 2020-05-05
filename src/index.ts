@@ -274,7 +274,7 @@ setInterval(async () => {
         var mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
         var db = mongod.db(dbName);
 
-        var data = await db.collection('user').find({ 'birthday': { $eq: today } }).toArray();
+        let data = await db.collection('user').find({ 'birthday': { $eq: todayString } }).toArray();
 
         if(data.length >= 1) {
             let channel:any = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
