@@ -1,6 +1,6 @@
 <div align="center">
 <p align="center">
-    <img src="https://cdn.iwa.sh/img/q-bot_logo.png" alt="logo"/>
+    <img src="https://storage.googleapis.com/iwa-bucket/img/q-bot_logo.png" alt="logo"/>
 
   <p align="center">
     Custom Discord bot for <a href="https://discord.gg/BU6cPff">Qumu's Discord server</a>.
