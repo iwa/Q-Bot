@@ -1,8 +1,8 @@
 import { Client, Message, MessageReaction, User, MessageEmbed } from 'discord.js'
 import { Db } from 'mongodb'
 import utilities from '../../js/utilities';
-let lastGif:number = 0, count:number = 2;
-let lastGifFail:number = 0, countFail:number = 2;
+let lastGif:number = 0, count:number = 9;
+let lastGifFail:number = 0, countFail:number = 5;
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     if(msg.channel.type != "dm")
