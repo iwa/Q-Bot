@@ -1,5 +1,5 @@
 import * as Discord from "discord.js";
-const bot = new Discord.Client()
+const bot:Discord.Client = new Discord.Client()
 const commands:Discord.Collection<any, any> = new Discord.Collection();
 
 import * as dotenv from "dotenv";
@@ -13,9 +13,11 @@ const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 const letmein = require('./js/letmein')
 const img = require('./js/img')
+const starboard = require('./js/starboard');
 const levels = require('../lib/levels.json');
 
 import { YouTube } from 'popyt';
+import utilities from "./js/utilities";
 const yt = new YouTube(process.env.YT_TOKEN)
 
 let cooldown:stringKeyArray = [], cooldownXP:stringKeyArray = [];
@@ -127,7 +129,7 @@ bot.on('message', async (msg:Discord.Message) => {
         var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
 
         if(!user)
-            await db.collection('user').insertOne({ _id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0 });
+            await db.collection('user').insertOne({ _id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0, highfive: 0 });
         else if(!cooldownXP[msg.author.id]) {
             await db.collection('user').updateOne({ _id: msg.author.id }, { $inc: { exp: 1 }});
             levelCheck(msg, (user.exp+1));
@@ -154,7 +156,7 @@ bot.on('message', async (msg:Discord.Message) => {
 
     return setTimeout(async () => {
         await mongod.close()
-    }, 1000);
+    }, 31000);
 });
 
 // Reactions Event
@@ -173,24 +175,7 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
             else
                 content = `\`\`\`${msg.cleanContent}\`\`\``
 
-            var channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
-
-            await msg.react(reaction.emoji.name);
-            await channel.send({
-                "embed": {
-                  "description": `${content}[message link✉️](${msg.url})`,
-                  "color": 14212956,
-                  "timestamp": msg.createdTimestamp,
-                  "footer": {
-                    "text": "New starboard entry ⭐️"
-                  },
-                  "author": {
-                    "name": msg.author.username,
-                    "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
-                  }
-                }
-              });
-            return console.log(`info: new message into starboard (author: ${msg.author.tag})`);
+            return starboard.send(bot, msg, reaction, content);
         }
     } else if(reaction.emoji.name == '🌟' && author.id == process.env.IWA) {
         let msg = reaction.message;
@@ -200,23 +185,7 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
         else
             content = `\`\`\`${msg.cleanContent}\`\`\``
 
-        let channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
-        await msg.react(reaction.emoji.name);
-        await channel.send({
-            "embed": {
-              "description": `${content}[message link✉️](${msg.url})`,
-              "color": 14212956,
-              "timestamp": msg.createdTimestamp,
-              "footer": {
-                "text": "New starboard entry ⭐️"
-              },
-              "author": {
-                "name": msg.author.username,
-                "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
-              }
-            }
-          });
-        return console.log(`info: new message into starboard (author: ${msg.author.tag})`);
+        return starboard.send(bot, msg, reaction, content);
     }
 });
 
@@ -265,6 +234,33 @@ bot.on('messageReactionRemove', async (reaction:Discord.MessageReaction, author:
     return mongod.close();
 });
 
+bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
+    if(reaction.emoji.name === '✋') {
+        let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+        let db = mongod.db(dbName);
+        let result = await db.collection('highfive').findOne({ '_id': { $eq: reaction.message.id }, 'target': { $eq: author.id } });
+
+        if(result) {
+            await reaction.message.delete()
+
+            const embed = new Discord.MessageEmbed();
+            embed.setColor('#F2DEB0')
+            embed.setDescription(`**<@${result.author}> 🙌 <@${author.id}>**`)
+            embed.setImage(`https://${process.env.CDN_URL}/img/highfive/${result.gif}.gif`)
+            await db.collection('highfive').deleteOne({ 'target': { $eq: author.id } })
+
+            await db.collection('user').updateOne({ '_id': { $eq: result.author } }, { $inc: { highfive: 1 }});
+            await db.collection('user').updateOne({ '_id': { $eq: author.id } }, { $inc: { highfive: 1 }});
+            await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { highfive: 1 }});
+            return reaction.message.channel.send(embed)
+            .then(() => {
+                console.log(`info: highfive`);
+            })
+            .catch(console.error);
+        }
+    }
+})
+
 // Subs count, refresh every hour
 
 setInterval(async () => {
@@ -295,29 +291,41 @@ setInterval(async () => {
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
 
 setInterval(async () => {
-    var today = new Date();
-    var hh = today.getUTCHours()
+    let today = new Date();
+    let hh = today.getUTCHours()
 
     if(hh == 7) {
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
+        let oldMembers = guild.roles.fetch(process.env.BIRTHDAYROLE);
+
+        (await oldMembers).members.forEach(async (user:Discord.GuildMember) => {
+            try {
+                await user.roles.remove(process.env.BIRTHDAYROLE)
+            } catch (e) {
+                console.error(e)
+            }
+        });
+
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
         let todayString = `${mm}/${dd}`;
 
-        var mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
-        var db = mongod.db(dbName);
+        let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+        let db = mongod.db(dbName);
 
-        var data = await db.collection('user').find({ 'birthday': { $eq: today } }).toArray();
+        let data = await db.collection('user').find({ 'birthday': { $eq: todayString } }).toArray();
 
         if(data.length >= 1) {
-            let channel:any = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
+            let channel:any = guild.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
-                var userInfo = await bot.users.fetch(user._id)
+                let userInfo = await guild.members.fetch(user._id)
+                userInfo.roles.add(process.env.BIRTHDAYROLE)
                 const embed = new Discord.MessageEmbed();
-                embed.setTitle(`**Happy Birthday, ${userInfo.username} ! 🎉🎉**`)
+                embed.setTitle(`**Happy Birthday, ${userInfo.user.username} ! 🎉🎉**`)
                 embed.setFooter(`Born on : ${todayString}`)
                 embed.setColor('#FFFF72')
-                embed.setThumbnail(userInfo.avatarURL({ format: 'png', dynamic: false, size: 128 }))
+                embed.setThumbnail(userInfo.user.avatarURL({ format: 'png', dynamic: false, size: 128 }))
                 channel.send(`<@${user._id}>`)
                 channel.send(embed)
             });
@@ -344,8 +352,9 @@ async function levelCheck(msg:Discord.Message, xp:number) {
 
 async function imageLvl(msg:Discord.Message, level:number) {
     var avatarURL = msg.author.avatarURL({ format: 'png', dynamic: false, size: 512 })
+    let cdnUrl = process.env.CDN_URL;
 
-    var html = await ejs.renderFile('views/level.ejs', { avatarURL, level });
+    var html = await ejs.renderFile('views/level.ejs', { avatarURL, level, cdnUrl });
     var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
 
     try {

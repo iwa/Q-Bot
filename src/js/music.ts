@@ -2,7 +2,7 @@ import { Client, Message, MessageEmbed, Util, VoiceChannel, VoiceConnection } fr
 import * as YoutubeStream from 'ytdl-core';
 const { YouTube } = require('popyt')
 const yt = new YouTube(process.env.YT_TOKEN)
-const utils = require('./utilities')
+import utilities from './utilities'
 
 let TC = process.env.MUSICTC;
 let VC = process.env.MUSICVC;
@@ -13,7 +13,6 @@ let skipReq = 0, loop = 0;
 module.exports = class music {
 
     static async play (bot:Client, msg:Message, args:string[]) {
-
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         if(!args[0])return;
@@ -92,53 +91,11 @@ module.exports = class music {
                     console.error(ex)
                 }
             }
-
             return;
-
         }
 
         if(YoutubeStream.validateURL(video_url[0])) {
-
-            msg.channel.startTyping()
-            error = false;
-
-            if(queue.indexOf(video_url[0]) == -1) {
-                data = await YoutubeStream.getInfo(video_url[0]).catch(() => { error = true; })
-                if(!error && data) {
-                    queue.push(video_url[0])
-                    title.push(Util.escapeMarkdown(data.title))
-                    length.push(data.length_seconds)
-                }
-            } else {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is already in the queue!**")
-            }
-
-            if(error) {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is unavailable :(**")
-            }
-
-            if(queue[0] != video_url[0] && data) {
-                const embed = new MessageEmbed();
-                embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
-                embed.setDescription(`**${data.title}**`)
-                embed.setFooter(`Added by ${msg.author.username}`)
-                embed.setColor('LUMINOUS_VIVID_PINK')
-                msg.channel.stopTyping()
-                msg.channel.send(embed)
-                console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
-            }
-            else {
-                msg.channel.stopTyping()
-                try {
-                    const voiceConnection = await voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel);
-                }
-                catch(ex) {
-                    console.error(ex)
-                }
-            }
+            launchPlay(msg, voiceChannel, video_url[0], data)
         } else {
             let keywords = args.join(' ')
 
@@ -148,52 +105,11 @@ module.exports = class music {
 
             if(!YoutubeStream.validateURL(video))return;
 
-            msg.channel.startTyping();
-            error = false;
-
-            if(queue.indexOf(video) == -1) {
-                data = await YoutubeStream.getInfo(video).catch(() => { error = true; })
-                if(!error && data) {
-                    queue.push(video)
-                    title.push(Util.escapeMarkdown(data.title))
-                    length.push(data.length_seconds)
-                }
-            } else {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is already in the queue!**")
-            }
-
-            if(error) {
-                msg.channel.stopTyping()
-                return msg.channel.send(":x: > **This video is unavailable :(**")
-            }
-
-            if(queue[0] != video && data) {
-                const embed = new MessageEmbed();
-                embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
-                embed.setDescription(`**${data.title}**`)
-                embed.setFooter(`Added by ${msg.author.username}`)
-                embed.setColor('LUMINOUS_VIVID_PINK')
-                msg.channel.stopTyping()
-                msg.channel.send(embed)
-                console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
-            }
-            else {
-                msg.channel.stopTyping()
-                try {
-                    const voiceConnection = await voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel);
-                }
-                catch(ex) {
-                    console.error(ex)
-                }
-            }
+            launchPlay(msg, voiceChannel, video, data)
         }
-
     }
 
     static remove (msg:Message, args:string[]) {
-
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         var queueID:number = parseInt(args[0]);
@@ -212,11 +128,9 @@ module.exports = class music {
 
         queue.splice(queueID, 1)
         title.splice(queueID, 1)
-
     }
 
     static list (msg:Message, args:string[]) {
-
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
         if(args.length > 0)return;
         if(queue.length < 0)return;
@@ -247,7 +161,6 @@ module.exports = class music {
         msg.channel.send(embed);
 
         console.log(`musc: show queue by ${msg.author.tag}`)
-
     }
 
     static async skip (bot:Client, msg:Message) {
@@ -255,7 +168,7 @@ module.exports = class music {
 
         let voiceChannel = msg.guild.channels.cache.find(val => val.id == VC)
 
-        let voiceConnection = await bot.voice.connections.find(val => val.channel.id == VC);
+        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
         if(!voiceConnection) {
             const embed = new MessageEmbed();
             embed.setColor('RED')
@@ -304,11 +217,7 @@ module.exports = class music {
         title = [];
         length = [];
 
-        const embed = new MessageEmbed();
-        var avatar = msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
-        embed.setAuthor("You've successfully cleared the queue.", avatar);
-        embed.setColor('GREEN')
-        msg.channel.send(embed)
+        await msg.react('✅');
 
         console.log(`musc: clear queue by ${msg.author.tag}`)
     }
@@ -322,12 +231,13 @@ module.exports = class music {
         title = [];
         length = [];
 
+        await msg.react('✅');
         await voiceChannel.leave()
         console.log(`musc: stop by ${msg.author.tag}`)
     }
 
     static async forceskip (bot:Client, msg:Message) {
-        if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
+        if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -410,15 +320,7 @@ module.exports = class music {
     static async pause (bot:Client, msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
-        if(!voiceConnection) {
-            const embed = new MessageEmbed();
-            embed.setColor('RED')
-            embed.setTitle("I'm not playing anything right now!")
-            return msg.channel.send(embed);
-        }
-
-        let dispatcher = voiceConnection.dispatcher;
+        let dispatcher = await fetchDispatcher(bot, msg);
         dispatcher.pause(false);
 
         await msg.react('✅');
@@ -427,15 +329,7 @@ module.exports = class music {
     static async resume (bot:Client, msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
-        if(!voiceConnection) {
-            const embed = new MessageEmbed();
-            embed.setColor('RED')
-            embed.setTitle("I'm not playing anything right now!")
-            return msg.channel.send(embed);
-        }
-
-        let dispatcher = voiceConnection.dispatcher;
+        let dispatcher = await fetchDispatcher(bot, msg);
         dispatcher.resume();
 
         await msg.react('✅');
@@ -489,4 +383,59 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
             playSong(msg, voiceConnection, voiceChannel)
         }
     }).on('error', console.error);
+}
+
+async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:string, data:void | YoutubeStream.videoInfo) {
+    msg.channel.startTyping();
+    let error = false;
+    if(queue.indexOf(video_url) == -1) {
+        data = await YoutubeStream.getInfo(video_url).catch(() => { error = true; })
+        if(!error && data) {
+            queue.push(video_url)
+            title.push(Util.escapeMarkdown(data.title))
+            length.push(data.length_seconds)
+        }
+    } else {
+        msg.channel.stopTyping()
+        return msg.channel.send(":x: > **This video is already in the queue!**")
+    }
+
+    if(error) {
+        msg.channel.stopTyping()
+        return msg.channel.send(":x: > **This video is unavailable :(**")
+    }
+
+    if(queue[0] != video_url && data) {
+        const embed = new MessageEmbed();
+        embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+        embed.setDescription(`**${data.title}**`)
+        embed.setFooter(`Added by ${msg.author.username}`)
+        embed.setColor('LUMINOUS_VIVID_PINK')
+        msg.channel.stopTyping()
+        await msg.channel.send(embed)
+        console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
+    }
+    else {
+        msg.channel.stopTyping()
+        try {
+            const voiceConnection = await voiceChannel.join();
+            playSong(msg, voiceConnection, voiceChannel);
+        }
+        catch(ex) {
+            console.error(ex)
+        }
+    }
+}
+
+async function fetchDispatcher(bot:Client, msg:Message) {
+    let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
+    if(!voiceConnection) {
+        const embed = new MessageEmbed();
+        embed.setColor('RED')
+        embed.setTitle("I'm not playing anything right now!")
+        await msg.channel.send(embed);
+    } else {
+        let dispatcher = voiceConnection.dispatcher;
+        return dispatcher;
+    }
 }

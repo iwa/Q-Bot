@@ -3,17 +3,17 @@ import { Db } from 'mongodb';
 
 let levels = require('../../lib/levels.json')
 
-module.exports = class utilities {
+export default class utilities {
 
-    static async info (msg:Discord.Message, iwaUrl:string) {
+    public static async info (msg:Discord.Message, iwaUrl:string):Promise<Discord.Message> {
 
         var embed = {
             "embed": {
                 "title": "**Bot Infos**",
-                "description": "Q-Bot is developed and handled by <@125325519054045184>\n\nLanguage : `JavaScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still support me [here](https://paypal.me/nokushi)",
+                "description": "Q-Bot is developed and handled by <@125325519054045184>\n\nLanguage : `TypeScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still financially support me [here](https://paypal.me/nokushi)",
                 "color": 13002714,
                 "footer": {
-                  "text": "Created with ♥ by iwa | Copyright © iwa, v1.2.5"
+                  "text": "Created with ♥ by iwa | Copyright © iwa, v1.4.0"
                 },
                 "thumbnail": {
                   "url": iwaUrl
@@ -30,7 +30,7 @@ module.exports = class utilities {
 
     }
 
-    static leaderboard (bot:Discord.Client, msg:Discord.Message, args:string[], db:Db) {
+    static leaderboard (bot:Discord.Client, msg:Discord.Message, args:string[], db:Db):Promise<void> {
         if(args.length > 1)return;
 
         switch(args[0]) {
@@ -62,28 +62,7 @@ module.exports = class utilities {
         }
     }
 
-    static async role (msg:Discord.Message, args:string[]) {
-        if(msg.channel.type != "text")return;
-        if(msg.channel.id != "611349541685559316")return;
-
-        if(args.length < 2)return;
-
-        var req = args[0];
-        args.splice(0, 1);
-        var game = args.join(' ').toLowerCase();
-
-        switch(req) {
-            case "join":
-                return join(msg, game);
-
-            case "leave":
-                return leave(msg, game);
-        }
-
-    }
-
-
-    static randomInt(max:number) {
+    static randomInt(max:number):number {
         return Math.floor(Math.random() * Math.floor(max) + 1);
     }
 
@@ -99,147 +78,13 @@ module.exports = class utilities {
         return {'level': 20, 'current': xp, 'max': levels[20].amount}
     }
 
-    static isMod(msg:Discord.Message) {
+    static isMod(msg:Discord.Message):boolean {
         if(msg.member.roles.cache.find(val => val.id == process.env.MODROLE)) { return true }
         else { return false }
     }
 }
 
 // Functions
-
-async function join (msg:Discord.Message, game:string) {
-    switch (game) {
-        case "mariokart":
-        case "mario kart":
-            if(!msg.member.roles.cache.find(val => val.id == '614445539693559820')) {
-                return msg.member.roles.add('614445539693559820')
-                .then(() => {
-                    msg.reply("you joined the Mario Kart role !")
-                })
-            } break;
-
-        case "smashbros":
-        case "smash bros":
-        case "smash":
-            if(!msg.member.roles.cache.find(val => val.id == '614445571045982228')) {
-                return msg.member.roles.add('614445571045982228')
-                .then(() => {
-                    msg.reply("you joined the Smash Bros role !")
-                })
-            } break;
-
-        case "splatoon":
-        case "sploon":
-            if(!msg.member.roles.cache.find(val => val.id == '614445571276668930')) {
-                return msg.member.roles.add('614445571276668930')
-                .then(() => {
-                    msg.reply("you joined the Splatoon role !")
-                })
-            } break;
-
-        case "mariomaker":
-        case "mario maker":
-            if(!msg.member.roles.cache.find(val => val.id == '614445572199546880')) {
-                return msg.member.roles.add('614445572199546880')
-                .then(() => {
-                    msg.reply("you joined the Mario Maker role !")
-                })
-            } break;
-
-        case "pokemon":
-        case "pokémon":
-            if(!msg.member.roles.cache.find(val => val.id == '662017645117440030')) {
-                return msg.member.roles.add('662017645117440030')
-                .then(() => {
-                    msg.reply("you joined the Pokémon role !")
-                })
-            } break;
-
-        case "minecraft":
-            if(!msg.member.roles.cache.find(val => val.id == '681557797661442063')) {
-                return msg.member.roles.add('681557797661442063')
-                .then(() => {
-                    msg.reply("you joined the Minecraft role !")
-                })
-            } break;
-
-        case "terraria":
-            if(!msg.member.roles.cache.find(val => val.id == '681557799725170718')) {
-                return msg.member.roles.add('681557799725170718')
-                .then(() => {
-                    msg.reply("you joined the Terraria role !")
-                })
-            } break;
-
-        default:
-            return msg.reply("the game you entered doesn't exist yet")
-
-    }
-}
-
-async function leave (msg:Discord.Message, game:string) {
-    switch (game) {
-        case "mariokart":
-        case "mario kart":
-            if(msg.member.roles.cache.find(val => val.id == '614445539693559820')) {
-                return msg.member.roles.remove('614445539693559820').then(() => {
-                    msg.reply("you left the Mario Kart role !")
-                })
-            } break;
-
-        case "smashbros":
-        case "smash bros":
-        case "smash":
-            if(msg.member.roles.cache.find(val => val.id == '614445571045982228')) {
-                return msg.member.roles.remove('614445571045982228').then(() => {
-                    msg.reply("you left the Smash Bros role !")
-                })
-            } break;
-
-        case "splatoon":
-        case "sploon":
-            if(msg.member.roles.cache.find(val => val.id == '614445571276668930')) {
-                return msg.member.roles.remove('614445571276668930').then(() => {
-                    msg.reply("you left the Splatoon role !")
-                })
-            } break;
-
-        case "mariomaker":
-        case "mario maker":
-            if(msg.member.roles.cache.find(val => val.id == '614445572199546880')) {
-                return msg.member.roles.remove('614445572199546880').then(() => {
-                    msg.reply("you left the Mario Maker role !")
-                })
-            } break;
-
-        case "pokemon":
-        case "pokémon":
-            if(msg.member.roles.cache.find(val => val.id == '662017645117440030')) {
-                return msg.member.roles.remove('662017645117440030').then(() => {
-                    msg.reply("you left the Pokémon role !")
-                })
-            } break;
-
-        case "minecraft":
-            if(msg.member.roles.cache.find(val => val.id == '681557797661442063')) {
-                return msg.member.roles.remove('681557797661442063').then(() => {
-                    msg.reply("you left the Minecraft role !")
-                })
-            } break;
-
-        case "terraria":
-            if(msg.member.roles.cache.find(val => val.id == '681557799725170718')) {
-                return msg.member.roles.remove('681557799725170718').then(() => {
-                    msg.reply("you left the Terraria role !")
-                })
-            } break;
-
-        default:
-            return msg.reply(":x: > The game you entered doesn't have a role on this server yet!")
-
-    }
-}
-
 
 async function leaderboard(bot:Discord.Client, msg:Discord.Message, db:Db, type:string) {
     let leaderboard = await db.collection('user').find({ hidden: false }).sort({[type]:-1}).limit(10).toArray();

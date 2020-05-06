@@ -3,13 +3,15 @@ import * as ejs from 'ejs'
 const img = require('../../js/img')
 
 module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
-    if(msg.channel.id != '606165780215889960')return;
+    //if(msg.channel.id != '606165780215889960')return;
     if(args.length > 0) {
         msg.channel.startTyping();
         var parole = args;
         var x = parole.join(' ')
 
-        var html = await ejs.renderFile('views/sonicsays.ejs', { x });
+        let cdnUrl = process.env.CDN_URL;
+
+        var html = await ejs.renderFile('views/sonicsays.ejs', { x, cdnUrl });
         var file = await img.generator(385, 209, html, msg.author.tag, 'sonic')
 
         try {

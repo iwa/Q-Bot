@@ -1,8 +1,8 @@
 import { Client, Message } from 'discord.js'
-const utils = require('../../js/utilities')
+import utilities from '../../js/utilities'
 
 module.exports.run = (bot:Client, msg:Message) => {
-    var n = utils.randomInt(2);
+    var n = utilities.randomInt(2);
     if(n == 1)
         msg.channel.send({"embed": { "title": ":large_blue_diamond: **Heads**" }})
     else

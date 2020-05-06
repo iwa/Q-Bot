@@ -1,6 +1,6 @@
 import { Client, Message, MessageEmbed } from 'discord.js';
 import { Db } from 'mongodb';
-const util = require('../js/utilities')
+import utilities from './utilities'
 
 let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so cute with me ?", "omg", "<3", "so cuuuute c:", "c:", "c;", ":3", "QT af :O", "oh yeaaaah ;3"]
 
@@ -25,22 +25,21 @@ let count:stringKeyArray = {
 module.exports = class actions {
 
     static async run (bot:Client, msg:Message, args:string[], db:Db, type:string) {
-        var n = util.randomInt(count[type])
+        let n = utilities.randomInt(count[type])
         while(lastGif[type] == n) {
-            n = util.randomInt(count[type]);
+            n = utilities.randomInt(count[type]);
         }
         lastGif[type] = n;
-        var r = util.randomInt(reply.length)
-        var mentionFirst, mentionSecond, user
+        let r = utilities.randomInt(reply.length)
+        let mentionFirst, mentionSecond, user;
 
         if(args.length == 1) {
             if(msg.mentions.everyone)return;
 
             mentionFirst = msg.mentions.users.first()
             if(!mentionFirst)return;
-            if(mentionFirst.id == msg.author.id) {
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
-            }
+            if(mentionFirst.id == msg.author.id)
+                return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
 
             const embed = new MessageEmbed();
             embed.setColor('#F2DEB0')
@@ -52,12 +51,8 @@ module.exports = class actions {
                 }, 2000)
             }
 
-            if(msg.channel.type != "dm") {
-                msg.delete().catch(console.error)
-            }
-
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
-            embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
+            embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
             user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
             await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 1 }});
@@ -65,7 +60,7 @@ module.exports = class actions {
 
             embed.setFooter(`You have given ${user[type] + 1} ${type}s`)
 
-            return msg.channel.send(embed)
+            return await msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} sent by ${msg.author.tag}`);
             })
@@ -77,9 +72,9 @@ module.exports = class actions {
             mentionSecond = msg.mentions.users.last()
             if(!mentionFirst || !mentionSecond)return;
             if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
+                return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
             if(mentionFirst.id == mentionSecond.id)
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
+                return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
 
             const embed = new MessageEmbed();
             embed.setColor('#F2DEB0')
@@ -91,12 +86,8 @@ module.exports = class actions {
                 }, 2000)
             }
 
-            if(msg.channel.type != "dm") {
-                msg.delete().catch(console.error)
-            }
-
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}** !`)
-            embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
+            embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
             user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
             await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 2 }});
@@ -104,7 +95,7 @@ module.exports = class actions {
 
             embed.setFooter(`You have given ${user[type] + 2} ${type}s`)
 
-            return msg.channel.send(embed)
+            return await msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} sent by ${msg.author.tag}`);
             })
