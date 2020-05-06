@@ -291,29 +291,41 @@ setInterval(async () => {
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
 
 setInterval(async () => {
-    var today = new Date();
-    var hh = today.getUTCHours()
+    let today = new Date();
+    let hh = today.getUTCHours()
 
     if(hh == 7) {
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
+        let oldMembers = guild.roles.fetch(process.env.BIRTHDAYROLE);
+
+        (await oldMembers).members.forEach(async (user:Discord.GuildMember) => {
+            try {
+                await user.roles.remove(process.env.BIRTHDAYROLE)
+            } catch (e) {
+                console.error(e)
+            }
+        });
+
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
         let todayString = `${mm}/${dd}`;
 
-        var mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
-        var db = mongod.db(dbName);
+        let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+        let db = mongod.db(dbName);
 
         let data = await db.collection('user').find({ 'birthday': { $eq: todayString } }).toArray();
 
         if(data.length >= 1) {
-            let channel:any = bot.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
+            let channel:any = guild.channels.cache.find(val => val.id == process.env.BIRTHDAYTC)
 
             data.forEach(async user => {
-                var userInfo = await bot.users.fetch(user._id)
+                let userInfo = await guild.members.fetch(user._id)
+                userInfo.roles.add(process.env.BIRTHDAYROLE)
                 const embed = new Discord.MessageEmbed();
-                embed.setTitle(`**Happy Birthday, ${userInfo.username} ! 🎉🎉**`)
+                embed.setTitle(`**Happy Birthday, ${userInfo.user.username} ! 🎉🎉**`)
                 embed.setFooter(`Born on : ${todayString}`)
                 embed.setColor('#FFFF72')
-                embed.setThumbnail(userInfo.avatarURL({ format: 'png', dynamic: false, size: 128 }))
+                embed.setThumbnail(userInfo.user.avatarURL({ format: 'png', dynamic: false, size: 128 }))
                 channel.send(`<@${user._id}>`)
                 channel.send(embed)
             });
