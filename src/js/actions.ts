@@ -1,6 +1,6 @@
 import { Client, Message, MessageEmbed } from 'discord.js';
 import { Db } from 'mongodb';
-const util = require('../js/utilities')
+import utilities from './utilities'
 
 let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so cute with me ?", "omg", "<3", "so cuuuute c:", "c:", "c;", ":3", "QT af :O", "oh yeaaaah ;3"]
 
@@ -25,12 +25,12 @@ let count:stringKeyArray = {
 module.exports = class actions {
 
     static async run (bot:Client, msg:Message, args:string[], db:Db, type:string) {
-        let n = util.randomInt(count[type])
+        let n = utilities.randomInt(count[type])
         while(lastGif[type] == n) {
-            n = util.randomInt(count[type]);
+            n = utilities.randomInt(count[type]);
         }
         lastGif[type] = n;
-        let r = util.randomInt(reply.length)
+        let r = utilities.randomInt(reply.length)
         let mentionFirst, mentionSecond, user;
 
         if(args.length == 1) {
