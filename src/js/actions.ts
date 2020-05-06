@@ -52,10 +52,6 @@ module.exports = class actions {
                 }, 2000)
             }
 
-            if(msg.channel.type != "dm") {
-                msg.delete().catch(console.error)
-            }
-
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
             embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
@@ -89,10 +85,6 @@ module.exports = class actions {
                     r-1;
                     msg.channel.send(reply[r])
                 }, 2000)
-            }
-
-            if(msg.channel.type != "dm") {
-                msg.delete().catch(console.error)
             }
 
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}** !`)
