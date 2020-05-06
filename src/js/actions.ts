@@ -38,9 +38,8 @@ module.exports = class actions {
 
             mentionFirst = msg.mentions.users.first()
             if(!mentionFirst)return;
-            if(mentionFirst.id == msg.author.id) {
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
-            }
+            if(mentionFirst.id == msg.author.id)
+                return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
 
             const embed = new MessageEmbed();
             embed.setColor('#F2DEB0')
@@ -61,7 +60,7 @@ module.exports = class actions {
 
             embed.setFooter(`You have given ${user[type] + 1} ${type}s`)
 
-            return msg.channel.send(embed)
+            return await msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} sent by ${msg.author.tag}`);
             })
@@ -73,9 +72,9 @@ module.exports = class actions {
             mentionSecond = msg.mentions.users.last()
             if(!mentionFirst || !mentionSecond)return;
             if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
+                return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
             if(mentionFirst.id == mentionSecond.id)
-                return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
+                return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
 
             const embed = new MessageEmbed();
             embed.setColor('#F2DEB0')
@@ -96,7 +95,7 @@ module.exports = class actions {
 
             embed.setFooter(`You have given ${user[type] + 2} ${type}s`)
 
-            return msg.channel.send(embed)
+            return await msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} sent by ${msg.author.tag}`);
             })
