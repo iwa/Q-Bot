@@ -56,7 +56,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             embed.setImage(`https://${process.env.CDN_URL}/img/highfive/fail/${n}.gif`)
             msg.channel.send(embed)
         }
-    }, 10000)
+    }, 30000)
 };
 
 module.exports.help = {
