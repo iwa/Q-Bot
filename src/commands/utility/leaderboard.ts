@@ -1,9 +1,9 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
-const utils = require('../../js/utilities')
+import utilities from '../../js/utilities'
 
 module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
-    utils.leaderboard(bot, msg, args, db);
+    utilities.leaderboard(bot, msg, args, db);
 };
 
 module.exports.help = {

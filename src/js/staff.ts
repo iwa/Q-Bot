@@ -1,10 +1,10 @@
 import { Client, Message, MessageEmbed } from 'discord.js'
-const utils = require('./utilities')
+import utilities from './utilities'
 
 module.exports = class staff {
 
     static async bulk (msg:Message, args:string[]) {
-        if(utils.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
+        if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
         if(args.length !== 0) {
             let channel:any = msg.channel
@@ -24,7 +24,7 @@ module.exports = class staff {
     }
 
     static async mute (bot:Client, msg:Message, args:string[]) {
-        if(utils.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
+        if(utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
 
         if(args.length == 2 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;

@@ -2,7 +2,7 @@ import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
 import * as ejs from 'ejs';
 const img = require('../../js/img')
-const utils = require('../../js/utilities')
+import utilities from '../../js/utilities'
 let lastComboColor:number;
 
 module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
@@ -33,11 +33,12 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
     let member = guild.members.cache.find(val => val.id == id)
 
-    var leadXP = await db.collection('user').find({ hidden: false }).sort({exp:-1}).toArray();
-    var leadHug = await db.collection('user').find({ hidden: false }).sort({hug:-1}).toArray();
-    var leadPat = await db.collection('user').find({ hidden: false }).sort({pat:-1}).toArray();
-    var leadBoop = await db.collection('user').find({ hidden: false }).sort({boop:-1}).toArray();
-    var leadSlap = await db.collection('user').find({ hidden: false }).sort({boop:-1}).toArray();
+    let leadXP = await db.collection('user').find({ hidden: false }).sort({exp:-1}).toArray();
+    let leadHug = await db.collection('user').find({ hidden: false }).sort({hug:-1}).toArray();
+    let leadPat = await db.collection('user').find({ hidden: false }).sort({pat:-1}).toArray();
+    let leadBoop = await db.collection('user').find({ hidden: false }).sort({boop:-1}).toArray();
+    let leadSlap = await db.collection('user').find({ hidden: false }).sort({slap:-1}).toArray();
+    let leadHighfive = await db.collection('user').find({ hidden: false }).sort({highfive:-1}).toArray();
 
     let user = {
         avatar: userDiscord.avatarURL({ format: 'png', dynamic: false, size: 512 }),
@@ -48,11 +49,13 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
         hug: userDB.hug,
         boop: userDB.boop,
         slap: userDB.slap,
+        highfive: userDB.highfive,
         positionXP: leadXP.findIndex(val => val._id == id),
         positionPat: leadPat.findIndex(val => val._id == id),
         positionHug: leadHug.findIndex(val => val._id == id),
         positionBoop: leadBoop.findIndex(val => val._id == id),
         positionSlap: leadSlap.findIndex(val => val._id == id),
+        positionHighfive: leadHighfive.findIndex(val => val._id == id),
         birthday: "",
         fc: "",
         level: 0,
@@ -77,7 +80,7 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     else
         user.fc = userDB.fc
 
-    var lvlInfo = await utils.levelInfo(user.exp);
+    var lvlInfo = await utilities.levelInfo(user.exp);
     user.level = lvlInfo.level
     user.current = lvlInfo.current
     user.max = lvlInfo.max
@@ -96,9 +99,9 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     if(id == process.env.QUMU || id == bot.user.id || member.roles.cache.find(val => val.id == process.env.MODROLE))
         whichColor = 5
     else {
-        whichColor = (utils.randomInt(5) - 1)
+        whichColor = (utilities.randomInt(5) - 1)
         while(lastComboColor == whichColor)
-            whichColor = (utils.randomInt(5) - 1)
+            whichColor = (utilities.randomInt(5) - 1)
         lastComboColor = whichColor
     }
 
