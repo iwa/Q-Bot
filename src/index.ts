@@ -17,6 +17,7 @@ const starboard = require('./js/starboard');
 const levels = require('../lib/levels.json');
 
 import { YouTube } from 'popyt';
+import utilities from "./js/utilities";
 const yt = new YouTube(process.env.YT_TOKEN)
 
 let cooldown:stringKeyArray = [], cooldownXP:stringKeyArray = [];
@@ -232,6 +233,33 @@ bot.on('messageReactionRemove', async (reaction:Discord.MessageReaction, author:
 
     return mongod.close();
 });
+
+bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
+    if(reaction.emoji.name === '✋') {
+        let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+        let db = mongod.db(dbName);
+        let result = await db.collection('highfive').findOne({ '_id': { $eq: reaction.message.id }, 'target': { $eq: author.id } });
+
+        if(result) {
+            await reaction.message.delete()
+
+            const embed = new Discord.MessageEmbed();
+            embed.setColor('#F2DEB0')
+            embed.setDescription(`**<@${result.author}> 🙌 <@${author.id}>**`)
+            embed.setImage(`https://cdn.iwa.sh/img/highfive/${result.gif}.gif`)
+            await db.collection('highfive').deleteOne({ 'target': { $eq: author.id } })
+
+            await db.collection('user').updateOne({ '_id': { $eq: result.author } }, { $inc: { highfive: 1 }});
+            await db.collection('user').updateOne({ '_id': { $eq: author.id } }, { $inc: { highfive: 1 }});
+            await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { highfive: 1 }});
+            return reaction.message.channel.send(embed)
+            .then(() => {
+                console.log(`info: highfive`);
+            })
+            .catch(console.error);
+        }
+    }
+})
 
 // Subs count, refresh every hour
 
