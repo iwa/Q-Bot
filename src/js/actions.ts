@@ -57,7 +57,7 @@ module.exports = class actions {
             }
 
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
-            embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
+            embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
             user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
             await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 1 }});
@@ -96,7 +96,7 @@ module.exports = class actions {
             }
 
             embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}** !`)
-            embed.setImage(`https://cdn.iwa.sh/img/${type}/${n}.gif`)
+            embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
             user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
             await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: 2 }});

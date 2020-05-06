@@ -246,7 +246,7 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
             const embed = new Discord.MessageEmbed();
             embed.setColor('#F2DEB0')
             embed.setDescription(`**<@${result.author}> 🙌 <@${author.id}>**`)
-            embed.setImage(`https://cdn.iwa.sh/img/highfive/${result.gif}.gif`)
+            embed.setImage(`https://${process.env.CDN_URL}/img/highfive/${result.gif}.gif`)
             await db.collection('highfive').deleteOne({ 'target': { $eq: author.id } })
 
             await db.collection('user').updateOne({ '_id': { $eq: result.author } }, { $inc: { highfive: 1 }});
@@ -340,8 +340,9 @@ async function levelCheck(msg:Discord.Message, xp:number) {
 
 async function imageLvl(msg:Discord.Message, level:number) {
     var avatarURL = msg.author.avatarURL({ format: 'png', dynamic: false, size: 512 })
+    let cdnUrl = process.env.CDN_URL;
 
-    var html = await ejs.renderFile('views/level.ejs', { avatarURL, level });
+    var html = await ejs.renderFile('views/level.ejs', { avatarURL, level, cdnUrl });
     var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
 
     try {
