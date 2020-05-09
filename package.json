@@ -27,7 +27,7 @@
     "node-gyp": "^6.1.0",
     "node-pre-gyp": "^0.14.0",
     "popyt": "3.0.0",
-    "puppeteer": "^3.0.2",
+    "puppeteer": "^3.0.4",
     "sodium": "^3.0.2",
     "ytdl-core": "^2.1.1",
     "zlib-sync": "^0.1.6"
