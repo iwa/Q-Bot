@@ -1,7 +1,7 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
 import * as ejs from 'ejs';
-const img = require('../../js/img')
+import imGenerator from '../../js/img';
 import utilities from '../../js/utilities'
 let lastComboColor:number;
 
@@ -108,14 +108,14 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     var html, file;
     if(id == process.env.QUMU) {
         html = await ejs.renderFile('views/profileQumu.ejs', { user, colors, whichColor });
-        file = await img.generator(508, 288, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 288, html, userDiscord.tag, 'prof')
     } else if(id == bot.user.id) {
         let thanksiwa:number = userDB.thanksiwa
         html = await ejs.renderFile('views/profileBot.ejs', { user, colors, whichColor, thanksiwa });
-        file = await img.generator(508, 358, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 358, html, userDiscord.tag, 'prof')
     } else {
         html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
-        file = await img.generator(508, 428, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 428, html, userDiscord.tag, 'prof')
     }
 
     try {

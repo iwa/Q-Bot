@@ -2,7 +2,7 @@ import * as Discord from "discord.js";
 import * as ejs from 'ejs';
 
 const levels = require('../../lib/levels.json');
-const img = require('./img')
+import imGenerator from './img'
 
 export default class leveling {
 
@@ -22,7 +22,7 @@ export default class leveling {
         let cdnUrl = process.env.CDN_URL;
 
         var html = await ejs.renderFile('views/level.ejs', { avatarURL, level, cdnUrl });
-        var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
+        var file = await imGenerator(808, 208, html, msg.author.tag, 'lvl')
 
         try {
             await msg.reply('', {files: [file]})
