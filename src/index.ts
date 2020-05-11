@@ -150,7 +150,7 @@ bot.on('message', async (msg:Discord.Message) => {
     if(process.env.SLEEP === '1' && msg.author.id != process.env.IWA)return;
 
     if (!cmd) return;
-    else cmd.run(bot, msg, args, db, commands);
+    else await cmd.run(bot, msg, args, db, commands);
 
     await db.collection('stats').updateOne({ _id: date }, { $inc: { cmd: 1 } }, { upsert: true })
 
