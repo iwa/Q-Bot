@@ -20,7 +20,7 @@ module.exports.run = (bot:Client, msg:Message, args:string[]) => {
             break;
 
             default:
-                return msg.channel.send({"embed": { "title": ":x: > **You need to pick between rock, paper and scissors !**" }})
+                return msg.channel.send({"embed": { "title": ":x: > **You need to pick between rock, paper or scissors !**" }})
         }
 
         var n = utilities.randomInt(3);

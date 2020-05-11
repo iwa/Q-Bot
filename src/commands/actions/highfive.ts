@@ -11,22 +11,22 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     let mention = msg.mentions.users.first()
     if(!mention)return;
 
-    if(mention.id == msg.author.id)
+    if(mention.id == msg.author.id) // Send this reply if user mentioned is the same as user who sent message
         return msg.channel.send({"embed": { "title": `:x: > **You can't highfive youself!**`, "color": 13632027 }});
 
     if(mention.id == bot.user.id)return;
 
     let result = await db.collection('highfive').findOne({ 'author': { $eq: msg.author.id }, 'target': { $eq: mention.id } });
     if (result)
-        return msg.channel.send({"embed": { "title": `:x: > **You already requested this person a highfive!**`, "color": 13632027 }});
+        return msg.channel.send({"embed": { "title": `:x: > **You already requested this user a highfive!**`, "color": 13632027 }});
 
     let reply = await msg.channel.send({
         "embed": {
             "title": "🙌",
-            "description": `<@${msg.author.id}> wants to do a highfive with you <@${mention.id}> !\nreact with ✋ to accept the highfive`,
+            "description": `<@${msg.author.id}> wants to do a high five with you <@${mention.id}>!\nReact with ✋ to accept the highfive`,
             "color": 15916720,
             "footer": {
-                "text": "the request will fail in 30 seconds"
+                "text": "(The request will fail in 30 seconds)"
             }
         }
     })
