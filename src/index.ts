@@ -6,18 +6,16 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 import * as fs from 'fs';
-import * as ejs from 'ejs';
 
 import { MongoClient } from 'mongodb';
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 const letmein = require('./js/letmein')
-const img = require('./js/img')
 const starboard = require('./js/starboard');
 const levels = require('../lib/levels.json');
 
 import { YouTube } from 'popyt';
-import utilities from "./js/utilities";
+import leveling from './js/leveling';
 const yt = new YouTube(process.env.YT_TOKEN)
 
 let cooldown:stringKeyArray = [], cooldownXP:stringKeyArray = [];
@@ -132,7 +130,7 @@ bot.on('message', async (msg:Discord.Message) => {
             await db.collection('user').insertOne({ _id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0, highfive: 0 });
         else if(!cooldownXP[msg.author.id]) {
             await db.collection('user').updateOne({ _id: msg.author.id }, { $inc: { exp: 1 }});
-            levelCheck(msg, (user.exp+1));
+            leveling.levelCheck(msg, (user.exp+1));
             cooldownXP[msg.author.id] = 1;
             return setTimeout(async () => { delete cooldownXP[msg.author.id] }, 5000)
         }
@@ -336,33 +334,3 @@ setInterval(async () => {
 // Login
 
 bot.login(process.env.TOKEN)
-
-// Functions
-
-async function levelCheck(msg:Discord.Message, xp:number) {
-    for(var i = 1; i <= 20; i++) {
-        if(xp == levels[i].amount) {
-            if(i != 1)
-                await msg.member.roles.remove(levels[i-1].id).catch(console.error);
-            await msg.member.roles.add(levels[i].id).catch(console.error);
-            return imageLvl(msg, i);
-        }
-    }
-}
-
-async function imageLvl(msg:Discord.Message, level:number) {
-    var avatarURL = msg.author.avatarURL({ format: 'png', dynamic: false, size: 512 })
-    let cdnUrl = process.env.CDN_URL;
-
-    var html = await ejs.renderFile('views/level.ejs', { avatarURL, level, cdnUrl });
-    var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
-
-    try {
-        await msg.reply('', {files: [file]})
-        if(level % 2 == 0)
-            return await msg.channel.send("*hey, you've unlocked a new color, do `?color` in #commands to discover it!*")
-    } catch(err) {
-        console.error(err)
-        return msg.reply(`You're now level ${level} ! Congrats !`)
-    }
-}
