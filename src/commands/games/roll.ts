@@ -3,7 +3,7 @@ import utilities from '../../js/utilities'
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     if(args.length > 0) {
-        var x = args[0]
+        let x = args[0]
         msg.channel.send({"embed": {
             "title": `🎲 **${utilities.randomInt(parseInt(x))}**`,
             "color": 5601658

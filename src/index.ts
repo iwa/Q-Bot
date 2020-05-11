@@ -124,7 +124,7 @@ bot.on('message', async (msg:Discord.Message) => {
         await db.collection('stats').updateOne({ _id: date }, { $inc: { msg: 1 } }, { upsert: true })
         if(msg.channel.id == '608630294261530624')return;
 
-        var user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
+        let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
 
         if(!user)
             await db.collection('user').insertOne({ _id: msg.author.id, exp: 1, birthday: null, fc: null, hidden: false, pat: 0, hug: 0, boop: 0, slap: 0, highfive: 0 });
@@ -166,8 +166,8 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
     if(reaction.users.cache.find(val => val.id == bot.user.id))return;
     if(reaction.emoji.name == '⭐') {
         if(reaction.count >= 5) {
-            var msg = reaction.message;
-            var content;
+            let msg = reaction.message;
+            let content;
             if(!msg.cleanContent)
                 content = "*attachment only*\n"
             else
@@ -188,10 +188,10 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
 });
 
 bot.on('guildMemberRemove', async member => {
-    var mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
-    var db = mongod.db(dbName);
+    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
+    let db = mongod.db(dbName);
 
-    var user = await db.collection('user').findOne({ '_id': { $eq: member.id } });
+    let user = await db.collection('user').findOne({ '_id': { $eq: member.id } });
     if(user)
         await db.collection('user').updateOne({ _id: member.id }, { $set: { hidden: true }});
 
@@ -277,7 +277,7 @@ setInterval(async () => {
 // Check if a member no longer booster have the color
 
 setInterval(async () => {
-    var guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
+    let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
 
     guild.members.cache.forEach(async elem => {
         if(elem.roles.cache.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.cache.find(val => val.id == process.env.BOOSTROLE))) {
