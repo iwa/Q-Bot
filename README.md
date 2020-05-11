@@ -15,7 +15,7 @@
 - Language used : `TypeScript, with NodeJS`
 - Library used : `discord.js`
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/iwaQwQ/Q-Bot?branch=master)](https://bettercodehub.com/)
+[![BCH compliance](https://bettercodehub.com/edge/badge/iwa/Q-Bot?branch=master)](https://bettercodehub.com/)
 
 ## How to contribute
 
@@ -28,7 +28,7 @@
 #### 1. Add remote from original repository in your forked repository:
 
     cd into/cloned/fork-repo
-    git remote add upstream https://github.com/iwaQwQ/Q-Bot.git
+    git remote add upstream https://github.com/iwa/Q-Bot.git
     git fetch upstream
 
 #### 2. Updating your fork from original repo to keep up with their changes:
