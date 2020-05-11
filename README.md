@@ -15,7 +15,7 @@
 - Language used : `TypeScript, with NodeJS`
 - Library used : `discord.js`
 
-[![BCH compliance](https://bettercodehub.com/edge/badge/iwaQwQ/Q-Bot?branch=master)](https://bettercodehub.com/)
+[![BCH compliance](https://bettercodehub.com/edge/badge/iwa/Q-Bot?branch=master)](https://bettercodehub.com/)
 
 ## How to contribute
 
