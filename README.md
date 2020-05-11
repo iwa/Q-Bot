@@ -10,7 +10,7 @@
 
 ## About
 
-**Q-Bot is entirely developed and handled by iwa**
+**Q-Bot is handled by @iwa**
 
 - Language used : `TypeScript, with NodeJS`
 - Library used : `discord.js`
@@ -20,8 +20,8 @@
 ## How to contribute
 
 #### 1. Make a fork and clone it
-#### 2. Make your modifications on the `master` branch
-#### 3. Create a Merge Request, with `dev` as target branch
+#### 2. Make your modifications
+#### 3. Create a Pull Request, with `dev` as target branch
 
 ## How to keep your fork up to date
 
@@ -35,7 +35,7 @@
 
     git pull upstream master
 
-Now you should have at least 2 remotes : origin & upstream
+Now you should have at least 2 remotes : `origin` & `upstream`
 
 Keep upstream/master always unedited since it'll be your fresh copy from the original repo.
 
