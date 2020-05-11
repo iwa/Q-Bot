@@ -10,7 +10,7 @@ module.exports = class staff {
             let channel:any = msg.channel
             if(msg.channel.type !== "dm") {
                 msg.delete().catch(console.error);
-                var nb = parseInt(args[0])
+                let nb = parseInt(args[0])
                 msg.channel.bulkDelete(nb)
                     .then(() => {
                         console.log(`info: bulk delete: ${nb} in #${channel.name} by ${msg.author.tag}`)
@@ -29,7 +29,7 @@ module.exports = class staff {
         if(args.length == 2 && msg.channel.type != 'dm') {
             if(msg.mentions.everyone)return;
 
-            var mention = msg.mentions.members.first()
+            let mention = msg.mentions.members.first()
 
             if(!mention)return;
             if(mention.id == msg.author.id || mention.id == bot.user.id)return;
@@ -42,7 +42,7 @@ module.exports = class staff {
                 console.error(error);
             }
 
-            var time = parseInt(args[1])
+            let time = parseInt(args[1])
 
             if(time <= 0 || time > 1440)return;
 
@@ -54,7 +54,7 @@ module.exports = class staff {
 
             try {
                 await mention.roles.add('636254696880734238')
-                var reply = await msg.channel.send(embed)
+                let reply = await msg.channel.send(embed)
                 setTimeout(async () => {
                     await reply.delete()
                     return mention.roles.remove('636254696880734238')

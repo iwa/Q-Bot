@@ -2,7 +2,7 @@ import { Client, Message } from 'discord.js'
 import utilities from '../../js/utilities'
 
 module.exports.run = (bot:Client, msg:Message) => {
-    var n = utilities.randomInt(2);
+    let n = utilities.randomInt(2);
     if(n == 1)
         msg.channel.send({"embed": { "title": ":large_blue_diamond: **Heads**" }})
     else

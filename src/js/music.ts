@@ -23,17 +23,17 @@ module.exports = class music {
 
         let video_url = args[0].split('&')
 
-        var error, data;
+        let error, data;
 
         if(video_url[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 
             const playlist = await yt.getPlaylistByUrl(video_url[0]).catch(console.error)
 
-            var reply = await msg.channel.send(":warning: Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
+            let reply = await msg.channel.send(":warning: Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
             await reply.react('✅');
             await reply.react('❌');
 
-            var collected = await reply.awaitReactions((_reaction, user) => user.id == msg.author.id, { time: 10000 })
+            let collected = await reply.awaitReactions((_reaction, user) => user.id == msg.author.id, { time: 10000 })
 
             if(collected.first() == undefined) {
                 reply.delete()
@@ -44,7 +44,7 @@ module.exports = class music {
                 return msg.channel.send(":x: > **You must choose only one of both reactions!**")
             }
 
-            var emote = collected.first().emoji.name
+            let emote = collected.first().emoji.name
 
             if(emote == '❌')return;
             if(emote != '✅')return;
@@ -57,7 +57,7 @@ module.exports = class music {
             msg.channel.send(embed)
 
             const videos = await playlist.fetchVideos();
-            var errors = 0;
+            let errors = 0;
 
             videos.forEach(async (video:any) => {
                 const url:any = video.url
@@ -99,7 +99,7 @@ module.exports = class music {
         } else {
             let keywords = args.join(' ')
 
-            var video = await yt.searchVideos(keywords, 1).then((data:any) => {
+            let video = await yt.searchVideos(keywords, 1).then((data:any) => {
                 return data.results[0].url
             })
 
@@ -112,7 +112,7 @@ module.exports = class music {
     static remove (msg:Message, args:string[]) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        var queueID:number = parseInt(args[0]);
+        let queueID:number = parseInt(args[0]);
 
         if(isNaN(queueID)) return;
 
@@ -148,9 +148,9 @@ module.exports = class music {
             queue.forEach(async (item, index) => {
                 if(index == 0 || index > 10)return;
 
-                var date = new Date(null)
+                let date = new Date(null)
                 date.setSeconds(parseInt(length[index]))
-                var timeString = date.toISOString().substr(11, 8)
+                let timeString = date.toISOString().substr(11, 8)
 
                 embed.addField(`${index} : **${title[index]}**, *${timeString}*`, item)
             })
@@ -294,14 +294,14 @@ module.exports = class music {
             return msg.channel.send(embed);
         }
 
-        var date = new Date(null)
+        let date = new Date(null)
         date.setSeconds(parseInt(length[0]))
-        var timeString = date.toISOString().substr(11, 8)
+        let timeString = date.toISOString().substr(11, 8)
         const embed = new MessageEmbed();
         embed.setColor('GREEN')
         embed.setTitle("**:cd: Now Playing:**")
 
-        var desc = `[${title[0]}](${queue[0]})`;
+        let desc = `[${title[0]}](${queue[0]})`;
         if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable";
         embed.setDescription(desc)
 
@@ -348,9 +348,9 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
     voiceConnection.play(video, {volume : 0.8, bitrate : 96000, highWaterMark: 512})
     .on('start', async () => {
         if(loop == 0) {
-            var date = new Date(null)
+            let date = new Date(null)
             date.setSeconds(parseInt(length[0]))
-            var timeString = date.toISOString().substr(11, 8)
+            let timeString = date.toISOString().substr(11, 8)
             const embed = new MessageEmbed();
             embed.setColor('GREEN')
             embed.setTitle("**:cd: Now Playing:**")
