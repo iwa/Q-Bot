@@ -3,7 +3,7 @@ import * as ejs from 'ejs'
 const img = require('../../js/img')
 
 module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
-    //if(msg.channel.id != '606165780215889960')return;
+    if(msg.channel.id != '606165780215889960') return msg.channel.send({"embed": { "title": `:x: > **Command only usable in #memes**`, "color": 13632027}});
     if(args.length > 0) {
         msg.channel.startTyping();
         var parole = args;
