@@ -16,10 +16,6 @@ const levels = require('../lib/levels.json');
 
 import cooldown from "./events/messages/cooldown";
 
-import { YouTube } from 'popyt';
-
-const yt = new YouTube(process.env.YT_TOKEN)
-
 
 fs.readdir('./build/commands/', { withFileTypes:true }, (error, f) => {
     if (error) return console.error(error);
@@ -153,17 +149,9 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
 
 // Subs count, refresh every hour
 
+import subsCount from './loops/subsCount';
 setInterval(async () => {
-    let channel:any = bot.channels.cache.find(val => val.id == process.env.SUBCOUNT)
-    let title = channel.name
-    let newCount = title.replace(/\D/gim, '')
-
-    await yt.getChannel('UC0QbcOX2gI5zruEvpSmnf6Q')
-        .then(data => {
-            if(newCount == data.subCount)return;
-            let subs = data.subCount.toLocaleString()
-            channel.edit({ name: `📊 ${subs} subs`})
-        })
+    subsCount(bot);
 }, 3600000);
 
 // Check if a member no longer booster have the color
