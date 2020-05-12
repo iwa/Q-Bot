@@ -15,6 +15,7 @@ const letmein = require('./js/letmein')
 const levels = require('../lib/levels.json');
 
 import cooldown from "./events/messages/cooldown";
+import ready from './events/ready';
 
 
 fs.readdir('./build/commands/', { withFileTypes:true }, (error, f) => {
@@ -50,32 +51,11 @@ bot.on('shardReconnecting', () => {
 });
 
 bot.on('shardResume', async () => {
-    await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
-    await bot.user.setStatus("online").catch(console.error)
-
-    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
-    let db = mongod.db(dbName);
-
-    let allMsg = db.collection('msg').find()
-    allMsg.forEach(async elem => {
-        let channel:any = await bot.channels.fetch(elem.channel)
-        await channel.messages.fetch(elem._id, true)
-    });
+    ready(bot);
 })
 
 bot.on('shardReady', async () => {
-    await bot.user.setActivity("Qumu's Remixes | ?help", {type : 2}).catch(console.error);
-    await bot.user.setStatus("online").catch(console.error)
-
-    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
-    let db = mongod.db(dbName);
-
-    let allMsg = db.collection('msg').find()
-    allMsg.forEach(async elem => {
-        let channel:any = await bot.channels.fetch(elem.channel)
-        await channel.messages.fetch(elem._id, true)
-    });
-
+    ready(bot)
     console.log(`info: logged in as ${bot.user.username}`);
 });
 
