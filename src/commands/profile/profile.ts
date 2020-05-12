@@ -1,14 +1,14 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
 import * as ejs from 'ejs';
-const img = require('../../js/img')
+import imGenerator from '../../js/img';
 import utilities from '../../js/utilities'
 let lastComboColor:number;
 
 module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
     if(args.length == 1) {
         if(msg.mentions.everyone)return;
-        var mention = msg.mentions.users.first()
+        let mention = msg.mentions.users.first()
         if(!mention)return;
         return profileImg(bot, msg, db, mention.id);
     } else
@@ -22,7 +22,7 @@ module.exports.help = {
 };
 
 async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
-    var userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
+    let userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
 
     if(!userDB)return msg.channel.send(":x: > **You aren't registered into the database. You need to talk once in a channel to have your profile created.**");
 
@@ -80,7 +80,7 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     else
         user.fc = userDB.fc
 
-    var lvlInfo = await utilities.levelInfo(user.exp);
+    let lvlInfo = await utilities.levelInfo(user.exp);
     user.level = lvlInfo.level
     user.current = lvlInfo.current
     user.max = lvlInfo.max
@@ -94,7 +94,7 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
         ['#90B1FF', '#F0A6E4']
     ]
 
-    var whichColor;
+    let whichColor;
 
     if(id == process.env.QUMU || id == bot.user.id || member.roles.cache.find(val => val.id == process.env.MODROLE))
         whichColor = 5
@@ -105,17 +105,17 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
         lastComboColor = whichColor
     }
 
-    var html, file;
+    let html, file;
     if(id == process.env.QUMU) {
         html = await ejs.renderFile('views/profileQumu.ejs', { user, colors, whichColor });
-        file = await img.generator(508, 288, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 288, html, userDiscord.tag, 'prof')
     } else if(id == bot.user.id) {
         let thanksiwa:number = userDB.thanksiwa
         html = await ejs.renderFile('views/profileBot.ejs', { user, colors, whichColor, thanksiwa });
-        file = await img.generator(508, 358, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 358, html, userDiscord.tag, 'prof')
     } else {
         html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
-        file = await img.generator(508, 428, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 428, html, userDiscord.tag, 'prof')
     }
 
     try {
