@@ -14,4 +14,6 @@ export default async function ready (bot:Client) {
         let channel:any = await bot.channels.fetch(elem.channel)
         await channel.messages.fetch(elem._id, true)
     });
+
+    await mongod.close()
 }
