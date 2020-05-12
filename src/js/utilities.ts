@@ -9,8 +9,8 @@ export default class utilities {
 
         let embed = {
             "embed": {
-                "title": "**Bot Infos**",
-                "description": "Q-Bot is developed and handled by <@125325519054045184>\n\nLanguage : `TypeScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still financially support me [here](https://paypal.me/nokushi)",
+                "title": "**Bot Infos**", // I've added a GitHub link too. - Hy~
+                "description": "Q-Bot is developed and handled by <@125325519054045184>.\nYou can help contribute to Q-Bot's code [here!](https://github.com/iwa/Q-Bot)\n\nLanguage : `TypeScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still financially support me [here](https://paypal.me/nokushi)",
                 "color": 13002714,
                 "footer": {
                   "text": "Created with ♥ by iwa | Copyright © iwa, v1.4.0"
