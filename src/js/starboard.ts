@@ -1,6 +1,6 @@
-import { Client, Message, MessageReaction } from "discord.js";
+import { Client, Message, MessageReaction, User } from "discord.js";
 
-module.exports = class starboard {
+export default class starboard {
 
     static async send (bot:Client, msg:Message, reaction:MessageReaction, content:string):Promise<void> {
         let channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
@@ -22,4 +22,31 @@ module.exports = class starboard {
         console.log(`info: new message into starboard (author: ${msg.author.tag})`);
     }
 
+    static async check (reaction:MessageReaction, author:User, bot:Client) {
+        if(reaction.message.guild.id !== process.env.GUILDID)return;
+        if(reaction.message.channel.id == process.env.STARBOARDTC)return;
+        if(reaction.message.channel.id == process.env.ANNOUNCEMENTSTC)return;
+        if(reaction.users.cache.find(val => val.id == bot.user.id))return;
+        if(reaction.emoji.name == '⭐') {
+            if(reaction.count >= 5) {
+                let msg = reaction.message;
+                let content;
+                if(!msg.cleanContent)
+                    content = "*attachment only*\n"
+                else
+                    content = `\`\`\`${msg.cleanContent}\`\`\``
+
+                return starboard.send(bot, msg, reaction, content);
+            }
+        } else if(reaction.emoji.name == '🌟' && author.id == process.env.IWA) {
+            let msg = reaction.message;
+            let content;
+            if(!msg.cleanContent)
+                content = "*attachment only*\n"
+            else
+                content = `\`\`\`${msg.cleanContent}\`\`\``
+
+            return starboard.send(bot, msg, reaction, content);
+        }
+    }
 }
