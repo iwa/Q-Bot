@@ -268,7 +268,7 @@ module.exports = class music {
             loop = 1
             console.log(`info: loop enabled by ${msg.author.tag}`)
             const embed = new MessageEmbed();
-            embed.setAuthor("Looping the current song...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+            embed.setAuthor("🔂 Looping the current song...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
@@ -301,7 +301,7 @@ module.exports = class music {
         embed.setTitle("**:cd: Now Playing:**")
 
         let desc = `[${title[0]}](${queue[0]})`;
-        if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable";
+        if(loop == 1) desc += "\n🔂 Currently looping this song - type `?loop` to disable";
         embed.setDescription(desc)
 
         let time = new Date(voiceConnection.dispatcher.streamTime).toISOString().slice(11,19)
