@@ -5,8 +5,7 @@ let lastGif:number = 0, count:number = 9;
 let lastGifFail:number = 0, countFail:number = 5;
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
-    if(msg.channel.type != "dm")
-        await msg.delete().catch(console.error)
+
     if(msg.mentions.everyone)return;
     let mention = msg.mentions.users.first()
     if(!mention)return;
