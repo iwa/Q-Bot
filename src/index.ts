@@ -164,15 +164,9 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
     await starboard.check(reaction, author, bot);
 });
 
+import memberLeave from './events/memberLeave'
 bot.on('guildMemberRemove', async member => {
-    let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
-    let db = mongod.db(dbName);
-
-    let user = await db.collection('user').findOne({ '_id': { $eq: member.id } });
-    if(user)
-        await db.collection('user').updateOne({ _id: member.id }, { $set: { hidden: true }});
-
-    return mongod.close();
+    memberLeave(member)
 })
 
 bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
