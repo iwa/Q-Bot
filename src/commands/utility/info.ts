@@ -1,4 +1,3 @@
- // Now puts GitHub link too. Check the utilities TS. - Hy~
 import { Client, Message } from 'discord.js'
 import utilities from '../../js/utilities'
 
