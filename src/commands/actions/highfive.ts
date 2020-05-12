@@ -62,5 +62,5 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
 module.exports.help = {
     name: 'highfive',
     usage: "?highfive (mention someone)",
-    desc: "highfive people by mentioning them"
+    desc: "Highfive people by mentioning them. Requires the target to react back!"
 };
