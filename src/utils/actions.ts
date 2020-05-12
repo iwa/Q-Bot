@@ -22,7 +22,7 @@ let count:stringKeyArray = { // define last gif of action
     'slap': 9
 };
 
-module.exports = class actions {
+export default class actions {
 
     static async run (bot:Client, msg:Message, args:string[], db:Db, type:string) {
         let n = utilities.randomInt(count[type])
