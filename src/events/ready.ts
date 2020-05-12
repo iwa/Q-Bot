@@ -15,5 +15,7 @@ export default async function ready (bot:Client) {
         await channel.messages.fetch(elem._id, true)
     });
 
-    await mongod.close()
+    return setTimeout(async () => {
+        await mongod.close()
+    }, 15000);
 }
