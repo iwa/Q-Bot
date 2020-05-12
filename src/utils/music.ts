@@ -396,12 +396,12 @@ async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:stri
         }
     } else {
         msg.channel.stopTyping()
-        return msg.channel.send(":x: > **This video is already in the queue!**")
+        return msg.channel.send({"embed": { "title": `:x: > **This video is already in the queue!**`, "color": 13632027 }})
     }
 
     if(error) {
         msg.channel.stopTyping()
-        return msg.channel.send(":x: > **This video is unavailable :(**")
+        return msg.channel.send({"embed": { "title": `:x: > **This video is unavailable :(**`, "color": 13632027 }})
     }
 
     if(queue[0] != video_url && data) {
