@@ -156,14 +156,9 @@ setInterval(async () => {
 
 // Check if a member no longer booster have the color
 
+import boostColorCheck from './loops/boostColorCheck';
 setInterval(async () => {
-    let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
-
-    guild.members.cache.forEach(async elem => {
-        if(elem.roles.cache.find(val => val.id == process.env.BOOSTCOLOR) && !(elem.roles.cache.find(val => val.id == process.env.BOOSTROLE))) {
-            await elem.roles.remove(process.env.BOOSTCOLOR);
-        }
-    });
+    boostColorCheck(bot)
 }, 300000);
 
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
