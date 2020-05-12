@@ -1,6 +1,6 @@
 import { Client, Message, MessageEmbed, Util, VoiceChannel, VoiceConnection } from 'discord.js';
 import * as YoutubeStream from 'ytdl-core';
-const { YouTube } = require('popyt')
+import { YouTube, Video } from 'popyt';
 const yt = new YouTube(process.env.YT_TOKEN)
 import utilities from './utilities'
 
@@ -27,7 +27,8 @@ module.exports = class music {
 
         if(video_url[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 
-            const playlist = await yt.getPlaylistByUrl(video_url[0]).catch(console.error)
+            const playlist = await yt.getPlaylist(video_url[0]).catch(console.error)
+            if(!playlist)return;
 
             let reply = await msg.channel.send(":warning: Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
             await reply.react('✅');
@@ -59,38 +60,43 @@ module.exports = class music {
             const videos = await playlist.fetchVideos();
             let errors = 0;
 
-            videos.forEach(async (video:any) => {
-                const url:any = video.url
-                error = false;
-                if(queue.indexOf(url) == -1) {
-                    data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
-                    if(!error && data) {
-                        queue.push(url)
-                        title.push(Util.escapeMarkdown(data.title))
-                        length.push(data.length_seconds)
+            let bar = new Promise((resolve, reject) => {
+                videos.forEach(async (video:Video, index:number, array:Video[]) => {
+                    const url:string = video.url
+                    error = false;
+                    if(queue.indexOf(url) == -1) {
+                        data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
+                        if(!error && data) {
+                            queue.push(url)
+                            title.push(Util.escapeMarkdown(data.title))
+                            length.push(data.length_seconds)
+                        }
+                    }
+                    if(index === array.length -1) resolve();
+                });
+            });
+
+            bar.then(async () => {
+                const embedDone = new MessageEmbed();
+                embedDone.setTitle("**Done!**")
+                embedDone.setColor('LUMINOUS_VIVID_PINK')
+
+                if(errors > 0) embedDone.setDescription("Some videos are unavailable :(");
+
+                msg.channel.send(embedDone)
+
+                let connection:null | VoiceConnection = bot.voice.connections.find(val => val.channel.id == voiceChannel.id);
+
+                if(!connection) {
+                    try {
+                        const voiceConnection = await voiceChannel.join();
+                        playSong(msg, voiceConnection, voiceChannel);
+                    }
+                    catch(ex) {
+                        console.error(ex)
                     }
                 }
             });
-
-            const embedDone = new MessageEmbed();
-            embedDone.setTitle("**Done!**")
-            embedDone.setColor('LUMINOUS_VIVID_PINK')
-
-            if(errors > 0) embedDone.setDescription("Some videos are unavailable :(");
-
-            msg.channel.send(embedDone)
-
-            let connection:null | VoiceConnection = bot.voice.connections.find(val => val.channel.id == voiceChannel.id);
-
-            if(!connection) {
-                try {
-                    const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel);
-                }
-                catch(ex) {
-                    console.error(ex)
-                }
-            }
             return;
         }
 
