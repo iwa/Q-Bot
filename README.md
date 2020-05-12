@@ -23,7 +23,9 @@
 #### 2. Make your modifications
 #### 3. Create a Pull Request, with `dev` as target branch
 
-## How to keep your fork up to date
+-----
+
+### Advice : How to keep your fork up to date
 
 #### 1. Add remote from original repository in your forked repository:
 
@@ -39,7 +41,7 @@ Now you should have at least 2 remotes : `origin` & `upstream`
 
 Keep upstream/master always unedited since it'll be your fresh copy from the original repo.
 
-**A good way to keep working on your fork for MR is :**
+**A good way to keep working on your fork for PRs is :**
 
 - Always check for an update of the upstream before begin your work
 - Create another branch from upstream/master so you can keep upstream/master clean
