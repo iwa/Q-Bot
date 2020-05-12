@@ -360,7 +360,7 @@ async function imageLvl(msg:Discord.Message, level:number) {
     try {
         await msg.reply('', {files: [file]})
         if(level % 2 == 0)
-            return await msg.channel.send("*hey, you've unlocked a new color, do `?color` in #commands to discover it!*")
+            return await msg.channel.send("*Hey, looks like you've unlocked a new color! Do `?color` in #commands to discover it!*")
     } catch(err) {
         console.error(err)
         return msg.reply(`You're now level ${level} ! Congrats !`)

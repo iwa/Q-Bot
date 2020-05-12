@@ -2,20 +2,20 @@ import { Client, Message, MessageEmbed } from 'discord.js';
 import { Db } from 'mongodb';
 import utilities from './utilities'
 
-let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so cute with me ?", "omg", "<3", "so cuuuute c:", "c:", "c;", ":3", "QT af :O", "oh yeaaaah ;3"]
+let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so cute with me ?", "omg", "<3", "so cuuuute c:", "c:", "c;", ":3", "QT af :O", "^u^ thanks!", ">u<", "-u-"] // That "oh yeaaaah ;3" is a little... suggestive. I've changed it. ;) - Hy~
 
 interface stringKeyArray {
 	[index:string]: any;
 }
 
-let lastGif:stringKeyArray = {
+let lastGif:stringKeyArray = { // define the first gif of action (0)
     'pat': 0,
     'hug': 0,
     'boop': 0,
     'slap': 0
 };
 
-let count:stringKeyArray = {
+let count:stringKeyArray = { // define last gif of action
     'pat': 46,
     'hug': 47,
     'boop': 15,

@@ -124,6 +124,6 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
             .then(() => { msg.channel.stopTyping(true) });
     } catch(err) {
         console.error(err)
-        return msg.channel.send("An error occured, please contact <@125325519054045184>")
+        return msg.channel.send(":x: > An error occured. Please contact <@125325519054045184>.")
     }
 }

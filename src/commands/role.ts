@@ -11,7 +11,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     try {
         embed.react(emote)
     } catch (ex) {
-        return msg.reply("Can't react!")
+        return msg.reply(":x: > Can't react!")
     }
 
     let roleID = args[2]
