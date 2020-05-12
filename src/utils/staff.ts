@@ -1,7 +1,7 @@
 import { Client, Message, MessageEmbed } from 'discord.js'
 import utilities from './utilities'
 
-module.exports = class staff {
+export default class staff {
 
     static async bulk (msg:Message, args:string[]) {
         if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
