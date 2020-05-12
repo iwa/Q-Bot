@@ -1,6 +1,6 @@
 import { Client, Message, MessageEmbed, Util, VoiceChannel, VoiceConnection } from 'discord.js';
 import * as YoutubeStream from 'ytdl-core';
-const { YouTube } = require('popyt')
+import { YouTube, Video } from 'popyt';
 const yt = new YouTube(process.env.YT_TOKEN)
 import utilities from './utilities'
 
@@ -23,17 +23,18 @@ module.exports = class music {
 
         let video_url = args[0].split('&')
 
-        var error, data;
+        let error, data;
 
         if(video_url[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 
-            const playlist = await yt.getPlaylistByUrl(video_url[0]).catch(console.error)
+            const playlist = await yt.getPlaylist(video_url[0]).catch(console.error)
+            if(!playlist)return;
 
-            var reply = await msg.channel.send(":warning: Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
+            let reply = await msg.channel.send(":warning: Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
             await reply.react('✅');
             await reply.react('❌');
 
-            var collected = await reply.awaitReactions((_reaction, user) => user.id == msg.author.id, { time: 10000 })
+            let collected = await reply.awaitReactions((_reaction, user) => user.id == msg.author.id, { time: 10000 })
 
             if(collected.first() == undefined) {
                 reply.delete()
@@ -44,7 +45,7 @@ module.exports = class music {
                 return msg.channel.send(":x: > **You must choose only one of both reactions!**")
             }
 
-            var emote = collected.first().emoji.name
+            let emote = collected.first().emoji.name
 
             if(emote == '❌')return;
             if(emote != '✅')return;
@@ -57,40 +58,45 @@ module.exports = class music {
             msg.channel.send(embed)
 
             const videos = await playlist.fetchVideos();
-            var errors = 0;
+            let errors = 0;
 
-            videos.forEach(async (video:any) => {
-                const url:any = video.url
-                error = false;
-                if(queue.indexOf(url) == -1) {
-                    data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
-                    if(!error && data) {
-                        queue.push(url)
-                        title.push(Util.escapeMarkdown(data.title))
-                        length.push(data.length_seconds)
+            let bar = new Promise((resolve, reject) => {
+                videos.forEach(async (video:Video, index:number, array:Video[]) => {
+                    const url:string = video.url
+                    error = false;
+                    if(queue.indexOf(url) == -1) {
+                        data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
+                        if(!error && data) {
+                            queue.push(url)
+                            title.push(Util.escapeMarkdown(data.title))
+                            length.push(data.length_seconds)
+                        }
+                    }
+                    if(index === array.length -1) resolve();
+                });
+            });
+
+            bar.then(async () => {
+                const embedDone = new MessageEmbed();
+                embedDone.setTitle("**Done!**")
+                embedDone.setColor('LUMINOUS_VIVID_PINK')
+
+                if(errors > 0) embedDone.setDescription("Some videos are unavailable :(");
+
+                msg.channel.send(embedDone)
+
+                let connection:null | VoiceConnection = bot.voice.connections.find(val => val.channel.id == voiceChannel.id);
+
+                if(!connection) {
+                    try {
+                        const voiceConnection = await voiceChannel.join();
+                        playSong(msg, voiceConnection, voiceChannel);
+                    }
+                    catch(ex) {
+                        console.error(ex)
                     }
                 }
             });
-
-            const embedDone = new MessageEmbed();
-            embedDone.setTitle("**Done!**")
-            embedDone.setColor('LUMINOUS_VIVID_PINK')
-
-            if(errors > 0) embedDone.setDescription("Some videos are unavailable :(");
-
-            msg.channel.send(embedDone)
-
-            let connection:null | VoiceConnection = bot.voice.connections.find(val => val.channel.id == voiceChannel.id);
-
-            if(!connection) {
-                try {
-                    const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel);
-                }
-                catch(ex) {
-                    console.error(ex)
-                }
-            }
             return;
         }
 
@@ -99,7 +105,7 @@ module.exports = class music {
         } else {
             let keywords = args.join(' ')
 
-            var video = await yt.searchVideos(keywords, 1).then((data:any) => {
+            let video = await yt.searchVideos(keywords, 1).then((data:any) => {
                 return data.results[0].url
             })
 
@@ -112,7 +118,7 @@ module.exports = class music {
     static remove (msg:Message, args:string[]) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
-        var queueID:number = parseInt(args[0]);
+        let queueID:number = parseInt(args[0]);
 
         if(isNaN(queueID)) return;
 
@@ -148,9 +154,9 @@ module.exports = class music {
             queue.forEach(async (item, index) => {
                 if(index == 0 || index > 10)return;
 
-                var date = new Date(null)
+                let date = new Date(null)
                 date.setSeconds(parseInt(length[index]))
-                var timeString = date.toISOString().substr(11, 8)
+                let timeString = date.toISOString().substr(11, 8)
 
                 embed.addField(`${index} : **${title[index]}**, *${timeString}*`, item)
             })
@@ -237,8 +243,7 @@ module.exports = class music {
     }
 
     static async forceskip (bot:Client, msg:Message) {
-        if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
-
+        if(utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
@@ -269,7 +274,7 @@ module.exports = class music {
             loop = 1
             console.log(`info: loop enabled by ${msg.author.tag}`)
             const embed = new MessageEmbed();
-            embed.setAuthor("Looping the current song...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+            embed.setAuthor("🔂 Looping the current song...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
@@ -294,15 +299,15 @@ module.exports = class music {
             return msg.channel.send(embed);
         }
 
-        var date = new Date(null)
+        let date = new Date(null)
         date.setSeconds(parseInt(length[0]))
-        var timeString = date.toISOString().substr(11, 8)
+        let timeString = date.toISOString().substr(11, 8)
         const embed = new MessageEmbed();
         embed.setColor('GREEN')
         embed.setTitle("**:cd: Now Playing:**")
 
-        var desc = `[${title[0]}](${queue[0]})`;
-        if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable";
+        let desc = `[${title[0]}](${queue[0]})`;
+        if(loop == 1) desc += "\n🔂 Currently looping this song - type `?loop` to disable";
         embed.setDescription(desc)
 
         let time = new Date(voiceConnection.dispatcher.streamTime).toISOString().slice(11,19)
@@ -348,9 +353,9 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
     voiceConnection.play(video, {volume : 0.8, bitrate : 96000, highWaterMark: 512})
     .on('start', async () => {
         if(loop == 0) {
-            var date = new Date(null)
+            let date = new Date(null)
             date.setSeconds(parseInt(length[0]))
-            var timeString = date.toISOString().substr(11, 8)
+            let timeString = date.toISOString().substr(11, 8)
             const embed = new MessageEmbed();
             embed.setColor('GREEN')
             embed.setTitle("**:cd: Now Playing:**")
@@ -397,13 +402,15 @@ async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:stri
         }
     } else {
         msg.channel.stopTyping()
-        return msg.channel.send(":x: > **This video is already in the queue!**")
+        return msg.channel.send({"embed": { "title": `:x: > **This video is already in the queue!**`, "color": 13632027 }})
     }
 
     if(error) {
         msg.channel.stopTyping()
-        return msg.channel.send(":x: > **This video is unavailable :(**")
+        return msg.channel.send({"embed": { "title": `:x: > **This video is unavailable :(**`, "color": 13632027 }})
     }
+
+    msg.delete();
 
     if(queue[0] != video_url && data) {
         const embed = new MessageEmbed();

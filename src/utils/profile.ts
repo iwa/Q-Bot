@@ -9,7 +9,7 @@ module.exports = class profile {
 
             let id = args[0]
 
-            var userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
+            let userDB = await db.collection('user').findOne({ '_id': { $eq: id } });
             if(!userDB)
                 return msg.channel.send({"embed": { "title": ":x: > **The user you entered isn't registered in the database yet!**", "color": 13632027 }});
 

@@ -1,9 +1,9 @@
 import { Client, Message, MessageEmbed } from 'discord.js'
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     if(args.length < 1)return;
-        var req = args[0].toLowerCase(), numReq, res;
+        let req = args[0].toLowerCase(), numReq, res;
 
         switch(req) {
             case "rock":
@@ -20,10 +20,10 @@ module.exports.run = (bot:Client, msg:Message, args:string[]) => {
             break;
 
             default:
-                return msg.channel.send({"embed": { "title": ":x: > **You need to pick between rock, paper and scissors !**" }})
+                return msg.channel.send({"embed": { "title": ":x: > **You need to pick between rock, paper or scissors !**" }})
         }
 
-        var n = utilities.randomInt(3);
+        let n = utilities.randomInt(3);
 
         if(n == 1 && numReq == 1 || n == 2 && numReq == 2 || n == 3 && numReq == 3)
             res = "**Draw!**";

@@ -1,9 +1,9 @@
 import { Client, Message } from 'discord.js'
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     if(args.length > 0) {
-        var x = args[0]
+        let x = args[0]
         msg.channel.send({"embed": {
             "title": `🎲 **${utilities.randomInt(parseInt(x))}**`,
             "color": 5601658
@@ -22,6 +22,6 @@ module.exports.run = (bot:Client, msg:Message, args:string[]) => {
 
 module.exports.help = {
     name: 'roll',
-    usage: "?roll [number]\n_will choose 100 by default if you don't precise any number_",
-    desc: "Generates a number between 1 and the number you choose"
+    usage: "?roll [number]",
+    desc: "Generates a number between 1 and the number you choose.\n_Rolls up to 100 if a number isn't provided._"
 };
