@@ -404,6 +404,8 @@ async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:stri
         return msg.channel.send({"embed": { "title": `:x: > **This video is unavailable :(**`, "color": 13632027 }})
     }
 
+    msg.delete();
+
     if(queue[0] != video_url && data) {
         const embed = new MessageEmbed();
         embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
