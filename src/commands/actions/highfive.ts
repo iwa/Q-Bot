@@ -1,6 +1,6 @@
 import { Client, Message, MessageReaction, User, MessageEmbed } from 'discord.js'
 import { Db } from 'mongodb'
-import utilities from '../../js/utilities';
+import utilities from '../../utils/utilities';
 let lastGif:number = 0, count:number = 9;
 let lastGifFail:number = 0, countFail:number = 5;
 

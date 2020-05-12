@@ -1,5 +1,5 @@
 import { Client, Message, MessageEmbed } from 'discord.js'
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     if(args.length < 1)return;

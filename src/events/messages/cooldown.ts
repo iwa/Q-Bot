@@ -1,7 +1,7 @@
 import { MongoClient, Db } from 'mongodb';
 import { Message } from 'discord.js';
 
-import leveling from '../../js/leveling';
+import leveling from '../../utils/leveling';
 
 let cooldownMsg:stringKeyArray = [], cooldownXP:stringKeyArray = [];
 interface stringKeyArray {

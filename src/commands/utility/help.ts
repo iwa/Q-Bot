@@ -1,6 +1,6 @@
 import { Client, Message, Collection } from 'discord.js';
 import { Db } from 'mongodb';
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 let commands:stringKeyArray = [];
 let member = {};
 interface stringKeyArray {
