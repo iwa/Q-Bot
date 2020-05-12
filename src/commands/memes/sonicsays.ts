@@ -1,6 +1,6 @@
 import { Client, Message } from 'discord.js'
 import * as ejs from 'ejs'
-import imGenerator from '../../js/img';
+import imGenerator from '../../utils/img';
 
 module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
     if(msg.channel.id != '606165780215889960') return msg.channel.send({"embed": { "title": `:x: > **Command only usable in #memes**`, "color": 13632027}});

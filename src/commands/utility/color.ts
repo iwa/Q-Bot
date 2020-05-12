@@ -1,6 +1,6 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 const colors = require('../../../lib/colors.json')
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
