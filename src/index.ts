@@ -7,8 +7,6 @@ dotenv.config();
 
 import * as fs from 'fs';
 
-import * as ejs from 'ejs';
-
 import { MongoClient } from 'mongodb';
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
@@ -336,33 +334,3 @@ setInterval(async () => {
 // Login
 
 bot.login(process.env.TOKEN)
-
-// Functions
-
-async function levelCheck(msg:Discord.Message, xp:number) {
-    for(var i = 1; i <= 20; i++) {
-        if(xp == levels[i].amount) {
-            if(i != 1)
-                await msg.member.roles.remove(levels[i-1].id).catch(console.error);
-            await msg.member.roles.add(levels[i].id).catch(console.error);
-            return imageLvl(msg, i);
-        }
-    }
-}
-
-async function imageLvl(msg:Discord.Message, level:number) {
-    var avatarURL = msg.author.avatarURL({ format: 'png', dynamic: false, size: 512 })
-    let cdnUrl = process.env.CDN_URL;
-
-    var html = await ejs.renderFile('views/level.ejs', { avatarURL, level, cdnUrl });
-    var file = await img.generator(808, 208, html, msg.author.tag, 'lvl')
-
-    try {
-        await msg.reply('', {files: [file]})
-        if(level % 2 == 0)
-            return await msg.channel.send("*Hey, looks like you've unlocked a new color! Do `?color` in #commands to discover it!*")
-    } catch(err) {
-        console.error(err)
-        return msg.reply(`You're now level ${level} ! Congrats !`)
-    }
-}
