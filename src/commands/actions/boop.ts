@@ -1,9 +1,9 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
-import actions from '../../utils/actions';
+import actionsRun from '../../utils/actions';
 
 module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
-    actions.run(bot, msg, args, db, 'boop');
+    actionsRun(bot, msg, args, db, 'boop');
 };
 
 module.exports.help = {
