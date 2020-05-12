@@ -7,6 +7,8 @@ dotenv.config();
 
 import * as fs from 'fs';
 
+import * as ejs from 'ejs';
+
 import { MongoClient } from 'mongodb';
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
