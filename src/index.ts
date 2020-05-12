@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import { MongoClient } from 'mongodb';
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
-const letmein = require('./js/letmein')
+import letmein from './utils/letmein';
 
 const levels = require('../lib/levels.json');
 
@@ -87,7 +87,7 @@ bot.on('message', async (msg:Discord.Message) => {
     let cmd:any = commands.get(req);
 
     if(req == "letmein")
-        return letmein.action(msg, levels, db);
+        return letmein(msg, levels, db);
 
     if(process.env.SLEEP === '1' && msg.author.id != process.env.IWA)return;
 
