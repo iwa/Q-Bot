@@ -31,7 +31,7 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
     let r = utilities.randomInt(reply.length)
     let mentionFirst, mentionSecond, user;
 
-    if(args.length == 1) {
+    /*if(args.length == 1) {
 
         if(msg.mentions.everyone)return;
         mentionFirst = msg.mentions.users.first()
@@ -58,7 +58,7 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
         })
         .catch(console.error);
 
-    } else if(args.length == 2) {
+    } else */if(args.length <= 2) {
 
         if(msg.mentions.everyone)return;
         mentionFirst = msg.mentions.users.first()
