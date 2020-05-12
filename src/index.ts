@@ -11,7 +11,7 @@ import { MongoClient } from 'mongodb';
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 const letmein = require('./js/letmein')
-const starboard = require('./js/starboard');
+
 const levels = require('../lib/levels.json');
 
 import { YouTube } from 'popyt';
@@ -159,32 +159,9 @@ bot.on('message', async (msg:Discord.Message) => {
 
 // Reactions Event
 
+import starboard from './js/starboard';
 bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
-    if(reaction.message.guild.id !== process.env.GUILDID)return;
-    if(reaction.message.channel.id == process.env.STARBOARDTC)return;
-    if(reaction.message.channel.id == process.env.ANNOUNCEMENTSTC)return;
-    if(reaction.users.cache.find(val => val.id == bot.user.id))return;
-    if(reaction.emoji.name == '⭐') {
-        if(reaction.count >= 5) {
-            let msg = reaction.message;
-            let content;
-            if(!msg.cleanContent)
-                content = "*attachment only*\n"
-            else
-                content = `\`\`\`${msg.cleanContent}\`\`\``
-
-            return starboard.send(bot, msg, reaction, content);
-        }
-    } else if(reaction.emoji.name == '🌟' && author.id == process.env.IWA) {
-        let msg = reaction.message;
-        let content;
-        if(!msg.cleanContent)
-            content = "*attachment only*\n"
-        else
-            content = `\`\`\`${msg.cleanContent}\`\`\``
-
-        return starboard.send(bot, msg, reaction, content);
-    }
+    await starboard.check(reaction, author, bot);
 });
 
 bot.on('guildMemberRemove', async member => {
