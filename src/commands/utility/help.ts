@@ -48,7 +48,7 @@ setTimeout(() => {
 
 let mod = {
     "embed": {
-      "title": "**⚔️ Mods**", // Hmm, ⚔ (swords) or 👮‍♂️ (policeman)? - Hy~
+      "title": "**⚔️ Mods**",
       "description": "`?forceskip`\n`?bulk (amount of messages to delete)`\n`?mute (mention someone) (length in minutes)`",
       "color": 4886754
     }
