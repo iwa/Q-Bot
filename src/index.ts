@@ -159,7 +159,7 @@ bot.on('message', async (msg:Discord.Message) => {
 
 // Reactions Event
 
-import starboard from './js/starboard';
+import starboard from './events/starboard';
 bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
     await starboard.check(reaction, author, bot);
 });
