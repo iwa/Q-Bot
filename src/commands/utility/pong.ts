@@ -1,7 +1,7 @@
 import { Client, Message } from 'discord.js';
 
 module.exports.run = async (bot:Client, msg:Message) => {
-    var ping = Math.ceil(bot.ws.ping)
+    let ping = Math.ceil(bot.ws.ping)
     await msg.channel.send(`:ping_pong: Ping ! \`${ping}ms\``)
         .then(() => { console.log(`info: ping : ${msg.author.tag}`) })
         .catch(console.error);

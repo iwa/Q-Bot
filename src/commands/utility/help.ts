@@ -1,6 +1,6 @@
 import { Client, Message, Collection } from 'discord.js';
 import { Db } from 'mongodb';
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 let commands:stringKeyArray = [];
 let member = {};
 interface stringKeyArray {
@@ -79,7 +79,7 @@ async function sendHelp(msg:Message) {
             await msg.author.send(member)
             await msg.author.send(mod)
         } catch(ex) {
-            return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
+            return msg.channel.send(":x: > **Please open your DMs, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
     else
         try {

@@ -1,6 +1,6 @@
 import { Client, Message, MessageEmbed } from 'discord.js'
 
-let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not", "Reply hazy, try again", "Take a guess"]
+let reply = ["Yes", "No", "Yep", "Nope", "Probably", "Well...", "Probably not", "Reply hazy, try again", "Take a guess", "Nah.", "🎱"] // I like that last one. :)
 
 module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
     if(await msg.channel.type != "text")return;
@@ -16,5 +16,5 @@ module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
 module.exports.help = {
     name: '8ball',
     usage: "?8ball (your question)",
-    desc: "Let Q-Bot reply to all your questions, with a lot of honesty"
+    desc: "Let Q-Bot reply to all your questions, with a **lot** of honesty" // emphasise the **lot** ;) - Hy~
 };

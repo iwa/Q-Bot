@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js'
-const staff = require('../js/staff')
+import staff from '../utils/staff';
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     staff.bulk(msg, args);

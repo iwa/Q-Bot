@@ -4,10 +4,10 @@ const Anilist = new al();
 
 module.exports.run = (bot:Client, msg:Message, args:string[]) => {
     if(args.length < 1)return;
-    var req = args.join(' ');
+    let req = args.join(' ');
     Anilist.search('manga', req, 1, 1).then(async (data: { media: any[]; }) => {
-        var res = data.media[0];
-        var info = await Anilist.media.manga(res.id)
+        let res = data.media[0];
+        let info = await Anilist.media.manga(res.id)
         const embed = new MessageEmbed();
         if(info.title.romaji == info.title.english)
             embed.setTitle(`**${info.title.romaji}**`)

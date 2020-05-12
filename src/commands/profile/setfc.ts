@@ -3,12 +3,12 @@ import { Db } from 'mongodb'
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     if(args.length == 1) {
-        var content = args[0]
+        let content = args[0]
         if(content.length != 14 || content.search(/\d\d\d\d-\d\d\d\d-\d\d\d\d/gi) == -1) {
             return msg.channel.send({"embed": { "title": ":x: > **Switch Friend Code format invalid! Please enter your FC without the 'SW-' at the beginning**", "color": 13632027 }});
         }
 
-        var userDB = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
+        let userDB = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
         if(userDB.fc != null) {
             return msg.channel.send({"embed": { "title": ":x: > **Sorry, you can't change your FC!**", "description": "**Please contact <@125325519054045184> to change.**", "color": 13632027 }});
         }

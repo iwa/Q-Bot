@@ -7,10 +7,10 @@ export default class utilities {
 
     public static async info (msg:Discord.Message, iwaUrl:string):Promise<Discord.Message> {
 
-        var embed = {
+        let embed = {
             "embed": {
-                "title": "**Bot Infos**",
-                "description": "Q-Bot is developed and handled by <@125325519054045184>\n\nLanguage : `TypeScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still financially support me [here](https://paypal.me/nokushi)",
+                "title": "**Bot Infos**", // I've added a GitHub link too. - Hy~
+                "description": "Q-Bot is developed and handled by <@125325519054045184>.\nYou can help contribute to Q-Bot's code [here!](https://github.com/iwa/Q-Bot)\n\nLanguage : `TypeScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still financially support me [here](https://paypal.me/nokushi)",
                 "color": 13002714,
                 "footer": {
                   "text": "Created with ♥ by iwa | Copyright © iwa, v1.4.0"
@@ -70,7 +70,7 @@ export default class utilities {
         if(xp < levels[1].amount) {
             return {'level': 0, 'current': xp, 'max': levels[1].amount}
         }
-        for(var i = 1; i < 20; i++) {
+        for(let i = 1; i < 20; i++) {
             if(xp >= levels[i].amount && xp < levels[i+1].amount) {
                 return {'level': i, 'current': (xp - levels[i].amount), 'max': (levels[i+1].amount - levels[i].amount)}
             }
@@ -88,10 +88,10 @@ export default class utilities {
 
 async function leaderboard(bot:Discord.Client, msg:Discord.Message, db:Db, type:string) {
     let leaderboard = await db.collection('user').find({ hidden: false }).sort({[type]:-1}).limit(10).toArray();
-    var n = 0;
+    let n = 0;
 
     msg.channel.startTyping()
-    var title = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
+    let title = `${type.charAt(0).toUpperCase()}${type.slice(1)}`
 
     const embed = new Discord.MessageEmbed();
     embed.setColor(16114507)

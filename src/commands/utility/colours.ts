@@ -9,5 +9,5 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
 module.exports.help = {
     name: 'colours',
     usage: "?colours [color id]",
-    desc: "Choose your username color"
+    desc: "Choose your username color\n(alias of `?color`)"
 };
