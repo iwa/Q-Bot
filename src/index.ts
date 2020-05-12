@@ -14,7 +14,7 @@ const letmein = require('./js/letmein')
 
 const levels = require('../lib/levels.json');
 
-import cooldown from "./events/messages/cooldown";
+import cooldown from './events/messages/cooldown';
 import ready from './events/ready';
 
 
