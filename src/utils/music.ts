@@ -237,8 +237,7 @@ module.exports = class music {
     }
 
     static async forceskip (bot:Client, msg:Message) {
-        if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
-
+        if(utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
