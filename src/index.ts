@@ -151,21 +151,21 @@ bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Dis
 
 import subsCount from './loops/subsCount';
 setInterval(async () => {
-    subsCount(bot);
+    await subsCount(bot);
 }, 3600000);
 
 // Check if a member no longer booster have the color
 
 import boostColorCheck from './loops/boostColorCheck';
 setInterval(async () => {
-    boostColorCheck(bot)
+    await boostColorCheck(bot)
 }, 300000);
 
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
 
 import birthdayCheck from './loops/birthdayCheck';
 setInterval(async () => {
-    birthdayCheck(bot)
+    await birthdayCheck(bot)
 }, 3600000);
 
 // Login
