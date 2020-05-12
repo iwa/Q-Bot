@@ -9,5 +9,5 @@ module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
 module.exports.help = {
     name: 'lead',
     usage: "?lead (exp | pat | hug | boop | slap)",
-    desc: "Show the leaderboard of a category :\nexperience, amount of pats / hugs / boops / slaps given"
+    desc: "Show the leaderboard of a category :\nexperience, amount of pats / hugs / boops / slaps given.\n(alias of `?leaderboard`)"
 };

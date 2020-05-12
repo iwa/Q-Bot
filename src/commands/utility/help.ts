@@ -79,7 +79,7 @@ async function sendHelp(msg:Message) {
             await msg.author.send(member)
             await msg.author.send(mod)
         } catch(ex) {
-            return msg.channel.send(":x: > **Please open your DM, I can't reach you** <:sad_onigiri:610476938955456532>")
+            return msg.channel.send(":x: > **Please open your DMs, I can't reach you** <:sad_onigiri:610476938955456532>")
         }
     else
         try {

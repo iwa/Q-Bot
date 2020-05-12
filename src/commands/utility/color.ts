@@ -28,7 +28,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
                 "embed": {
                   "color": 14686489,
                   "author": {
-                    "name": "❌ impossible choice",
+                    "name": "❌ > Not an available option!",
                     "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
                   }
                 }
@@ -39,15 +39,12 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             await msg.member.roles.add(colors[choice]);
             msg.channel.send({
                 "embed": {
-                  "description": `You're now wearing <@&${colors[choice]}> color!`,
+                  "description": "You're now wearing the <@&${colors[choice]}> color!\nType `?color off` to take off the color.",
                   "color": 11675878,
                   "author": {
                     "name": msg.author.username,
                     "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
-                  },
-                  "footer": {
-                      "text": "type `?color off` to take off the color"
-                  }
+                  } // Got rid of footer because code blocs (``) don't work in embed footers. Moved to "description". - Hy~
                 }
               })
         }
@@ -66,7 +63,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
                 "icon_url": msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
               },
               "footer": {
-                  "text": "type `?color (id)` to wear the color you want"
+                  "text": "Type '?color (id)' to wear the color you want."
               }
             }
           })
