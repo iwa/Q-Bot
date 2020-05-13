@@ -962,10 +962,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-popyt@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/popyt/-/popyt-3.0.0.tgz#e1a0f1ff0052f2334cef25775201d5e88fbba604"
-  integrity sha512-MQ+p0kLXxtTbHyQ77z1Dt3HOiTrzlEkTsTBQYtV5cur/Imt88aFHF6vEhDKLND17HxEUKPURnfqc3LD2JB2oQg==
+popyt@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/popyt/-/popyt-3.2.0.tgz#45e9c02e77151af0354e0f8f0a7750e382d7e325"
+  integrity sha512-whu/Tdd4uHnhm4oPV0+HdpIvP3wDelvALfzfol2q26zXr9jZPi7RsshF4TMKfDokjaqEts1OEXl6xa557/1YlQ==
 
 prism-media@^1.2.0:
   version "1.2.1"
