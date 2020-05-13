@@ -16,7 +16,7 @@
     "@discordjs/opus": "^0.3.2",
     "@types/ejs": "^3.0.3",
     "@types/mongodb": "^3.5.16",
-    "@types/node": "^13.13.5",
+    "@types/node": "^14.0.1",
     "@types/puppeteer": "^2.1.0",
     "@types/ws": "^7.2.4",
     "anilist-node": "^1.4.0",
