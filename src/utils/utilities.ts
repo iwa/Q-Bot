@@ -63,7 +63,7 @@ export default class utilities {
                 return leaderboard(bot, msg, db, 'highfive')
 
             default:
-                msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
+                msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap | highfive`", "color": 3396531}});
             break;
         }
     }
