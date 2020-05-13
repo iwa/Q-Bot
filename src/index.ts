@@ -104,7 +104,7 @@ bot.on('message', async (msg:Discord.Message) => {
         return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
     else if(cooldown[msg.author.id] == 6) {
         await msg.member.roles.add('636254696880734238')
-        let msgReply = await msg.reply({"embed": { "title": "**You've been mute for 20 minutes. Reason : spamming.**", "color": 13632027 }})
+        let msgReply = await msg.reply({"embed": { "title": "**You've been muted for 20 minutes. Reason : spamming.**", "color": 13632027 }})
         setTimeout(async () => {
             await msgReply.delete()
             return msg.member.roles.remove('636254696880734238')
