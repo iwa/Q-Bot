@@ -56,6 +56,12 @@ export default class utilities {
             case "slaps":
                 return leaderboard(bot, msg, db, 'slap')
 
+            case "highfive":
+            case "highfives":
+            case "high-five":
+            case "high-fives":
+                return leaderboard(bot, msg, db, 'highfive')
+
             default:
                 msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
             break;
