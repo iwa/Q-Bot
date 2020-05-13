@@ -10,10 +10,10 @@ export default class utilities {
         let embed = {
             "embed": {
                 "title": "**Bot Infos**", // I've added a GitHub link too. - Hy~
-                "description": "Q-Bot is developed and handled by <@125325519054045184>.\nYou can help contribute to Q-Bot's code [here!](https://github.com/iwa/Q-Bot)\n\nLanguage : `TypeScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still financially support me [here](https://paypal.me/nokushi)",
+                "description": "Q-Bot is mainly developed and handled by <@125325519054045184>.\nYou can help contribute to Q-Bot's code [here!](https://github.com/iwa/Q-Bot)\n\nLanguage : `TypeScript` using NodeJS\nAPI Access : `discord.js` package on npm\n\nYou can access to the index of commands by typing `?help`\n\nAll my work is done for free, but you can still financially support me [here](https://paypal.me/nokushi)",
                 "color": 13002714,
                 "footer": {
-                  "text": "Created with ♥ by iwa | Copyright © iwa, v1.4.0"
+                  "text": "Created with ♥ by iwa & contributors | Copyright © iwa, v1.4.2"
                 },
                 "thumbnail": {
                   "url": iwaUrl
@@ -56,8 +56,14 @@ export default class utilities {
             case "slaps":
                 return leaderboard(bot, msg, db, 'slap')
 
+            case "highfive":
+            case "highfives":
+            case "high-five":
+            case "high-fives":
+                return leaderboard(bot, msg, db, 'highfive')
+
             default:
-                msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap`", "color": 3396531}});
+                msg.channel.send({"embed": { "title": "`exp | pat | hug | boop | slap | highfive`", "color": 3396531}});
             break;
         }
     }

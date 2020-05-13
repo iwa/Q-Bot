@@ -8,14 +8,17 @@ interface stringKeyArray {
 	[index:string]: any;
 }
 
-let lastGif:stringKeyArray = { // define the first gif of action (0)
+// define last gif of action
+// as the gif '0' doesn't exist, the first one will be random
+let lastGif:stringKeyArray = {
     'pat': 0,
     'hug': 0,
     'boop': 0,
     'slap': 0
 };
 
-let count:stringKeyArray = { // define last gif of action
+// define the number of gifs available
+let count:stringKeyArray = {
     'pat': 46,
     'hug': 47,
     'boop': 15,
