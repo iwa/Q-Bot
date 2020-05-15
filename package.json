@@ -4,7 +4,7 @@
   "description": "Discord Bot for Qumu's Discord Server",
   "main": "build/index.js",
   "scripts": {
-    "update": "git fetch origin master && git pull origin master && tsc"
+    "update": "git fetch origin master && git pull origin master && rm -rf build/ && tsc"
   },
   "repository": {
     "type": "git",
