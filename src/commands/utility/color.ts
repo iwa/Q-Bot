@@ -39,7 +39,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             await msg.member.roles.add(colors[choice]);
             msg.channel.send({
                 "embed": {
-                  "description": "You're now wearing the <@&${colors[choice]}> color!\nType `?color off` to take off the color.",
+                  "description": `You're now wearing the <@&${colors[choice]}> color!\nType \`?color off\` to take off the color.`,
                   "color": 11675878,
                   "author": {
                     "name": msg.author.username,
