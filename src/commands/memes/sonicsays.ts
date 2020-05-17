@@ -12,7 +12,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
         let cdnUrl = process.env.CDN_URL;
 
         let html = await ejs.renderFile('views/sonicsays.ejs', { x, cdnUrl });
-        let file = await imGenerator(385, 209, html, msg.author.tag, 'sonic')
+        let file = await imGenerator(385, 209, html, msg.author.id, 'sonic')
 
         try {
             console.log(`info: sonicsays by ${msg.author.tag}`)

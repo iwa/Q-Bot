@@ -22,7 +22,7 @@ export default class leveling {
         let cdnUrl = process.env.CDN_URL;
 
         let html = await ejs.renderFile('views/level.ejs', { avatarURL, level, cdnUrl });
-        let file = await imGenerator(808, 208, html, msg.author.tag, 'lvl')
+        let file = await imGenerator(808, 208, html, msg.author.id, 'lvl')
 
         try {
             await msg.reply('', {files: [file]})
