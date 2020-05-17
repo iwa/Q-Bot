@@ -5,7 +5,7 @@ export default async function imGenerator(width:number, height:number, content:s
     const page = await (await browser).newPage();
     await page.setViewport({width: width, height: height, deviceScaleFactor: 2})
     await page.setContent(content, {waitUntil: 'networkidle0'});
-    await page.screenshot({path: `image/${prefix}${tag}.jpg`, type: 'jpeg', quality: 100});
+    await page.screenshot({path: `image/${prefix}-${tag}.jpg`, type: 'jpeg', quality: 100});
     await page.close();
-    return `image/${prefix}${tag}.jpg`
+    return `image/${prefix}-${tag}.jpg`
 }
