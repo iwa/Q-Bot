@@ -4,7 +4,7 @@
   "description": "Discord Bot for Qumu's Discord Server",
   "main": "build/index.js",
   "scripts": {
-    "update": "git fetch origin master && git pull origin master && tsc"
+    "update": "git fetch origin master && git pull origin master && rm -rf build/ && yarn && tsc"
   },
   "repository": {
     "type": "git",
@@ -14,8 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.3.2",
-    "@types/ejs": "^3.0.3",
-    "@types/mongodb": "^3.5.16",
+    "@types/ejs": "^3.0.4",
+    "@types/mongodb": "^3.5.17",
     "@types/node": "^14.0.1",
     "@types/puppeteer": "^2.1.0",
     "@types/ws": "^7.2.4",
