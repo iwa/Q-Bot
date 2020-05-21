@@ -1,3 +1,9 @@
+/**
+ * Elements related to the cooldowns system
+ * @packageDocumentation
+ * @module Cooldowns
+ * @category Events
+ */
 import { MongoClient, Db } from 'mongodb';
 import { Message } from 'discord.js';
 
@@ -8,8 +14,16 @@ interface stringKeyArray {
 	[index:string]: any;
 }
 
+/**
+ * @classdesc Class used to gather every methods related to a cooldown system
+ */
 export default class cooldown {
 
+    /**
+     * Message cooldown handler (for anti-spam purpose)
+     * Automatically mutes the spammer if a spam is detected
+     * @param msg - Message object
+     */
     static async message (msg:Message) {
         if(!cooldownMsg[msg.author.id]) {
             cooldownMsg[msg.author.id] = 1;
@@ -29,6 +43,14 @@ export default class cooldown {
         }
     }
 
+    /**
+     * - Experience cooldown (1exp earnable every 5sec)
+     * - Keeps track of the number of message sent in the server with stats db
+     * @param msg - Message object
+     * @param mongod - MongoDB Client
+     * @param db - Database connection
+     * @param date - Current date (used for the stats db)
+     */
     static async exp (msg:Message, mongod:MongoClient, db:Db, date:string) {
         await db.collection('stats').updateOne({ _id: date }, { $inc: { msg: 1 } }, { upsert: true })
         if(msg.channel.id == '608630294261530624')return;
