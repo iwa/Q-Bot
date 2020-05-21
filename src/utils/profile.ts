@@ -1,8 +1,21 @@
+/**
+ * Profile reset function
+ * @packageDocumentation
+ * @module Profile
+ * @category Utils
+ */
 import { Client, Message, MessageEmbed } from 'discord.js'
 import { Db } from 'mongodb'
 
 module.exports = class profile {
 
+    /**
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     * @param args - Arguments in the message
+     * @param db - Database connection object
+     * @param type - Item to reset in the profile
+     */
     static async reset (bot:Client, msg:Message, args:string[], db:Db, type:string) {
         if(msg.author.id != process.env.IWA)return;
         if(args.length == 1) {
