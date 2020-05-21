@@ -41,7 +41,7 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
 
         if(!mentionFirst || !mentionSecond)return;
         if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
-            return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
+            return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
 
         if((mentionFirst.id == '606458989575667732' || mentionSecond.id == '606458989575667732') && type != 'slap') {
             setTimeout(() => {
@@ -63,7 +63,7 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
         await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { [type]: msg.mentions.members.size }});
 
         embed.setFooter(`You have given ${user[type] + msg.mentions.members.size} ${type}s`)
-        return await msg.channel.send(embed)
+        return msg.channel.send(embed)
         .then(() => {
             console.log(`info: ${type} sent by ${msg.author.tag}`);
         })
