@@ -1,15 +1,24 @@
+/**
+ * Actions function
+ * @packageDocumentation
+ * @module Actions
+ * @category Utils
+ */
 import { Client, Message, MessageEmbed } from 'discord.js';
 import { Db } from 'mongodb';
 import utilities from './utilities'
 
+/** @desc Automatic replies of the bot when an action is done on it  */
 let reply = ["awww", "thank you :33", "damn you're so precious", "why are you so cute with me ?", "omg", "<3", "so cuuuute c:", "c:", "c;", ":3", "QT af :O", "^u^ thanks!", ">u<", "-u-"] // That "oh yeaaaah ;3" is a little... suggestive. I've changed it. ;) - Hy~
 
 interface stringKeyArray {
 	[index:string]: any;
 }
 
-// define last gif of action
-// as the gif '0' doesn't exist, the first one will be random
+/**
+ * define last gif of action.
+ * as the gif '0' doesn't exist, the first one will be random
+ */
 let lastGif:stringKeyArray = {
     'pat': 0,
     'hug': 0,
@@ -17,7 +26,7 @@ let lastGif:stringKeyArray = {
     'slap': 0
 };
 
-// define the number of gifs available
+/** define the number of gifs available */
 let count:stringKeyArray = {
     'pat': 46,
     'hug': 47,
@@ -25,6 +34,13 @@ let count:stringKeyArray = {
     'slap': 9
 };
 
+/**
+ * @param bot - Discord Client object
+ * @param msg - Message object
+ * @param args - Arguments in the message
+ * @param db - Database connection object
+ * @param type - Type of actions (hug, pat...)
+ */
 export default async function actionsRun (bot:Client, msg:Message, args:string[], db:Db, type:string) {
     let n = utilities.randomInt(count[type])
     while(lastGif[type] == n) {
@@ -70,7 +86,7 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
         .catch(console.error);
 
     } else if(args.length > 2) {
-        if(type == "hug") { // Technically speaking, even with two arms you can fit more than two people in a hug, so uhhh... Custom dialog, perhaps? - Hy~
+        if(type == "hug") {
             msg.reply(`You can't ${type} them all, you can't fit more than two people in a hug! :(`)
         }
         else {
