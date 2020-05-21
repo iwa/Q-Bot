@@ -1,7 +1,18 @@
+/**
+ * Letmein function
+ * @packageDocumentation
+ * @module Letmein
+ * @category Utils
+ */
 import utilities from './utilities'
 import { Message } from 'discord.js';
 import { Db } from 'mongodb';
 
+/**
+ * @param msg - Message object
+ * @param levels - Levels list object
+ * @param db - Database connection object
+ */
 export default async function letmein (msg:Message, levels:any, db:Db) {
     if(msg.channel.id != process.env.LOBBY)return;
 
