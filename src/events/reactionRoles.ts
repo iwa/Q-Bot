@@ -1,5 +1,5 @@
 /**
- * 'Ready' function executed every times the bot logs in
+ * Reaction roles methods to run RR Messages
  * @packageDocumentation
  * @module ReactionRoles
  * @category Utils
