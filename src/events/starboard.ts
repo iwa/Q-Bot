@@ -1,7 +1,24 @@
+/**
+ * Starboard class containing methods needed to run a Starboard channel
+ * @packageDocumentation
+ * @module Starboard
+ * @category Utils
+ */
 import { Client, Message, MessageReaction, User } from "discord.js";
 
+/**
+ * Starboard class
+ * @class Starboard class
+ */
 export default class starboard {
 
+    /**
+     * Sends the message to the Starboard channel
+     * @param {Client} bot - Discord Client object
+     * @param {Message} msg - Message object
+     * @param {MessageReaction} reaction - Reaction object
+     * @param {string} content - Content of the message that'll be posted to the Starboard
+     */
     static async send (bot:Client, msg:Message, reaction:MessageReaction, content:string):Promise<void> {
         let channel:any = bot.channels.cache.find(val => val.id == process.env.STARBOARDTC);
         await msg.react(reaction.emoji.name);
@@ -22,6 +39,12 @@ export default class starboard {
         console.log(`info: new message into starboard (author: ${msg.author.tag})`);
     }
 
+    /**
+     * Checks every message reacted with a star emoji
+     * @param {MessageReaction} reaction - Reaction object
+     * @param {User} author - Author Object
+     * @param {Client} bot - Discord Client object
+     */
     static async check (reaction:MessageReaction, author:User, bot:Client) {
         if(reaction.message.guild.id !== process.env.GUILDID)return;
         if(reaction.message.channel.id == process.env.STARBOARDTC)return;
