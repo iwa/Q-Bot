@@ -2,7 +2,7 @@
  * Reaction roles methods to run RR Messages
  * @packageDocumentation
  * @module ReactionRoles
- * @category Utils
+ * @category Events
  */
 import { MessageReaction, User } from "discord.js";
 import { MongoClient } from 'mongodb';

@@ -2,7 +2,7 @@
  * Function that runs every time someone leaves the server
  * @packageDocumentation
  * @module MemberLeave
- * @category Utils
+ * @category Events
  */
 import { MongoClient } from 'mongodb';
 import { GuildMember, PartialGuildMember } from 'discord.js';
