@@ -12,7 +12,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             let role = msg.member.roles.cache.find(val => colors.indexOf(val.id) > -1)
             if(role) {
                 await msg.member.roles.remove(role)
-                return await msg.channel.send({
+                return msg.channel.send({
                     "embed": {
                       "color": 11675878,
                       "author": {

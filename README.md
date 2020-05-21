@@ -1,6 +1,6 @@
 <div align="center">
 <p align="center">
-    <img src="https://storage.googleapis.com/iwa-bucket/img/q-bot_logo.png" alt="logo"/>
+    <img src="https://cdn.iwa.sh/img/q-bot_logo.png" alt="logo"/>
 
   <p align="center">
     Custom Discord bot for <a href="https://discord.gg/BU6cPff">Qumu's Discord server</a>.
@@ -16,6 +16,7 @@
 - Library used : `discord.js`
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/iwa/Q-Bot?branch=master)](https://bettercodehub.com/)
+[![CodeFactor](https://www.codefactor.io/repository/github/iwa/q-bot/badge/master)](https://www.codefactor.io/repository/github/iwa/q-bot/overview/master)
 
 ## How to contribute
 

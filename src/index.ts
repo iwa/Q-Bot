@@ -8,6 +8,8 @@ dotenv.config();
 import * as fs from 'fs';
 
 import { MongoClient } from 'mongodb';
+
+// MongoDB constants
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 import letmein from './utils/letmein';
@@ -18,6 +20,7 @@ import cooldown from './events/messages/cooldown';
 import ready from './events/ready';
 
 
+//Imports commands from the 'commands' folder
 fs.readdir('./build/commands/', { withFileTypes:true }, (error, f) => {
     if (error) return console.error(error);
     f.forEach((f) => {
@@ -36,31 +39,21 @@ fs.readdir('./build/commands/', { withFileTypes:true }, (error, f) => {
     });
 });
 
-process.on('uncaughtException', exception => {
-    console.error(exception);
-});
+// Process related Events
+process.on('uncaughtException', exception => console.error(exception));
 
-bot.on('warn', console.warn)
-
-bot.on('shardError', console.error)
-
-bot.on('shardDisconnect', () => console.log("warn: bot disconnected"))
-
-bot.on('shardReconnecting', () => {
-    console.log("info: bot reconnecting...")
-});
-
-bot.on('shardResume', async () => {
-    ready(bot);
-})
-
+// Bot-User related Events
+bot.on('warn', console.warn);
+bot.on('shardError', console.error);
+bot.on('shardDisconnect', () => console.log("warn: bot disconnected"));
+bot.on('shardReconnecting', () => console.log("info: bot reconnecting..."));
+bot.on('shardResume', async () => ready(bot));
 bot.on('shardReady', async () => {
     ready(bot)
     console.log(`info: logged in as ${bot.user.username}`);
 });
 
 // Message Event
-
 bot.on('message', async (msg:Discord.Message) => {
 
     if(!msg)return;
@@ -72,7 +65,7 @@ bot.on('message', async (msg:Discord.Message) => {
 
     if(msg.channel.id == process.env.SUGGESTIONTC) {
         await msg.react('✅');
-        return await msg.react('❌');
+        return msg.react('❌');
     }
 
     let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
@@ -80,7 +73,7 @@ bot.on('message', async (msg:Discord.Message) => {
     let date:string = new Date().toISOString().slice(0,10)
 
     if(!msg.content.startsWith(process.env.PREFIX))
-        return await cooldown.exp(msg, mongod, db, date);
+        return cooldown.exp(msg, mongod, db, date);
 
     let args = msg.content.slice(1).trim().split(/ +/g);
     let req = args.shift();
@@ -101,53 +94,50 @@ bot.on('message', async (msg:Discord.Message) => {
     }, 31000);
 });
 
-// Reactions Event
-
+// Starboard Event
 import starboard from './events/starboard';
 bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
     await starboard.check(reaction, author, bot);
 });
 
+// MemberLeave Event
 import memberLeave from './events/memberLeave'
 bot.on('guildMemberRemove', async member => {
     memberLeave(member)
 })
 
+// Reaction Role Events
 import reactionRoles from './events/reactionRoles';
 bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
     reactionRoles.add(reaction, author);
 });
-
 bot.on('messageReactionRemove', async (reaction:Discord.MessageReaction, author:Discord.User) => {
     reactionRoles.remove(reaction, author);
 });
 
+// Highfive Watcher
 import highfiveWatcher from './events/highfiveWatcher'
 bot.on('messageReactionAdd', async (reaction:Discord.MessageReaction, author:Discord.User) => {
     highfiveWatcher(reaction, author, bot);
 })
 
 // Subs count, refresh every hour
-
 import subsCount from './loops/subsCount';
 setInterval(async () => {
     await subsCount(bot);
 }, 3600000);
 
 // Check if a member no longer booster have the color
-
 import boostColorCheck from './loops/boostColorCheck';
 setInterval(async () => {
     await boostColorCheck(bot)
 }, 300000);
 
 // Check if it's someone's birthday, and send a HBP message at 7am UTC
-
 import birthdayCheck from './loops/birthdayCheck';
 setInterval(async () => {
     await birthdayCheck(bot)
 }, 3600000);
 
 // Login
-
 bot.login(process.env.TOKEN)

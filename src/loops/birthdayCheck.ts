@@ -1,7 +1,22 @@
+/**
+ * Birthday Check function
+ * @packageDocumentation
+ * @module BirthdayCheck
+ * @category Loops
+ */
 import { Client, GuildMember, MessageEmbed } from 'discord.js';
 import { MongoClient } from 'mongodb';
+/**
+ * @desc MongoDB constants
+ */
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
+/**
+ * At 7am UTC, it checks if it's someone birthday.
+ * If so, a 'Happy Birthday' message is sent and
+ * the 'Happy Birthday' role is given to the people.
+ * @param bot - Discord Client object
+ */
 export default async function birthdayCheck (bot:Client) {
     let today = new Date();
     let hh = today.getUTCHours()
