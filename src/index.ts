@@ -65,7 +65,7 @@ bot.on('message', async (msg:Discord.Message) => {
 
     if(msg.channel.id == process.env.SUGGESTIONTC) {
         await msg.react('✅');
-        return await msg.react('❌');
+        return msg.react('❌');
     }
 
     let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
@@ -73,7 +73,7 @@ bot.on('message', async (msg:Discord.Message) => {
     let date:string = new Date().toISOString().slice(0,10)
 
     if(!msg.content.startsWith(process.env.PREFIX))
-        return await cooldown.exp(msg, mongod, db, date);
+        return cooldown.exp(msg, mongod, db, date);
 
     let args = msg.content.slice(1).trim().split(/ +/g);
     let req = args.shift();
