@@ -6,6 +6,9 @@
  */
 import { MongoClient } from 'mongodb';
 import { MessageReaction, User, MessageEmbed, Client } from 'discord.js';
+/**
+ * @desc MongoDB constants
+ */
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 /**
