@@ -2,7 +2,7 @@
  * 'Ready' function executed every times the bot logs in
  * @packageDocumentation
  * @module ReadyFunction
- * @category Utils
+ * @category Events
  */
 import { Client } from 'discord.js';
 import { MongoClient } from 'mongodb';

@@ -2,7 +2,7 @@
  * Starboard class containing methods needed to run a Starboard channel
  * @packageDocumentation
  * @module Starboard
- * @category Utils
+ * @category Events
  */
 import { Client, Message, MessageReaction, User } from "discord.js";
 

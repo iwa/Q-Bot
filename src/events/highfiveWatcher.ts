@@ -2,7 +2,7 @@
  * 'Loop' function that checks for a Highfive request
  * @packageDocumentation
  * @module HighfiveWatcher
- * @category Utils
+ * @category Events
  */
 import { MongoClient } from 'mongodb';
 import { MessageReaction, User, MessageEmbed, Client } from 'discord.js';
