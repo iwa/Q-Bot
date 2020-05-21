@@ -20,7 +20,6 @@
         "readme": "README-docs.md",
         "plugin": ["typedoc-plugin-external-module-name"],
         "exclude": ["src/*+(index|.spec|.e2e).ts", "src/commands/**/*.ts"],
-        "categoryOrder": ["Utils", "*"],
         "hideGenerator": true,
         "includeVersion": true
     }
