@@ -15,7 +15,7 @@ export default async function letmein (msg:Message, levels:any, db:Db) {
     let date:string = new Date().toISOString().slice(0,10)
     await db.collection('stats').updateOne({ _id: date }, { $inc: { letmein: 1 } }, { upsert: true })
 
-    return await msg.member.roles.add('606862164392673290').then(() => {
+    return msg.member.roles.add('606862164392673290').then(() => {
         msg.delete().catch(console.error)
         try {
             msg.member.send({"embed": { "description": "I'm Q-Bot, a unique bot created for this server.\n\nYou can use me with the prefix `?`\nand see all my commands by doing `?help`", "color": 2543500, "author": { "name": `Welcome to Qumu's Discord Server, ${msg.author.username} !`, "icon_url": msg.author.avatarURL}}});

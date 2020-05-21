@@ -32,7 +32,7 @@ export default class cooldown {
             cooldownMsg[msg.author.id]++;
 
         if(cooldownMsg[msg.author.id] == 4)
-            return await msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
+            return msg.reply({"embed": { "title": "**Please calm down, or I'll mute you.**", "color": 13632027 }})
         else if(cooldownMsg[msg.author.id] == 6) {
             await msg.member.roles.add('636254696880734238')
             let msgReply = await msg.reply({"embed": { "title": "**You've been muted for 20 minutes. Reason : spamming.**", "color": 13632027 }})
