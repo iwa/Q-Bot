@@ -7,7 +7,6 @@
 import { Client, Message, MessageReaction, User } from "discord.js";
 
 /**
- * Starboard class
  * @class Starboard class
  */
 export default class starboard {
