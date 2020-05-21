@@ -1,8 +1,19 @@
+/**
+ * Class regrouping staff commands
+ * @packageDocumentation
+ * @module Staff
+ * @category Utils
+ */
 import { Client, Message, MessageEmbed } from 'discord.js'
 import utilities from './utilities'
 
 export default class staff {
 
+    /**
+     * Involves Discord integrated bulk delete
+     * @param msg - Message object
+     * @param args - Arguments in the message
+     */
     static async bulk (msg:Message, args:string[]) {
         if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
 
@@ -23,7 +34,13 @@ export default class staff {
 
     }
 
-    static async mute (bot:Client, msg:Message, args:string[]) {
+    /**
+     * Mutes a member of the server
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     * @param args - Arguments in the message
+     */
+    static async mute (bot:Client, msg:Message, args:string[]):Promise<void> {
         if(utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
 
         if(args.length == 2 && msg.channel.type != 'dm') {
@@ -63,10 +80,15 @@ export default class staff {
                 console.error(err);
             }
         }
-
     }
 
-    static async sleep (bot:Client, msg:Message) {
+    /**
+     * Enables / Disables maintenance mode
+     * (only usable by iwa)
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     */
+    static async sleep (bot:Client, msg:Message):Promise<"1" | "0"> {
         if(msg.author.id != process.env.IWA)return;
         if(process.env.SLEEP == '0') {
             await bot.user.setPresence({ activity: { name: "being updated...", type: 0 }, status: 'dnd' })
