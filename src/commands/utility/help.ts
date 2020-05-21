@@ -60,7 +60,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db, comma
         if (!cmd || !cmd.help.usage) return;
         else {
             await msg.channel.send("`Syntax : ( ) is needed argument, [ ] is optional argument`")
-            return await msg.channel.send(`\`\`\`markdown\n< ${cmd.help.name} >\n\n# Usage\n${cmd.help.usage}\n\n# Description\n${cmd.help.desc}\`\`\``);
+            return msg.channel.send(`\`\`\`markdown\n< ${cmd.help.name} >\n\n# Usage\n${cmd.help.usage}\n\n# Description\n${cmd.help.desc}\`\`\``);
         }
     } else
         sendHelp(msg);
