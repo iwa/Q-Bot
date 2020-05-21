@@ -16,6 +16,7 @@
 - Library used : `discord.js`
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/iwa/Q-Bot?branch=master)](https://bettercodehub.com/)
+[![CodeFactor](https://www.codefactor.io/repository/github/iwa/q-bot/badge/master)](https://www.codefactor.io/repository/github/iwa/q-bot/overview/master)
 
 ## How to contribute
 
