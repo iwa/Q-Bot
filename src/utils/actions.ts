@@ -58,13 +58,12 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
         let mentionSecond = msg.mentions.users.last()
 
         if(!mentionFirst || !mentionSecond)return;
-        if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
-            if(type == "tronky") {
+        if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id) {
+            if(type == "tronky")
                 return msg.channel.send({"embed": { "title": `:x: > **You can't give yourself a tronky!**`, "color": 13632027 }});
-            }
-            else {
+            else
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 }});
-            }
+	}
         if((mentionFirst.id == '606458989575667732' || mentionSecond.id == '606458989575667732') && type != 'slap') {
             setTimeout(() => {
                 r-1;
@@ -74,20 +73,16 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
 
         const embed = new MessageEmbed();
         embed.setColor('#F2DEB0')
-        if(msg.mentions.members.size == 2)
-            if(type == "tronky") {
+        if(msg.mentions.members.size == 2) {
+            if(type == "tronky")
                 embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}** !`)
-            }
-            else {
+            else
                 embed.setTitle(`**${msg.author.username}** gave tronkys to **${mentionFirst.username}** & **${mentionSecond.username}** !`)
-            }
-        else {
-            if(type == "tronky") {
+	} else {
+            if(type == "tronky")
                 embed.setTitle(`**${msg.author.username}** gave a tronky to **${mentionFirst.username}** !`)
-            }
-            else {
+            else
                 embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
-            }
         }
         embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
