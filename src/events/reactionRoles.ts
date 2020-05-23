@@ -1,9 +1,26 @@
+/**
+ * Reaction roles methods to run RR Messages
+ * @packageDocumentation
+ * @module ReactionRoles
+ * @category Events
+ */
 import { MessageReaction, User } from "discord.js";
 import { MongoClient } from 'mongodb';
+/**
+ * @desc MongoDB constants
+ */
 const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
+/**
+ * @class reactionRoles class
+ */
 export default class reactionRoles {
 
+    /**
+     * Gives the corresponding role of the reaction to the user
+     * @param {MessageReaction} reaction
+     * @param {User} author
+     */
     static async add (reaction:MessageReaction, author:User) {
         let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
         let db = mongod.db(dbName);
@@ -21,6 +38,11 @@ export default class reactionRoles {
         return mongod.close();
     }
 
+    /**
+     * Removes the corresponding role of the reaction from the user
+     * @param {MessageReaction} reaction
+     * @param {User} author
+     */
     static async remove (reaction:MessageReaction, author:User) {
         let mongod = await MongoClient.connect(url, {'useUnifiedTopology': true});
         let db = mongod.db(dbName);
