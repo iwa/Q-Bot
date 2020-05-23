@@ -1,8 +1,8 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
 import * as ejs from 'ejs';
-import imGenerator from '../../js/img';
-import utilities from '../../js/utilities'
+import imGenerator from '../../utils/img';
+import utilities from '../../utils/utilities'
 let lastComboColor:number;
 
 module.exports.run = (bot:Client, msg:Message, args:string[], db:Db) => {
@@ -108,14 +108,14 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     let html, file;
     if(id == process.env.QUMU) {
         html = await ejs.renderFile('views/profileQumu.ejs', { user, colors, whichColor });
-        file = await imGenerator(508, 288, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 288, html, userDiscord.id, 'prof')
     } else if(id == bot.user.id) {
         let thanksiwa:number = userDB.thanksiwa
         html = await ejs.renderFile('views/profileBot.ejs', { user, colors, whichColor, thanksiwa });
-        file = await imGenerator(508, 358, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 358, html, userDiscord.id, 'prof')
     } else {
         html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
-        file = await imGenerator(508, 428, html, userDiscord.tag, 'prof')
+        file = await imGenerator(508, 428, html, userDiscord.id, 'prof')
     }
 
     try {

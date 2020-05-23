@@ -47,28 +47,28 @@
   dependencies:
     "@types/node" "*"
 
-"@types/ejs@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.0.3.tgz#aa88c117fb4e666ece7348e8620d0c57b3cc2ad3"
-  integrity sha512-vkPNcai0FAHsaqLXObm1bTr87XOwfAS1a/jUx5b+Mj+lUToeEcgMIcdE0PuU0CdWq4VkNJYgLa0asYjrNb/maA==
+"@types/ejs@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.0.4.tgz#8851fcdedb96e410fbb24f83b8be6763ef9afa77"
+  integrity sha512-ZxnwyBGO4KX/82AsFHTX82eMw0PsoBcIngEat+zx0y+3yxoNDJucAihg9nAcrc+g4Cwiv/4WcWsX4oiy0ySrRQ==
 
-"@types/mongodb@^3.5.16":
-  version "3.5.16"
-  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.5.16.tgz#b39b2e4873a5f399aa2a9027baeca542d0d76ebe"
-  integrity sha512-q12k9vFEGfQTUTC9KiN+Lf1nPpEawuPyTfIHBgGn+lSD/4ICZhePxQqEe/ukRgAjS63vdc+Td758VBr4bUGNjg==
+"@types/mongodb@^3.5.18":
+  version "3.5.18"
+  resolved "https://registry.yarnpkg.com/@types/mongodb/-/mongodb-3.5.18.tgz#79b1b8119e035980a4b4412239e0d05b367ec647"
+  integrity sha512-fEmnRmwXt4pEFhqWB/ZlyNaDhLfQv5GALaZAlH9Pb0kEttvsCr66umJ9pfBEEP3ks1hjlwAuMtqk/+DyZDLAXQ==
   dependencies:
     "@types/bson" "*"
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^13.13.5":
-  version "13.13.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.5.tgz#96ec3b0afafd64a4ccea9107b75bf8489f0e5765"
-  integrity sha512-3ySmiBYJPqgjiHA7oEaIo2Rzz0HrOZ7yrNO5HWyaE5q0lQ3BppDZ3N53Miz8bw2I7gh1/zir2MGVZBvpb1zq9g==
+"@types/node@*", "@types/node@^14.0.4":
+  version "14.0.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.4.tgz#43a63fc5edce226bed106b31b875165256271107"
+  integrity sha512-k3NqigXWRzQZVBDS5D1U70A5E8Qk4Kh+Ha/x4M8Bt9pF0X05eggfnC9+63Usc9Q928hRUIpIhTQaXsZwZBl4Ew==
 
-"@types/puppeteer@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-2.0.1.tgz#83a1d7f0a1c2e0edbbb488b4d8fb54b14ec9d455"
-  integrity sha512-G8vEyU83Bios+dzs+DZGpAirDmMqRhfFBJCkFrg+A5+6n5EPPHxwBLImJto3qjh0mrBXbLBCyuahhhtTrAfR5g==
+"@types/puppeteer@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/puppeteer/-/puppeteer-3.0.0.tgz#24cdcc131e319477608d893f0017e08befd70423"
+  integrity sha512-59+fkfHHXHzX5rgoXIMnZyzum7ZLx/Wc3fhsOduFThpTpKbzzdBHMZsrkKGLunimB4Ds/tI5lXTRLALK8Mmnhg==
   dependencies:
     "@types/node" "*"
 
@@ -378,10 +378,10 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-ejs@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/ejs/-/ejs-3.1.2.tgz#a9986e6920a60f2a3229e87d4f0f3c073209874c"
-  integrity sha512-zFuywxrAWtX5Mk2KAuoJNkXXbfezpNA0v7i+YC971QORguPekpjpAgeOv99YWSdKXwj7JxI2QAWDeDkE8fWtXw==
+ejs@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/ejs/-/ejs-3.1.3.tgz#514d967a8894084d18d3d47bd169a1c0560f093d"
+  integrity sha512-wmtrUGyfSC23GC/B1SMv2ogAUgbQEtDmTIhfqielrG5ExIM9TP4UoYdi90jLF1aTcsWCJNEO0UrgKzP0y3nTSg==
   dependencies:
     jake "^10.6.1"
 
@@ -694,10 +694,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-m3u8stream@^0.6.3:
-  version "0.6.5"
-  resolved "https://registry.yarnpkg.com/m3u8stream/-/m3u8stream-0.6.5.tgz#a41713cb7144f8fe1eb944d32a8848be8cb2c951"
-  integrity sha512-QZCzhcfUliZfsOboi68QkNcMejPKTEhxE+s1TApvHubDeR8ythm4ViWuYFqgUwZeoHe8q0nsPxOvA3lQvdSzyg==
+m3u8stream@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/m3u8stream/-/m3u8stream-0.7.1.tgz#74b01a67ca248ac7bbdc263a65d9d8d2c479a65c"
+  integrity sha512-z6ldnAdhbuWOL6LmMkwptSZGzj+qbRytMKLTbNicwF/bJMjf9U9lqD57RNQUFecvWadEkzy6PDjcNJFFgi19uQ==
   dependencies:
     miniget "^1.6.1"
     sax "^1.2.4"
@@ -1005,10 +1005,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-puppeteer@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-3.0.4.tgz#f445aae0a6732c65bbb90e963dcd6fd8fde0d780"
-  integrity sha512-1QEb4tJXXbNId7WSHlcDkS3B4GklTIebKn8Y9D6B7tAdUjQncb+8QlTjbQsAgGX5dhRG32Qycuk5XKzJgLs0sg==
+puppeteer@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-3.1.0.tgz#d44efdc5410809025f38bca2de106c3ae5c85a52"
+  integrity sha512-jLa9sqdVx0tPnr2FcwAq+8DSjGhSM4YpkwOf3JE22Ycyqm71SW7B5uGfTyMGFoLCmbCozbLZclCjasPb0flTRw==
   dependencies:
     debug "^4.1.0"
     extract-zip "^2.0.0"
@@ -1401,13 +1401,13 @@ yauzl@^2.10.0:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
 
-ytdl-core@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-2.1.2.tgz#64003e5ac1907df3e92cf36771224811bd81698f"
-  integrity sha512-/tOT9Pka6nX+LuvzNLBU8AbVHe8XELn3aZ69mvCxzvwO/ty9k8cRvF6jXqti7l5M+0hf+UPpP9jYPSAFAuoBUA==
+ytdl-core@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/ytdl-core/-/ytdl-core-2.1.3.tgz#1dd06056b97bf4159469ce05ca143d3175354061"
+  integrity sha512-fYgamrENhlRlxBaQioibekS8wzejZZpXlxOGK4pOfhupprGoknY7VAfMJ7zxI36NU8zpnnW9i3VmTRuQIyNB8A==
   dependencies:
     html-entities "^1.3.1"
-    m3u8stream "^0.6.3"
+    m3u8stream "^0.7.1"
     miniget "^1.7.0"
     sax "^1.1.3"
 

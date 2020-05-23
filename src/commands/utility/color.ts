@@ -1,6 +1,6 @@
 import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 const colors = require('../../../lib/colors.json')
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
@@ -12,7 +12,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             let role = msg.member.roles.cache.find(val => colors.indexOf(val.id) > -1)
             if(role) {
                 await msg.member.roles.remove(role)
-                return await msg.channel.send({
+                return msg.channel.send({
                     "embed": {
                       "color": 11675878,
                       "author": {
@@ -39,7 +39,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             await msg.member.roles.add(colors[choice]);
             msg.channel.send({
                 "embed": {
-                  "description": "You're now wearing the <@&${colors[choice]}> color!\nType `?color off` to take off the color.",
+                  "description": `You're now wearing the <@&${colors[choice]}> color!\nType \`?color off\` to take off the color.`,
                   "color": 11675878,
                   "author": {
                     "name": msg.author.username,

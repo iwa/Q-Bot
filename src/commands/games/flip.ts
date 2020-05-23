@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js'
-import utilities from '../../js/utilities'
+import utilities from '../../utils/utilities'
 
 module.exports.run = (bot:Client, msg:Message) => {
     let n = utilities.randomInt(2);

@@ -1,10 +1,18 @@
-import { Client, Message, MessageEmbed, Util, VoiceChannel, VoiceConnection } from 'discord.js';
+/**
+ * Youtube Music Module
+ * @packageDocumentation
+ * @module Music
+ * @category Utils
+ */
+import { Client, Message, MessageEmbed, Util, VoiceChannel, VoiceConnection, StreamDispatcher } from 'discord.js';
 import * as YoutubeStream from 'ytdl-core';
-const { YouTube } = require('popyt')
+import { YouTube, Video } from 'popyt';
 const yt = new YouTube(process.env.YT_TOKEN)
 import utilities from './utilities'
 
+/** @desc Text Channel where music commands can be sent */
 let TC = process.env.MUSICTC;
+/** @desc Voice Channel where the bot connects and plays music */
 let VC = process.env.MUSICVC;
 
 let queue:string[] = [], title:string[] = [], length:string[] = [], skippers:string[] = [];
@@ -12,6 +20,13 @@ let skipReq = 0, loop = 0;
 
 module.exports = class music {
 
+    /**
+     * Parses the request (keywords or link)
+     * and try to play the video
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     * @param args - Arguments in the message
+     */
     static async play (bot:Client, msg:Message, args:string[]) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -27,7 +42,8 @@ module.exports = class music {
 
         if(video_url[0].match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
 
-            const playlist = await yt.getPlaylistByUrl(video_url[0]).catch(console.error)
+            const playlist = await yt.getPlaylist(video_url[0]).catch(console.error)
+            if(!playlist)return;
 
             let reply = await msg.channel.send(":warning: Are you sure you want to add all the videos of __" + playlist.title + "__ to the queue ? *(**" + playlist.data.contentDetails.itemCount + "** videos)*")
             await reply.react('✅');
@@ -59,38 +75,43 @@ module.exports = class music {
             const videos = await playlist.fetchVideos();
             let errors = 0;
 
-            videos.forEach(async (video:any) => {
-                const url:any = video.url
-                error = false;
-                if(queue.indexOf(url) == -1) {
-                    data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
-                    if(!error && data) {
-                        queue.push(url)
-                        title.push(Util.escapeMarkdown(data.title))
-                        length.push(data.length_seconds)
+            let bar = new Promise((resolve, reject) => {
+                videos.forEach(async (video:Video, index:number, array:Video[]) => {
+                    const url:string = video.url
+                    error = false;
+                    if(queue.indexOf(url) == -1) {
+                        data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
+                        if(!error && data) {
+                            queue.push(url)
+                            title.push(Util.escapeMarkdown(data.title))
+                            length.push(data.length_seconds)
+                        }
+                    }
+                    if(index === array.length -1) resolve();
+                });
+            });
+
+            bar.then(async () => {
+                const embedDone = new MessageEmbed();
+                embedDone.setTitle("**Done!**")
+                embedDone.setColor('LUMINOUS_VIVID_PINK')
+
+                if(errors > 0) embedDone.setDescription("Some videos are unavailable :(");
+
+                msg.channel.send(embedDone)
+
+                let connection:null | VoiceConnection = bot.voice.connections.find(val => val.channel.id == voiceChannel.id);
+
+                if(!connection) {
+                    try {
+                        const voiceConnection = await voiceChannel.join();
+                        playSong(msg, voiceConnection, voiceChannel);
+                    }
+                    catch(ex) {
+                        console.error(ex)
                     }
                 }
             });
-
-            const embedDone = new MessageEmbed();
-            embedDone.setTitle("**Done!**")
-            embedDone.setColor('LUMINOUS_VIVID_PINK')
-
-            if(errors > 0) embedDone.setDescription("Some videos are unavailable :(");
-
-            msg.channel.send(embedDone)
-
-            let connection:null | VoiceConnection = bot.voice.connections.find(val => val.channel.id == voiceChannel.id);
-
-            if(!connection) {
-                try {
-                    const voiceConnection = voiceChannel.join();
-                    playSong(msg, voiceConnection, voiceChannel);
-                }
-                catch(ex) {
-                    console.error(ex)
-                }
-            }
             return;
         }
 
@@ -109,6 +130,11 @@ module.exports = class music {
         }
     }
 
+    /**
+     * Removes a song from the queue
+     * @param msg - Message object
+     * @param args - Arguments in the message
+     */
     static remove (msg:Message, args:string[]) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -130,6 +156,11 @@ module.exports = class music {
         title.splice(queueID, 1)
     }
 
+    /**
+     * Sends the queue
+     * @param msg - Message object
+     * @param args - Arguments in the message
+     */
     static list (msg:Message, args:string[]) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
         if(args.length > 0)return;
@@ -163,6 +194,11 @@ module.exports = class music {
         console.log(`musc: show queue by ${msg.author.tag}`)
     }
 
+    /**
+     * Adds a voteskip
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     */
     static async skip (bot:Client, msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -210,6 +246,10 @@ module.exports = class music {
         }
     }
 
+    /**
+     * Clears the queue
+     * @param msg - Message object
+     */
     static async clear (msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -222,6 +262,10 @@ module.exports = class music {
         console.log(`musc: clear queue by ${msg.author.tag}`)
     }
 
+    /**
+     * Stops the music
+     * @param msg - Message object
+     */
     static async stop (msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -236,9 +280,14 @@ module.exports = class music {
         console.log(`musc: stop by ${msg.author.tag}`)
     }
 
+    /**
+     * Forceskips the music
+     * (only usable by the staff)
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     */
     static async forceskip (bot:Client, msg:Message) {
-        if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
-
+        if(utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
         let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
@@ -262,6 +311,10 @@ module.exports = class music {
         return console.log(`musc: forceskip by ${msg.author.tag}`)
     }
 
+    /**
+     * Enables / Disables looping the current song
+     * @param msg - Message object
+     */
     static loop (msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -269,7 +322,7 @@ module.exports = class music {
             loop = 1
             console.log(`info: loop enabled by ${msg.author.tag}`)
             const embed = new MessageEmbed();
-            embed.setAuthor("Looping the current song...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+            embed.setAuthor("🔂 Looping the current song...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
@@ -283,6 +336,11 @@ module.exports = class music {
         }
     }
 
+    /**
+     * Shows the current played song
+     * @param msg - Message object
+     * @param bot - Discord Client object
+     */
     static async np (msg:Message, bot:Client) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -302,7 +360,7 @@ module.exports = class music {
         embed.setTitle("**:cd: Now Playing:**")
 
         let desc = `[${title[0]}](${queue[0]})`;
-        if(loop == 1) desc += "\nCurrently looping this song - type `?loop` to disable";
+        if(loop == 1) desc += "\n🔂 Currently looping this song - type `?loop` to disable";
         embed.setDescription(desc)
 
         let time = new Date(voiceConnection.dispatcher.streamTime).toISOString().slice(11,19)
@@ -317,6 +375,11 @@ module.exports = class music {
         console.log(`info: nowplaying by ${msg.author.tag}`)
     }
 
+    /**
+     * Pauses the music
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     */
     static async pause (bot:Client, msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -326,6 +389,11 @@ module.exports = class music {
         await msg.react('✅');
     }
 
+    /**
+     * Resumes the music
+     * @param bot - Discord Client object
+     * @param msg - Message object
+     */
     static async resume (bot:Client, msg:Message) {
         if(msg.channel.type != "text" || msg.channel.id != TC)return;
 
@@ -336,9 +404,13 @@ module.exports = class music {
     }
 }
 
-
+/**
+ * Plays the song in the top of the queue
+ * @param msg - Message object
+ * @param voiceConnection - Voice connection of the bot
+ * @param voiceChannel - The voice channel where the bot should be connected in
+ */
 async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChannel:VoiceChannel) {
-
     const video = YoutubeStream(queue[0], {filter: "audioonly", quality: "highestaudio"});
 
     video.on('error', () => {
@@ -385,6 +457,14 @@ async function playSong (msg:Message, voiceConnection:VoiceConnection, voiceChan
     }).on('error', console.error);
 }
 
+/**
+ * Parses the top video in the queue
+ * and check if the video is playable
+ * @param msg - Message object
+ * @param voiceChannel - The voice channel where the bot should be connected in
+ * @param video_url - The video url to check and play
+ * @param data - Youtube Stream data infos
+ */
 async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:string, data:void | YoutubeStream.videoInfo) {
     msg.channel.startTyping();
     let error = false;
@@ -397,13 +477,15 @@ async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:stri
         }
     } else {
         msg.channel.stopTyping()
-        return msg.channel.send(":x: > **This video is already in the queue!**")
+        return msg.channel.send({"embed": { "title": `:x: > **This video is already in the queue!**`, "color": 13632027 }})
     }
 
     if(error) {
         msg.channel.stopTyping()
-        return msg.channel.send(":x: > **This video is unavailable :(**")
+        return msg.channel.send({"embed": { "title": `:x: > **This video is unavailable :(**`, "color": 13632027 }})
     }
+
+    msg.delete();
 
     if(queue[0] != video_url && data) {
         const embed = new MessageEmbed();
@@ -427,7 +509,14 @@ async function launchPlay(msg:Message, voiceChannel:VoiceChannel, video_url:stri
     }
 }
 
-async function fetchDispatcher(bot:Client, msg:Message) {
+/**
+ * Try to fetch an existing dispatcher if the bot is already
+ * connected to the voice channel
+ * @param bot - Discord Client object
+ * @param msg - Message object
+ * @returns The existing StreamDispatcher (if exists)
+ */
+async function fetchDispatcher(bot:Client, msg:Message): Promise<StreamDispatcher> {
     let voiceConnection = bot.voice.connections.find(val => val.channel.id == VC);
     if(!voiceConnection) {
         const embed = new MessageEmbed();

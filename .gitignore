@@ -8,5 +8,8 @@ node_modules/
 image/
 .env
 
-# TypeScript
+# TypeScript artifacts
 build/
+
+# npm lockfile
+package-lock.json

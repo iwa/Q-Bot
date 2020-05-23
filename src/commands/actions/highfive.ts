@@ -1,12 +1,11 @@
 import { Client, Message, MessageReaction, User, MessageEmbed } from 'discord.js'
 import { Db } from 'mongodb'
-import utilities from '../../js/utilities';
+import utilities from '../../utils/utilities';
 let lastGif:number = 0, count:number = 9;
 let lastGifFail:number = 0, countFail:number = 5;
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
-    if(msg.channel.type != "dm")
-        await msg.delete().catch(console.error)
+
     if(msg.mentions.everyone)return;
     let mention = msg.mentions.users.first()
     if(!mention)return;
