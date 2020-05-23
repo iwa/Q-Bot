@@ -41,8 +41,12 @@ module.exports = class actions {
             mentionFirst = msg.mentions.users.first()
             if(!mentionFirst)return;
             if(mentionFirst.id == msg.author.id)
-                return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
-
+                if(type == "tronky") {
+                    return await msg.channel.send({"embed": { "title": `:x: > **You can't give yourself a tronky!**`, "color": 13632027 }});
+                }
+                else {
+                    return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 }});
+                }
             const embed = new MessageEmbed();
             embed.setColor('#F2DEB0')
 
@@ -74,7 +78,12 @@ module.exports = class actions {
             mentionSecond = msg.mentions.users.last()
             if(!mentionFirst || !mentionSecond)return;
             if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
+                if(type == "tronky") {
+                    return await msg.channel.send({"embed": { "title": `:x: > **You can't give yourself a tronky!**`, "color": 13632027 }});
+                }
+                else {
                 return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} youself!**`, "color": 13632027 }});
+                }
             if(mentionFirst.id == mentionSecond.id)
                 return await msg.channel.send({"embed": { "title": `:x: > **You can't ${type} the same person twice in one go!**`, "color": 13632027 }});
 
