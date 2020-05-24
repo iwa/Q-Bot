@@ -63,7 +63,8 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
                 return msg.channel.send({"embed": { "title": `:x: > **You can't give yourself a tronky!**`, "color": 13632027 }});
             else
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 }});
-	}
+        }
+
         if((mentionFirst.id == '606458989575667732' || mentionSecond.id == '606458989575667732') && type != 'slap') {
             setTimeout(() => {
                 r-1;
@@ -78,12 +79,13 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
                 embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}** !`)
             else
                 embed.setTitle(`**${msg.author.username}** gave tronkys to **${mentionFirst.username}** & **${mentionSecond.username}** !`)
-	} else {
+	    } else {
             if(type == "tronky")
                 embed.setTitle(`**${msg.author.username}** gave a tronky to **${mentionFirst.username}** !`)
             else
                 embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
         }
+
         embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
         let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
