@@ -3,7 +3,7 @@ import { Db } from 'mongodb'
 
 module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
     let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
-    let avatar = await msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
+    let avatar = msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 })
     if(!user.fc)
         return msg.channel.send({
             "embed": {
