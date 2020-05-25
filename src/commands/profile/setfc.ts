@@ -13,7 +13,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             return msg.channel.send({"embed": { "title": ":x: > **Sorry, you can't change your FC!**", "description": "**Please contact <@125325519054045184> to change.**", "color": 13632027 }});
         }
 
-        await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { fc: content }});
+        await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { fc: content }}, { upsert: true });
         const embed = new MessageEmbed();
         embed.setAuthor("Your Switch FC is now set to : ", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         embed.setTitle(`**${content}**`)
