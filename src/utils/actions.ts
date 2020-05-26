@@ -22,6 +22,7 @@ interface stringKeyArray {
 let lastGif:stringKeyArray = {
     'pat': 0,
     'hug': 0,
+    'group-hug': 0,
     'boop': 0,
     'slap': 0
 };
@@ -30,6 +31,7 @@ let lastGif:stringKeyArray = {
 let count:stringKeyArray = {
     'pat': 46,
     'hug': 47,
+    'group-hug': 9,
     'boop': 15,
     'slap': 9
 };
@@ -42,23 +44,18 @@ let count:stringKeyArray = {
  * @param type - Type of actions (hug, pat...)
  */
 export default async function actionsRun (bot:Client, msg:Message, args:string[], db:Db, type:string) {
-    let n = utilities.randomInt(count[type])
-    while(lastGif[type] == n) {
-        n = utilities.randomInt(count[type]);
-    }
-    lastGif[type] = n;
-    let r = utilities.randomInt(reply.length)
-
     if(args.length <= 10) {
         if(msg.mentions.everyone)return;
         if(msg.mentions.members.has(msg.author.id))
             return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 }});
 
-        if(msg.mentions.members.has(bot.user.id) && type != 'slap')
+        if(msg.mentions.members.has(bot.user.id) && type != 'slap') {
+            let r = utilities.randomInt(reply.length)
             setTimeout(() => {
                 r-1;
                 msg.reply(reply[r]);
             }, 2000)
+        }
 
         const embed = new MessageEmbed();
         embed.setColor('#F2DEB0')
@@ -69,9 +66,33 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
                 title = `${title}, **<@${users[i].id}>**`
             title = `${title} & **<@${(msg.mentions.users.last()).id}>**!`
             embed.setDescription(title);
-        } else
+
+            if(type == 'hug') {
+                let groupType = `group-${type}`
+                let n = utilities.randomInt(count[groupType])
+                while(lastGif[groupType] == n)
+                    n = utilities.randomInt(count[groupType]);
+                lastGif[groupType] = n;
+
+                embed.setImage(`https://${process.env.CDN_URL}/img/${type}/group/${n}.gif`)
+            } else {
+                let n = utilities.randomInt(count[type])
+                while(lastGif[type] == n)
+                    n = utilities.randomInt(count[type]);
+                lastGif[type] = n;
+
+                embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
+            }
+        } else {
             embed.setDescription(`**<@${msg.author.id}>** ${type}s you **<@${(msg.mentions.members.first()).id}>**!`)
-        embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
+
+            let n = utilities.randomInt(count[type])
+            while(lastGif[type] == n)
+                n = utilities.randomInt(count[type]);
+            lastGif[type] = n;
+
+            embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
+        }
 
         let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
         await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: msg.mentions.members.size }}, { upsert: true });
