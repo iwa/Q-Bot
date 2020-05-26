@@ -92,7 +92,7 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
         await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: msg.mentions.members.size }}, { upsert: true });
         await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { [type]: msg.mentions.members.size }}, { upsert: true });
 
-        embed.setFooter(`You have given ${user[type] + msg.mentions.members.size} ${type}s`)
+        embed.setFooter(`You have given ${(user[type]? user[type] : 0) + msg.mentions.members.size} ${type}s`)
         return msg.channel.send(embed)
         .then(() => {
             console.log(`info: ${type} sent by ${msg.author.tag}`);

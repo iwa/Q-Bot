@@ -33,12 +33,12 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
     let guild = bot.guilds.cache.find(val => val.id == process.env.GUILDID)
     let member = guild.members.cache.find(val => val.id == id)
 
-    let leadXP = await db.collection('user').find({ hidden: false }).sort({exp:-1}).toArray();
-    let leadHug = await db.collection('user').find({ hidden: false }).sort({hug:-1}).toArray();
-    let leadPat = await db.collection('user').find({ hidden: false }).sort({pat:-1}).toArray();
-    let leadBoop = await db.collection('user').find({ hidden: false }).sort({boop:-1}).toArray();
-    let leadSlap = await db.collection('user').find({ hidden: false }).sort({slap:-1}).toArray();
-    let leadHighfive = await db.collection('user').find({ hidden: false }).sort({highfive:-1}).toArray();
+    let leadXP = await db.collection('user').find({ hidden: { $ne: true } }).sort({exp:-1}).toArray();
+    let leadHug = await db.collection('user').find({ hidden: { $ne: true }}).sort({hug:-1}).toArray();
+    let leadPat = await db.collection('user').find({ hidden: { $ne: true } }).sort({pat:-1}).toArray();
+    let leadBoop = await db.collection('user').find({ hidden: { $ne: true } }).sort({boop:-1}).toArray();
+    let leadSlap = await db.collection('user').find({ hidden: { $ne: true } }).sort({slap:-1}).toArray();
+    let leadHighfive = await db.collection('user').find({ hidden: { $ne: true } }).sort({highfive:-1}).toArray();
 
     let lvlInfo = utilities.levelInfo(userDB.exp);
 
