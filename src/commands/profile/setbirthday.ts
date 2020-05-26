@@ -19,7 +19,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
             let dd = String(date.getDate()).padStart(2, '0');
             let mm = String(date.getMonth() + 1).padStart(2, '0'); //January is 0!
             let today = mm + '/' + dd;
-            await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { birthday: today }});
+            await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { birthday: today }}, { upsert: true });
             const embed = new Discord.MessageEmbed();
             embed.setAuthor("Your birthday is now set to: ", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
             embed.setTitle(`**${today}**`)
