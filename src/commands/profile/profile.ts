@@ -58,8 +58,9 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
         positionBoop: leadBoop.findIndex(val => val._id == id),
         positionSlap: leadSlap.findIndex(val => val._id == id),
         positionHighfive: leadHighfive.findIndex(val => val._id == id),
-        birthday: userDB.birthday? userDB.birthday : "not registered yet",
+        birthday: userDB.birthday? userDB.birthday : "--/--",
         fc: userDB.fc? userDB.fc : "not registered yet",
+        psn: userDB.psn? userDB.psn : "not registered yet",
         level: lvlInfo.level,
         current: lvlInfo.current,
         max: lvlInfo.max
@@ -101,7 +102,7 @@ async function profileImg(bot:Client, msg:Message, db:Db, id:string) {
         file = await imGenerator(508, 358, html, userDiscord.id, 'prof')
     } else {
         html = await ejs.renderFile('views/profile.ejs', { user, colors, whichColor });
-        file = await imGenerator(508, 428, html, userDiscord.id, 'prof')
+        file = await imGenerator(508, 408, html, userDiscord.id, 'prof')
     }
 
     try {
