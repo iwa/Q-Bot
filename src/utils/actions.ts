@@ -89,8 +89,8 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
         embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
         let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
-        await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: msg.mentions.members.size }});
-        await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { [type]: msg.mentions.members.size }});
+        await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: msg.mentions.members.size }}, { upsert: true });
+        await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { [type]: msg.mentions.members.size }}, { upsert: true });
 
         embed.setFooter(`You have given ${user[type] + msg.mentions.members.size} ${type}s`)
         return msg.channel.send(embed)
