@@ -65,10 +65,10 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
                 return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 }});
         }
 
-        if((mentionFirst.id == '606458989575667732' || mentionSecond.id == '606458989575667732') && type != 'slap') {
+        if((mentionFirst.id == bot.user.id || mentionSecond.id == bot.user.id) && type != 'slap') {
             setTimeout(() => {
                 r-1;
-                msg.channel.send(reply[r])
+                msg.reply(reply[r]);
             }, 2000)
         }
 
