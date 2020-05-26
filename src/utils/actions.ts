@@ -49,16 +49,12 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
     lastGif[type] = n;
     let r = utilities.randomInt(reply.length)
 
-    if(args.length <= 2) {
+    if(args.length <= 10) {
         if(msg.mentions.everyone)return;
-        let mentionFirst = msg.mentions.users.first()
-        let mentionSecond = msg.mentions.users.last()
-
-        if(!mentionFirst || !mentionSecond)return;
-        if(mentionFirst.id == msg.author.id || mentionSecond.id == msg.author.id)
+        if(msg.mentions.members.has(msg.author.id))
             return msg.channel.send({"embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 }});
 
-        if((mentionFirst.id == bot.user.id || mentionSecond.id == bot.user.id) && type != 'slap')
+        if(msg.mentions.members.has(bot.user.id) && type != 'slap')
             setTimeout(() => {
                 r-1;
                 msg.reply(reply[r]);
@@ -66,10 +62,15 @@ export default async function actionsRun (bot:Client, msg:Message, args:string[]
 
         const embed = new MessageEmbed();
         embed.setColor('#F2DEB0')
-        if(msg.mentions.members.size == 2)
-            embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}** & **${mentionSecond.username}**!`)
-	    else
-            embed.setTitle(`**${msg.author.username}** ${type}s you **${mentionFirst.username}**!`)
+        if(msg.mentions.members.size >= 2) {
+            let users = msg.mentions.members.array()
+            let title: string = `**<@${msg.author.id}>** ${type}s you **<@${users[0].id}>**`;
+            for(let i = 1; i < (msg.mentions.members.size-1); i++)
+                title = `${title}, **<@${users[i].id}>**`
+            title = `${title} & **<@${(msg.mentions.users.last()).id}>**!`
+            embed.setDescription(title);
+        } else
+            embed.setDescription(`**<@${msg.author.id}>** ${type}s you **<@${(msg.mentions.members.first()).id}>**!`)
         embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
 
         let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
