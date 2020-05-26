@@ -27,7 +27,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
 
             try {
                 console.log(`info: birthday of ${msg.author.tag} set on ${today}`)
-                return await msg.channel.send(embed).then(() => { msg.delete() })
+                return await msg.channel.send(embed);
             } catch(err) {
                 console.error(err);
             }

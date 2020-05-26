@@ -20,7 +20,7 @@ module.exports.run = async (bot:Client, msg:Message, args:string[], db:Db) => {
         embed.setColor('AQUA')
         try {
             console.log(`info: switch fc of ${msg.author.tag} set`)
-            return await msg.channel.send(embed).then(() => { msg.delete() })
+            return await msg.channel.send(embed);
         } catch(err) {
             console.error(err);
         }
