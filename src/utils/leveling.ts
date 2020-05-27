@@ -19,11 +19,11 @@ export default class leveling {
      * @param msg - Message object
      * @param xp - The amount of exp of the user
      */
-    static async levelCheck (msg:Discord.Message, xp:number) {
-        for(let i = 1; i <= 20; i++) {
-            if(xp == levels[i].amount) {
-                if(i != 1)
-                    await msg.member.roles.remove(levels[i-1].id).catch(console.error);
+    static async levelCheck(msg: Discord.Message, xp: number) {
+        for (let i = 1; i <= 20; i++) {
+            if (xp == levels[i].amount) {
+                if (i != 1)
+                    await msg.member.roles.remove(levels[i - 1].id).catch(console.error);
                 await msg.member.roles.add(levels[i].id).catch(console.error);
                 return leveling.imageLvl(msg, i);
             }
@@ -36,7 +36,7 @@ export default class leveling {
      * @param msg - Message object
      * @param level - Level number of the user
      */
-    static async imageLvl (msg:Discord.Message, level:number) {
+    static async imageLvl(msg: Discord.Message, level: number) {
         let avatarURL = msg.author.avatarURL({ format: 'png', dynamic: false, size: 512 })
         let cdnUrl = process.env.CDN_URL;
 
@@ -44,8 +44,8 @@ export default class leveling {
         let file = await imGenerator(808, 208, html, msg.author.id, 'lvl')
 
         try {
-            await msg.reply('', {files: [file]})
-        } catch(err) {
+            await msg.reply('', { files: [file] })
+        } catch (err) {
             console.error(err)
             return msg.reply(`You're now level ${level} ! Congrats !`)
         }
