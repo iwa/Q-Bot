@@ -45,8 +45,6 @@ export default class leveling {
 
         try {
             await msg.reply('', {files: [file]})
-            if(level % 2 == 0)
-                return await msg.channel.send("*hey, you've unlocked a new color, do `?color` in #commands to discover it!*")
         } catch(err) {
             console.error(err)
             return msg.reply(`You're now level ${level} ! Congrats !`)
