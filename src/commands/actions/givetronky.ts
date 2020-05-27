@@ -2,7 +2,7 @@ import { Client, Message } from 'discord.js'
 import { Db } from 'mongodb'
 const tronky = require('./tronky');
 
-module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
+module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     tronky.run(bot, msg, args);
 };
 
