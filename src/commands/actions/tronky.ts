@@ -18,9 +18,9 @@ module.exports.run = async (bot:Client, msg:Message, args:string[]) => {
         const embed = new MessageEmbed();
         embed.setColor('#F2DEB0')
         if(msg.mentions.members.size == 2)
-            embed.setTitle(`**${msg.author.username}** gave tronkys to **${mentionFirst.username}** & **${mentionSecond.username}** !`)
+            embed.setDescription(`**<@${msg.author.id}>** gave tronkys to **<@${mentionFirst.id}>** & **<@${mentionSecond.id}>**! <:tronkyForYou:712980723258097664><:tronkyForYou:712980723258097664>`)
 	    else
-            embed.setTitle(`**${msg.author.username}** gave a tronky to **${mentionFirst.username}** !`)
+            embed.setDescription(`**<@${msg.author.id}>** gave a tronky to **<@${mentionFirst.id}>**! <:tronkyForYou:712980723258097664>`)
 
         return msg.channel.send(embed)
         .then(() => {
