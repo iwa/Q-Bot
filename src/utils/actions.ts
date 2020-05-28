@@ -64,7 +64,7 @@ export default async function actionsRun(bot: Client, msg: Message, args: string
             let title: string = `**<@${msg.author.id}>** ${type}s you **<@${users[0].id}>**`;
             for (let i = 1; i < (msg.mentions.members.size - 1); i++)
                 title = `${title}, **<@${users[i].id}>**`
-            title = `${title} & **<@${(msg.mentions.users.last()).id}>**!`
+            title = `${title} & **<@${(msg.mentions.members.last()).id}>**!`
             embed.setDescription(title);
 
             if (type == 'hug') {
