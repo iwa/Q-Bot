@@ -411,13 +411,13 @@ module.exports = class music {
  * @param voiceChannel - The voice channel where the bot should be connected in
  */
 async function playSong(msg: Message, voiceConnection: VoiceConnection, voiceChannel: VoiceChannel) {
-    const video = YoutubeStream(queue[0], { filter: "audioonly", quality: "highestaudio" });
+    const video = YoutubeStream(queue[0], { filter: "audioonly", quality: "highestaudio", highWaterMark: 1024 });
 
     video.on('error', () => {
         return msg.channel.send(":x: > **There was an unexpected error with playing the video, please retry later**")
     })
 
-    voiceConnection.play(video, { volume: 0.8, bitrate: 96000, highWaterMark: 512 })
+    voiceConnection.play(video, { volume: 0.8, bitrate: 96000, highWaterMark: 48, fec: true, plp: 0 })
         .on('start', async () => {
             if (loop == 0) {
                 let date = new Date(null)
