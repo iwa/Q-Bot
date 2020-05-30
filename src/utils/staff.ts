@@ -14,12 +14,12 @@ export default class staff {
      * @param msg - Message object
      * @param args - Arguments in the message
      */
-    static async bulk (msg:Message, args:string[]) {
-        if(utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU)return;
+    static async bulk(msg: Message, args: string[]) {
+        if (utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) return;
 
-        if(args.length !== 0) {
-            let channel:any = msg.channel
-            if(msg.channel.type !== "dm") {
+        if (args.length !== 0) {
+            let channel: any = msg.channel
+            if (msg.channel.type !== "dm") {
                 msg.delete().catch(console.error);
                 let nb = parseInt(args[0])
                 msg.channel.bulkDelete(nb)
@@ -30,7 +30,7 @@ export default class staff {
             }
         }
         else
-            return msg.channel.send({"embed": { "title": ":x: > **Incomplete command.**", "color": 13632027 }});
+            return msg.channel.send({ "embed": { "title": ":x: > **Incomplete command.**", "color": 13632027 } });
 
     }
 
@@ -40,18 +40,18 @@ export default class staff {
      * @param msg - Message object
      * @param args - Arguments in the message
      */
-    static async mute (bot:Client, msg:Message, args:string[]):Promise<void> {
-        if(utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU)return;
+    static async mute(bot: Client, msg: Message, args: string[]): Promise<void> {
+        if (utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU) return;
 
-        if(args.length == 2 && msg.channel.type != 'dm') {
-            if(msg.mentions.everyone)return;
+        if (args.length == 2 && msg.channel.type != 'dm') {
+            if (msg.mentions.everyone) return;
 
             let mention = msg.mentions.members.first()
 
-            if(!mention)return;
-            if(mention.id == msg.author.id || mention.id == bot.user.id)return;
+            if (!mention) return;
+            if (mention.id == msg.author.id || mention.id == bot.user.id) return;
 
-            if((msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) && mention.roles.cache.find(val => val.id == process.env.MODROLE))return;
+            if ((msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) && mention.roles.cache.find(val => val.id == process.env.MODROLE)) return;
 
             try {
                 msg.delete();
@@ -61,7 +61,7 @@ export default class staff {
 
             let time = parseInt(args[1])
 
-            if(time <= 0 || time > 1440)return;
+            if (time <= 0 || time > 1440) return;
 
             time = time * 60000;
 
@@ -76,7 +76,7 @@ export default class staff {
                     await reply.delete()
                     return mention.roles.remove('636254696880734238')
                 }, time)
-            } catch(err) {
+            } catch (err) {
                 console.error(err);
             }
         }
@@ -88,9 +88,9 @@ export default class staff {
      * @param bot - Discord Client object
      * @param msg - Message object
      */
-    static async sleep (bot:Client, msg:Message):Promise<"1" | "0"> {
-        if(msg.author.id != process.env.IWA)return;
-        if(process.env.SLEEP == '0') {
+    static async sleep(bot: Client, msg: Message): Promise<"1" | "0"> {
+        if (msg.author.id != process.env.IWA) return;
+        if (process.env.SLEEP == '0') {
             await bot.user.setPresence({ activity: { name: "being updated...", type: 0 }, status: 'dnd' })
                 .then(() => {
                     msg.react("✅");

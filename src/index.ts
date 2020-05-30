@@ -20,7 +20,7 @@ import cooldown from './events/messages/cooldown';
 import ready from './events/ready';
 
 
-//Imports commands from the 'commands' folder
+// Imports commands from the 'commands' folder
 fs.readdir('./build/commands/', { withFileTypes: true }, (error, f) => {
     if (error) return console.error(error);
     f.forEach((f) => {
@@ -28,13 +28,13 @@ fs.readdir('./build/commands/', { withFileTypes: true }, (error, f) => {
             fs.readdir(`./build/commands/${f.name}/`, (error, fi) => {
                 if (error) return console.error(error);
                 fi.forEach((fi) => {
-                    if(!fi.endsWith(".js"))return;
+                    if (!fi.endsWith(".js")) return;
                     let commande = require(`./commands/${f.name}/${fi}`);
                     commands.set(commande.help.name, commande);
                 })
             })
         } else {
-            if(!f.name.endsWith(".js"))return;
+            if (!f.name.endsWith(".js")) return;
             let commande = require(`./commands/${f.name}`);
             commands.set(commande.help.name, commande);
         }
