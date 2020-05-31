@@ -227,7 +227,7 @@ module.exports = class music {
                 let dispatcher = voiceConnection.dispatcher
                 const embed = new MessageEmbed();
                 embed.setColor('GREEN')
-                embed.setTitle("Half of the people have voted, skipping...")
+                embed.setTitle("⏭ Half of the people have voted, skipping...")
                 msg.channel.send(embed)
                 loop = 0;
                 dispatcher.end()
@@ -302,7 +302,7 @@ module.exports = class music {
 
         const embed = new MessageEmbed();
         embed.setColor('GREEN')
-        embed.setAuthor("Forced skip...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+        embed.setAuthor("⏭ Forced skip...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         msg.channel.send(embed)
         loop = 0;
 
@@ -330,7 +330,7 @@ module.exports = class music {
             loop = 0
             console.log(`info: loop disabled by ${msg.author.tag}`)
             const embed = new MessageEmbed();
-            embed.setAuthor("This song will no longer be looped...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
+            embed.setAuthor("▶️ This song will no longer be looped...", msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
             embed.setColor('GREEN')
             return msg.channel.send(embed)
         }
@@ -443,7 +443,7 @@ async function playSong(msg: Message, voiceConnection: VoiceConnection, voiceCha
             if (queue.length == 0) {
                 const embed = new MessageEmbed();
                 embed.setColor('GREEN')
-                embed.setTitle("Queue finished. Disconnecting...")
+                embed.setTitle("🚪 Queue finished. Disconnecting...")
                 skipReq = 0;
                 skippers = [];
                 loop = 0;
