@@ -10,10 +10,10 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
 
         // Define and decide the flavour of the tronky. Hazelnut is the default and is used if no or invalid flavour provided.
         let flavour: string = 'hazelnut'
-        if ('cocoa' in args) flavour = 'cocoa'
-        if ('milk' in args) flavour = 'milk'
-        if ('cereal' in args) flavour = 'cereal'
-        if ('pistachio' in args) flavour = 'pistacio'
+        if (args.includes('cocoa')) flavour = 'cocoa'
+        if (args.includes('milk')) flavour = 'milk'
+        if (args.includes('cereal')) flavour = 'cereal'
+        if (args.includes('pistacio')) flavour = 'pistacio'
 
         if (msg.mentions.members.has(msg.author.id)) // If mention is person who sent message, send this
             return msg.channel.send({ "embed": { "title": `:x: > **You can't give yourself a tronky!**`, "color": 13632027 } });
