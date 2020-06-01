@@ -45,5 +45,5 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
 module.exports.help = { // Define the info to display in the ?help command.
     name: 'tronky',
     usage: "?tronky (mention someone) [someone else]",
-    desc: "Give people tronkys"
+    desc: "Give people tronkys\nFlavours: cocoa, milk, cereal, pistacio"
 };
