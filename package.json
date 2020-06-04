@@ -18,7 +18,7 @@
     "@types/mongodb": "^3.5.20",
     "@types/node": "^14.0.10",
     "@types/puppeteer": "^3.0.0",
-    "@types/ws": "^7.2.4",
+    "@types/ws": "^7.2.5",
     "anilist-node": "^1.4.0",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
