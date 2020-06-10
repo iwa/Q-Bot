@@ -8,6 +8,8 @@ import { MongoClient, Db } from 'mongodb';
 import { Message } from 'discord.js';
 
 import leveling from '../../utils/leveling';
+import utils from '../../utils/utilities';
+let exp: number = 1;
 
 let cooldownMsg: stringKeyArray = [], cooldownXP: stringKeyArray = [];
 interface stringKeyArray {
@@ -56,7 +58,7 @@ export default class cooldown {
         if (msg.channel.id == '608630294261530624') return;
 
         if (!cooldownXP[msg.author.id]) {
-            await db.collection('user').updateOne({ _id: msg.author.id }, { $inc: { exp: 1 } }, { upsert: true });
+            await db.collection('user').updateOne({ _id: msg.author.id }, { $inc: { exp: exp } }, { upsert: true });
             let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
             leveling.levelCheck(msg, (user.exp));
             cooldownXP[msg.author.id] = 1;
@@ -66,3 +68,5 @@ export default class cooldown {
         mongod.close();
     }
 }
+
+setInterval(() => { exp = utils.randomInt(3) }, 300000);
