@@ -84,7 +84,7 @@ module.exports = class music {
                     if (!queue.find(song => song.url === url)) {
                         data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
                         if (!error && data) {
-                            queue.push({ url, title: Util.escapeMarkdown(data.title), length: data.length_seconds })
+                            queue.push({ url, title: Util.escapeMarkdown(data.videoDetails.title), length: data.videoDetails.lengthSeconds })
                         }
                     }
                     if (index === array.length - 1) resolve();
@@ -429,9 +429,9 @@ async function playSong(msg: Message, voiceConnection: VoiceConnection, voiceCha
                 console.log(`musc: playing: ${queue[0].title}`)
             }
         }).on('finish', () => {
-            if (loop == 0) {
+            if (loop == 0)
                 queue.shift()
-            }
+
             if (queue.length == 0) {
                 const embed = new MessageEmbed();
                 embed.setColor('GREEN')
@@ -463,7 +463,7 @@ async function launchPlay(msg: Message, voiceChannel: VoiceChannel, video_url: s
     if (!queue.find(song => song.url === video_url)) {
         data = await YoutubeStream.getInfo(video_url).catch(() => { error = true; })
         if (!error && data) {
-            queue.push({ url: video_url, title: Util.escapeMarkdown(data.title), length: data.length_seconds })
+            queue.push({ url: video_url, title: Util.escapeMarkdown(data.videoDetails.title), length: data.videoDetails.lengthSeconds })
         }
     } else {
         msg.channel.stopTyping()
@@ -485,7 +485,7 @@ async function launchPlay(msg: Message, voiceChannel: VoiceChannel, video_url: s
         embed.setColor('LUMINOUS_VIVID_PINK')
         msg.channel.stopTyping()
         await msg.channel.send(embed)
-        console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
+        console.log(`musc: add to queue: ${msg.author.tag} added ${data.videoDetails.title}`)
     }
     else {
         msg.channel.stopTyping()
