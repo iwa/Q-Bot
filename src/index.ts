@@ -151,6 +151,10 @@ import guildMemberRemove from './events/logs/guildMemberRemove';
 bot.on('guildMemberRemove', async member => {
 	guildMemberRemove(member, bot);
 });
+import guildBanAdd from './events/logs/guildBanAdd';
+bot.on('guildBanAdd', async (guild, user) => {
+	guildBanAdd(guild, user, bot);
+});
 
 
 // Login

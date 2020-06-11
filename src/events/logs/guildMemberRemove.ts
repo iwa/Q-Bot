@@ -7,6 +7,9 @@
 import { User, Client, TextChannel, MessageEmbed, GuildMember, PartialGuildMember } from 'discord.js';
 
 export default async function guildMemberRemove(member: GuildMember | PartialGuildMember, bot: Client) {
+    let isBan = await member.guild.fetchBan(member.id).catch(() => {return});
+    if(isBan) return;
+
 	const fetchedLogs = await member.guild.fetchAuditLogs({
 		limit: 1,
 		type: 'MEMBER_KICK',
@@ -21,7 +24,7 @@ export default async function guildMemberRemove(member: GuildMember | PartialGu
         let channel = await bot.channels.fetch(process.env.LOGTC);
         let embed = new MessageEmbed();
         embed.setTitle("Member kicked");
-        embed.setDescription(`Who: <@${member.id}>\nBy: <@${executor.id}>\nReason:\`\`\`${reason} \`\`\``);
+        embed.setDescription(`Who: ${member.user.tag} (<@${member.id}>)\nBy: <@${executor.id}>\nReason:\`\`\`${reason ? reason : "no reason"}\`\`\``);
         embed.setColor(15260213);
         embed.setTimestamp(createdTimestamp);
         embed.setFooter("Date of kick:")
