@@ -4,7 +4,8 @@
  * @module Staff
  * @category Utils
  */
-import { Client, Message, MessageEmbed } from 'discord.js'
+import { Client, Message, MessageEmbed, TextChannel } from 'discord.js'
+const timespan = require("timespan-parser")("min");
 import utilities from './utilities'
 
 export default class staff {
@@ -59,23 +60,31 @@ export default class staff {
                 console.error(error);
             }
 
-            let time = parseInt(args[1])
-
-            if (time <= 0 || time > 1440) return;
-
-            time = time * 60000;
+            args.shift();
+            let time = args.join(" ")
+            let timeParsed = await timespan.parse(time, "msec");
+            let timeParsedString = await timespan.getString(timeParsed, "msec");
 
             const embed = new MessageEmbed();
             embed.setColor('RED')
-            embed.setTitle(`:octagonal_sign: **${mention.user.username}**, you've been muted for ${args[1]} minute(s) by **${msg.author.username}**`)
+            embed.setTitle(`:octagonal_sign: **${mention.user.username}**, you've been muted for \`${timeParsedString}\` by **${msg.author.username}**`)
 
             try {
                 await mention.roles.add('636254696880734238')
                 let reply = await msg.channel.send(embed)
+                let channel = await bot.channels.fetch(process.env.LOGTC);
+                let embedLog = new MessageEmbed();
+                embedLog.setTitle("Member muted");
+                embedLog.setDescription(`Who: ${mention.user.tag} (<@${mention.id}>)\nBy: <@${msg.author.id}>\nFor: \`${timeParsedString}\``);
+                embedLog.setColor(9392322);
+                embedLog.setTimestamp(msg.createdTimestamp);
+                embedLog.setFooter("Date of mute:")
+                embedLog.setAuthor(msg.author.username, msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
+                await (channel as TextChannel).send(embedLog);
                 setTimeout(async () => {
                     await reply.delete()
                     return mention.roles.remove('636254696880734238')
-                }, time)
+                }, timeParsed)
             } catch (err) {
                 console.error(err);
             }
