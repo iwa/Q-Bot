@@ -70,7 +70,7 @@ export default class staff {
             embed.setTitle(`:octagonal_sign: **${mention.user.username}**, you've been muted for ${args[1]} minute(s) by **${msg.author.username}**`)
 
             try {
-                //await mention.roles.add('636254696880734238')
+                await mention.roles.add('636254696880734238')
                 let reply = await msg.channel.send(embed)
                 let channel = await bot.channels.fetch(process.env.LOGTC);
                 let embedLog = new MessageEmbed();
