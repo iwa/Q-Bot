@@ -22,13 +22,15 @@ export default async function messageDelete(msg: Message | PartialMessage, bot: 
         let channel = await bot.channels.fetch(process.env.LOGTC);
         let embed = new MessageEmbed();
         embed.setTitle("Message deleted");
-        embed.setDescription(`Author: <@${msg.author.id}>\nDeleted by: <@${executor.id}>\n\`\`\`${msg.cleanContent} \`\`\``);
+        embed.setDescription(`Author: ${msg.author.tag} (<@${msg.author.id}>)\nDeleted by: <@${executor.id}>\n\`\`\`${msg.cleanContent ? msg.cleanContent : "empty message"}\`\`\``);
         embed.setColor(10613368);
         embed.setTimestamp(createdTimestamp);
         embed.setFooter("Date of deletion:")
         embed.setAuthor(executor.username, executor.avatarURL({ format: 'png', dynamic: false, size: 128 }))
-        if(msg.attachments.first())
+        if(msg.attachments.first()) {
             embed.setImage(msg.attachments.first().proxyURL);
+            embed.addField('attachment', `[link](${msg.attachments.first().proxyURL})`);
+        }
         return (channel as TextChannel).send(embed);
 	}
 }
