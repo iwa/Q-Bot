@@ -44,7 +44,7 @@ export default class staff {
     static async mute(bot: Client, msg: Message, args: string[]): Promise<void> {
         if (utilities.isMod(msg) == false && msg.author.id != process.env.IWA && msg.author.id != process.env.QUMU) return;
 
-        if (args.length == 2 && msg.channel.type != 'dm') {
+        if (args.length >= 2 && msg.channel.type != 'dm') {
             if (msg.mentions.everyone) return;
 
             let mention = msg.mentions.members.first()
