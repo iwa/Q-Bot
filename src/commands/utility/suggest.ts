@@ -16,7 +16,10 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     embed.setAuthor(msg.author.username, msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
 
     await msg.delete();
-    await (channel as TextChannel).send(embed);
+    let sent = await (channel as TextChannel).send(embed);
+
+    await sent.react('✅');
+    return sent.react('❌');
 };
 
 module.exports.help = {

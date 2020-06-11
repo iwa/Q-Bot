@@ -65,11 +65,6 @@ bot.on('message', async (msg: Discord.Message) => {
 
     await cooldown.message(msg);
 
-    if (msg.channel.id == process.env.SUGGESTIONTC) {
-        await msg.react('✅');
-        return msg.react('❌');
-    }
-
     let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
     let db = mongod.db(dbName);
     let date: string = new Date().toISOString().slice(0, 10)
