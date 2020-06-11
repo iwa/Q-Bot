@@ -1309,6 +1309,11 @@ through@^2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
+timespan-parser@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/timespan-parser/-/timespan-parser-1.0.2.tgz#eec341948779ba5ef56bd05792c8cb173efcf6d5"
+  integrity sha512-18qhwC1ok5y5CS0PIXUB7wHPe8TbbQLj/Z3ANeFLh6dipPGZzWxWdr18yKuT4QnBWq09mJTSM5YrBvuNXUbXLg==
+
 tough-cookie@~2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.5.0.tgz#cd9fb2a0aa1d5a12b473bd9fb96fa3dcff65ade2"
