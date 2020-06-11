@@ -44,7 +44,7 @@ let count: stringKeyArray = {
  * @param type - Type of actions (hug, pat...)
  */
 export default async function actionsRun(bot: Client, msg: Message, args: string[], db: Db, type: string) {
-    if (args.length <= 10) {
+    if (args.length <= 4) {
         if (msg.mentions.everyone) return;
         if (msg.mentions.members.has(msg.author.id))
             return msg.channel.send({ "embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 } });
