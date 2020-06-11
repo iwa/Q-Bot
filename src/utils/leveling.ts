@@ -20,8 +20,24 @@ export default class leveling {
      */
     static async levelCheck(msg: Discord.Message, xp: number) {
         for (let i = 1; i <= 20; i++)
-            if (xp == levels[i].amount)
+            if (xp == levels[i].amount) {
+                if(i === 2) {
+                    await msg.member.roles.add('720723902212603935').catch(console.error);
+                } else if(i === 5) {
+                    await msg.member.roles.remove('720723902212603935').catch(console.error);
+                    await msg.member.roles.add('720723905370783864').catch(console.error);
+                } else if(i === 10) {
+                    await msg.member.roles.remove('720723905370783864').catch(console.error);
+                    await msg.member.roles.add('720723908436951101').catch(console.error);
+                } else if(i === 15) {
+                    await msg.member.roles.remove('720723908436951101').catch(console.error);
+                    await msg.member.roles.add('720723911247003729').catch(console.error);
+                } else if(i === 20) {
+                    await msg.member.roles.remove('720723911247003729').catch(console.error);
+                    await msg.member.roles.add('720723913444818974').catch(console.error);
+                }
                 return leveling.imageLvl(msg, i);
+            }
     }
 
     /**
