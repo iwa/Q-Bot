@@ -36,6 +36,14 @@ export default class reactionRoles {
         if (!member) return mongod.close();
         await member.roles.add(role.id)
 
+        let guildRole = await member.guild.roles.fetch(role.id);
+
+        try {
+            await member.send(`You put on the \`${guildRole.name}\` role!`)
+        } catch (error) {
+            return;
+        }
+
         return mongod.close();
     }
 
@@ -58,6 +66,14 @@ export default class reactionRoles {
         let member = reaction.message.guild.member(author)
         if (!member) return mongod.close();
         await member.roles.remove(role.id)
+
+        let guildRole = await member.guild.roles.fetch(role.id);
+
+        try {
+            await member.send(`You took off the \`${guildRole.name}\` role!`)
+        } catch (error) {
+            return;
+        }
 
         return mongod.close();
     }
