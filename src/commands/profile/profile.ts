@@ -86,7 +86,7 @@ async function profileImg(bot: Client, msg: Message, db: Db, id: string) {
     colors.set('#81d14d', '#a7ea7b');
     colors.set('#f5bc31', '#f4da9b');
 
-    let userColor = msg.member.displayHexColor, firstColor, secondColor;
+    let userColor = member.displayHexColor, firstColor, secondColor;
     if (id == process.env.QUMU || id == bot.user.id || member.roles.cache.find(val => val.id == process.env.MODROLE)) {
         firstColor = '#90B1FF'; secondColor = '#F0A6E4';
     } else {
