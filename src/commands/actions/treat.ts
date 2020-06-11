@@ -16,6 +16,25 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
                 if (args.includes('pistacio')) flavour = 'pistacio'
             break;
 
+            case 'popcorn':
+                flavour = 'sweet'
+                if (args.includes('salty') || args.includes('salted')) flavour = 'salty'
+            break;
+
+            case 'snickers':
+                flavour = 'orignal'
+                if (args.includes('almond')) flavour = 'almond'
+                if (args.includes('crisper')) flavour = 'crisper'
+                if (args.includes('peanut') || args.includes('butter')) flavour = 'peanut butter'
+                if (args.includes('hazelnut')) flavour = 'hazelnut'
+            break;
+
+            case 'cookie':
+            case 'cookies':
+                flavour = 'chocolate'
+                if (args.includes('white')) flavour = 'white chocolate'
+            break;
+
             default:
                 return msg.channel.send(":x: > **This treat doesn't exist! Type `?help treat` to see every existing treats and flavours.**");
         }
@@ -50,5 +69,14 @@ module.exports.help = {
 Available treats:
 
 - Tronkys
-Flavours: cocoa, milk, cereal, pistacio`
+Flavours: hazelnut, cocoa, milk, cereal, pistacio
+
+- Popcorn
+Flavours: sweet, salty
+
+- Snickers
+Flavours: orignal, almond, crisper, peanut butter, hazelnut
+
+- Cookie
+Flavours: chocolate, white chocolate`
 };
