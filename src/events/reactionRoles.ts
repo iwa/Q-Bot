@@ -36,6 +36,8 @@ export default class reactionRoles {
         if (!member) return mongod.close();
         await member.roles.add(role.id)
 
+        await mongod.close();
+
         let guildRole = await member.guild.roles.fetch(role.id);
 
         try {
@@ -43,8 +45,6 @@ export default class reactionRoles {
         } catch (error) {
             return;
         }
-
-        return mongod.close();
     }
 
     /**
@@ -67,6 +67,8 @@ export default class reactionRoles {
         if (!member) return mongod.close();
         await member.roles.remove(role.id)
 
+        await mongod.close();
+
         let guildRole = await member.guild.roles.fetch(role.id);
 
         try {
@@ -74,7 +76,5 @@ export default class reactionRoles {
         } catch (error) {
             return;
         }
-
-        return mongod.close();
     }
 }
