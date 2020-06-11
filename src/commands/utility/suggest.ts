@@ -6,7 +6,7 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
 
     let embed = new MessageEmbed();
-    embed.setTitle("Suggestion | Waiting...")
+    embed.setTitle("Suggestion: Waiting...")
     embed.setDescription(req);
     if(msg.attachments.first()) {
         embed.setImage(msg.attachments.first().proxyURL);
