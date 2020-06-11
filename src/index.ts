@@ -141,5 +141,13 @@ setInterval(async () => {
     await birthdayCheck(bot)
 }, 3600000);
 
+
+// Logs channel
+import messageDelete from './events/logs/messageDelete';
+bot.on('messageDelete', async msg => {
+    return messageDelete(msg, bot);
+});
+
+
 // Login
 bot.login(process.env.TOKEN)
