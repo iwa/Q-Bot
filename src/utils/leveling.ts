@@ -15,19 +15,13 @@ export default class leveling {
 
     /**
      * Checks if the user has leveled up.
-     * If so, the bot gives the new level role and removes the old one
      * @param msg - Message object
      * @param xp - The amount of exp of the user
      */
     static async levelCheck(msg: Discord.Message, xp: number) {
-        for (let i = 1; i <= 20; i++) {
-            if (xp == levels[i].amount) {
-                if (i != 1)
-                    await msg.member.roles.remove(levels[i - 1].id).catch(console.error);
-                await msg.member.roles.add(levels[i].id).catch(console.error);
+        for (let i = 1; i <= 20; i++)
+            if (xp == levels[i].amount)
                 return leveling.imageLvl(msg, i);
-            }
-        }
     }
 
     /**
