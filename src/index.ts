@@ -147,6 +147,10 @@ import messageDelete from './events/logs/messageDelete';
 bot.on('messageDelete', async msg => {
     return messageDelete(msg, bot);
 });
+import guildMemberRemove from './events/logs/guildMemberRemove';
+bot.on('guildMemberRemove', async member => {
+	guildMemberRemove(member, bot);
+});
 
 
 // Login
