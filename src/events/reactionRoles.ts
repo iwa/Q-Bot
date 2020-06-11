@@ -22,6 +22,7 @@ export default class reactionRoles {
      * @param {User} author
      */
     static async add(reaction: MessageReaction, author: User) {
+        if (author.bot) return;
         let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
         let db = mongod.db(dbName);
 
@@ -44,6 +45,7 @@ export default class reactionRoles {
      * @param {User} author
      */
     static async remove(reaction: MessageReaction, author: User) {
+        if (author.bot) return;
         let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
         let db = mongod.db(dbName);
 
