@@ -138,7 +138,7 @@ module.exports = class music {
     static remove(msg: Message, args: string[]) {
         if (msg.channel.type != "text" || msg.channel.id != TC) return;
 
-        let queueID: number = parseInt(args[0]);
+        let queueID: number = parseInt(args[0], 10);
 
         if (isNaN(queueID)) return;
 
@@ -178,7 +178,7 @@ module.exports = class music {
                 if (index == 0 || index > 10) return;
 
                 let date = new Date(null)
-                date.setSeconds(parseInt(song.length))
+                date.setSeconds(parseInt(song.length, 10))
                 let timeString = date.toISOString().substr(11, 8)
 
                 embed.addField(`${index} : **${song.title}**, *${timeString}*`, song.url)
@@ -347,7 +347,7 @@ module.exports = class music {
         }
 
         let date = new Date(null)
-        date.setSeconds(parseInt(queue[0].length))
+        date.setSeconds(parseInt(queue[0].length, 10))
         let timeString = date.toISOString().substr(11, 8)
         const embed = new MessageEmbed();
         embed.setColor('GREEN')
@@ -415,7 +415,7 @@ async function playSong(msg: Message, voiceConnection: VoiceConnection, voiceCha
         .on('start', async () => {
             if (loop == 0) {
                 let date = new Date(null)
-                date.setSeconds(parseInt(queue[0].length))
+                date.setSeconds(parseInt(queue[0].length, 10))
                 let timeString = date.toISOString().substr(11, 8)
                 const embed = new MessageEmbed();
                 embed.setColor('GREEN')
