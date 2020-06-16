@@ -26,7 +26,7 @@
     "mongodb": "^3.5.8",
     "node-gyp": "^7.0.0",
     "node-pre-gyp": "^0.15.0",
-    "popyt": "3.0.0",
+    "popyt": "4.0.0",
     "puppeteer": "^3.3.0",
     "sodium": "^3.0.2",
     "timespan-parser": "^1.0.2",
