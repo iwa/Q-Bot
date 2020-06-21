@@ -3,7 +3,7 @@ import { Client, Message, MessageEmbed } from 'discord.js'
 module.exports.run = async (bot: Client, msg: Message) => {
     const embed = new MessageEmbed();
     embed.setColor('#F2DEB0')
-    embed.setDescription(`**<@${msg.author.username}>**, facepalm!`)
+    embed.setDescription(`**<@${msg.author.id}>**, facepalm!`)
     embed.setImage('https://i.imgur.com/zqUDpIk.gif');
 
     return msg.channel.send(embed)

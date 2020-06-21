@@ -22,6 +22,7 @@ export default class reactionRoles {
      * @param {User} author
      */
     static async add(reaction: MessageReaction, author: User) {
+        if (author.bot) return;
         let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
         let db = mongod.db(dbName);
 
@@ -35,7 +36,15 @@ export default class reactionRoles {
         if (!member) return mongod.close();
         await member.roles.add(role.id)
 
-        return mongod.close();
+        await mongod.close();
+
+        let guildRole = await member.guild.roles.fetch(role.id);
+
+        try {
+            await member.send(`You put on the \`${guildRole.name}\` role!`)
+        } catch (error) {
+            return;
+        }
     }
 
     /**
@@ -44,6 +53,7 @@ export default class reactionRoles {
      * @param {User} author
      */
     static async remove(reaction: MessageReaction, author: User) {
+        if (author.bot) return;
         let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
         let db = mongod.db(dbName);
 
@@ -57,6 +67,14 @@ export default class reactionRoles {
         if (!member) return mongod.close();
         await member.roles.remove(role.id)
 
-        return mongod.close();
+        await mongod.close();
+
+        let guildRole = await member.guild.roles.fetch(role.id);
+
+        try {
+            await member.send(`You took off the \`${guildRole.name}\` role!`)
+        } catch (error) {
+            return;
+        }
     }
 }

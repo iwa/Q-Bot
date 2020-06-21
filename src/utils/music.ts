@@ -15,8 +15,10 @@ let TC = process.env.MUSICTC;
 /** @desc Voice Channel where the bot connects and plays music */
 let VC = process.env.MUSICVC;
 
-let queue: string[] = [], title: string[] = [], length: string[] = [], skippers: string[] = [];
-let skipReq = 0, loop = 0;
+let queue: { url: string, title: string, length: string }[] = []
+let skippers: string[] = []
+let skipReq = 0
+let loop = 0
 
 module.exports = class music {
 
@@ -79,12 +81,10 @@ module.exports = class music {
                 videos.forEach(async (video: Video, index: number, array: Video[]) => {
                     const url: string = video.url
                     error = false;
-                    if (queue.indexOf(url) == -1) {
+                    if (!queue.find(song => song.url === url)) {
                         data = await YoutubeStream.getInfo(url).catch(() => { error = true; errors++; })
                         if (!error && data) {
-                            queue.push(url)
-                            title.push(Util.escapeMarkdown(data.title))
-                            length.push(data.length_seconds)
+                            queue.push({ url, title: Util.escapeMarkdown(data.videoDetails.title), length: data.videoDetails.lengthSeconds })
                         }
                     }
                     if (index === array.length - 1) resolve();
@@ -138,22 +138,20 @@ module.exports = class music {
     static remove(msg: Message, args: string[]) {
         if (msg.channel.type != "text" || msg.channel.id != TC) return;
 
-        let queueID: number = parseInt(args[0]);
+        let queueID: number = parseInt(args[0], 10);
 
         if (isNaN(queueID)) return;
 
         const embed = new MessageEmbed();
         embed.setColor('GREEN')
         embed.setAuthor('Removed from the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
-        embed.setDescription(`**${title[queueID]}**`)
+        embed.setDescription(`**${queue[queueID].title}**`)
         embed.setFooter(`Removed by ${msg.author.username}`)
 
         msg.channel.send(embed)
 
-        console.log(`musc: remove from queue: ${msg.author.tag} removed ${title[queueID]}`)
-
+        console.log(`musc: remove from queue: ${msg.author.tag} removed ${queue[queueID].title}`)
         queue.splice(queueID, 1)
-        title.splice(queueID, 1)
     }
 
     /**
@@ -176,14 +174,14 @@ module.exports = class music {
         else {
             embed.setTitle("**:cd: Here's the queue:**")
 
-            queue.forEach(async (item, index) => {
+            queue.forEach(async (song, index) => {
                 if (index == 0 || index > 10) return;
 
                 let date = new Date(null)
-                date.setSeconds(parseInt(length[index]))
+                date.setSeconds(parseInt(song.length, 10))
                 let timeString = date.toISOString().substr(11, 8)
 
-                embed.addField(`${index} : **${title[index]}**, *${timeString}*`, item)
+                embed.addField(`${index} : **${song.title}**, *${timeString}*`, song.url)
             })
         }
 
@@ -254,8 +252,6 @@ module.exports = class music {
         if (msg.channel.type != "text" || msg.channel.id != TC) return;
 
         queue = [];
-        title = [];
-        length = [];
 
         await msg.react('✅');
 
@@ -272,8 +268,6 @@ module.exports = class music {
         let voiceChannel: any = msg.guild.channels.cache.find(val => val.id == VC)
 
         queue = [];
-        title = [];
-        length = [];
 
         await msg.react('✅');
         await voiceChannel.leave()
@@ -353,20 +347,20 @@ module.exports = class music {
         }
 
         let date = new Date(null)
-        date.setSeconds(parseInt(length[0]))
+        date.setSeconds(parseInt(queue[0].length, 10))
         let timeString = date.toISOString().substr(11, 8)
         const embed = new MessageEmbed();
         embed.setColor('GREEN')
         embed.setTitle("**:cd: Now Playing:**")
 
-        let desc = `[${title[0]}](${queue[0]})`;
+        let desc = `[${queue[0].title}](${queue[0].url})`;
         if (loop == 1) desc += "\n🔂 Currently looping this song - type `?loop` to disable";
         embed.setDescription(desc)
 
         let time = new Date(voiceConnection.dispatcher.streamTime).toISOString().slice(11, 19)
         embed.setFooter(`${time} / ${timeString}`)
 
-        let infos = await yt.getVideo(queue[0]);
+        let infos = await yt.getVideo(queue[0].url);
         let thumbnail = infos.thumbnails
         embed.setThumbnail(thumbnail.high.url)
 
@@ -411,7 +405,7 @@ module.exports = class music {
  * @param voiceChannel - The voice channel where the bot should be connected in
  */
 async function playSong(msg: Message, voiceConnection: VoiceConnection, voiceChannel: VoiceChannel) {
-    const video = YoutubeStream(queue[0], { filter: "audioonly", quality: "highestaudio", highWaterMark: 1024 });
+    const video = YoutubeStream(queue[0].url, { filter: "audioonly", quality: "highestaudio", highWaterMark: 1024 });
 
     video.on('error', () => {
         return msg.channel.send(":x: > **There was an unexpected error with playing the video, please retry later**")
@@ -421,25 +415,23 @@ async function playSong(msg: Message, voiceConnection: VoiceConnection, voiceCha
         .on('start', async () => {
             if (loop == 0) {
                 let date = new Date(null)
-                date.setSeconds(parseInt(length[0]))
+                date.setSeconds(parseInt(queue[0].length, 10))
                 let timeString = date.toISOString().substr(11, 8)
                 const embed = new MessageEmbed();
                 embed.setColor('GREEN')
                 embed.setTitle("**:cd: Now Playing:**")
-                embed.setDescription(`[${title[0]}](${queue[0]})`)
+                embed.setDescription(`[${queue[0].title}](${queue[0].url})`)
                 embed.setFooter(`Length : ${timeString}`)
-                let infos = await yt.getVideo(queue[0]);
+                let infos = await yt.getVideo(queue[0].url);
                 let thumbnail = infos.thumbnails
                 embed.setThumbnail(thumbnail.high.url)
                 msg.channel.send(embed)
-                console.log(`musc: playing: ${title[0]}`)
+                console.log(`musc: playing: ${queue[0].title}`)
             }
         }).on('finish', () => {
-            if (loop == 0) {
+            if (loop == 0)
                 queue.shift()
-                title.shift()
-                length.shift()
-            }
+
             if (queue.length == 0) {
                 const embed = new MessageEmbed();
                 embed.setColor('GREEN')
@@ -468,12 +460,10 @@ async function playSong(msg: Message, voiceConnection: VoiceConnection, voiceCha
 async function launchPlay(msg: Message, voiceChannel: VoiceChannel, video_url: string, data: void | YoutubeStream.videoInfo) {
     msg.channel.startTyping();
     let error = false;
-    if (queue.indexOf(video_url) == -1) {
+    if (!queue.find(song => song.url === video_url)) {
         data = await YoutubeStream.getInfo(video_url).catch(() => { error = true; })
         if (!error && data) {
-            queue.push(video_url)
-            title.push(Util.escapeMarkdown(data.title))
-            length.push(data.length_seconds)
+            queue.push({ url: video_url, title: Util.escapeMarkdown(data.videoDetails.title), length: data.videoDetails.lengthSeconds })
         }
     } else {
         msg.channel.stopTyping()
@@ -487,7 +477,7 @@ async function launchPlay(msg: Message, voiceChannel: VoiceChannel, video_url: s
 
     msg.delete();
 
-    if (queue[0] != video_url && data) {
+    if (queue[0].url != video_url && data) {
         const embed = new MessageEmbed();
         embed.setAuthor('Successfully added to the queue:', msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }));
         embed.setDescription(`**${data.title}**`)
@@ -495,7 +485,7 @@ async function launchPlay(msg: Message, voiceChannel: VoiceChannel, video_url: s
         embed.setColor('LUMINOUS_VIVID_PINK')
         msg.channel.stopTyping()
         await msg.channel.send(embed)
-        console.log(`musc: add to queue: ${msg.author.tag} added ${data.title}`)
+        console.log(`musc: add to queue: ${msg.author.tag} added ${data.videoDetails.title}`)
     }
     else {
         msg.channel.stopTyping()
