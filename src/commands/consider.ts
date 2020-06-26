@@ -15,7 +15,7 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     if(args.length >= 2) {
         args.shift()
         let req = args.join(' ');
-        embed.addField('Reason', req)
+        embed.addField(`Reason, by ${msg.author.username}`, req)
     }
 
     await suggestion.edit(embed);
