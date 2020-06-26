@@ -11,7 +11,7 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 
         let userDB = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
         if (userDB.birthday != null)
-            return msg.channel.send({ "embed": { "title": ":x: > **Sorry, you can't change your birthday date! Please contact iwa to change.**", "color": 13632027 } });
+            return msg.channel.send({ "embed": { "title": ":x: > **Sorry, you can't change your birthday date!", "description": "**Please contact <@125325519054045184> to change.**", "color": 13632027 } });
 
         let date = new Date(content);
 
