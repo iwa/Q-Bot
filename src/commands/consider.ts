@@ -1,7 +1,8 @@
 import { Client, Message, TextChannel } from 'discord.js';
+import utilities from '../utils/utilities';
 
 module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
-    if (msg.author.id != process.env.IWA) return;
+    if (!utilities.isMod(msg)) return;
 
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
     let suggestion = await (channel as TextChannel).messages.fetch(args[0])
@@ -23,5 +24,5 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
 
 module.exports.help = {
     name: 'consider',
-    usage: "?consider",
+    usage: "?consider (uid) [reason]",
 };
