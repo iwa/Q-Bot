@@ -9,6 +9,7 @@ import { Message, User, PartialMessage, Client, TextChannel, MessageEmbed } from
 export default async function messageDelete(msg: Message | PartialMessage, bot: Client) {
     if (!msg.guild) return;
     if (msg.content.startsWith('?')) return;
+    if (msg.author.bot) return;
 	const fetchedLogs = await msg.guild.fetchAuditLogs({
 		limit: 1,
 		type: 'MESSAGE_DELETE',
