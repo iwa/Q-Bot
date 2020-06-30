@@ -49,7 +49,7 @@ setTimeout(() => {
 let mod = {
     "embed": {
         "title": "**⚔️ Mods**",
-        "description": "`?forceskip`\n`?bulk (amount of messages to delete)`\n`?mute (mention someone) (length, eg. '5d 1h 20m 35s')`",
+        "description": "`?forceskip`\n`?bulk (amount of messages to delete)`\n`?mute (mention someone) (length, eg. '5d 1h 20m 35s')`\n?approve (suggestion UID) [reason]\n?consider (suggestion UID) [reason]\n?deny (suggestion UID) [reason]",
         "color": 4886754
     }
 }
