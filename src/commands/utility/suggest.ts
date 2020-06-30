@@ -18,8 +18,14 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     await msg.delete();
     let sent = await (channel as TextChannel).send(embed);
 
+    let embed2 = sent.embeds[0];
+    embed2.setFooter(sent.id);
+
+    await sent.edit(embed2);
+
     await sent.react('✅');
-    return sent.react('❌');
+    await sent.react('❌');
+    return sent.react('👀');
 };
 
 module.exports.help = {

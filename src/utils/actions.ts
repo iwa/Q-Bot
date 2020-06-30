@@ -24,7 +24,8 @@ let lastGif: stringKeyArray = {
     'hug': 0,
     'group-hug': 0,
     'boop': 0,
-    'slap': 0
+    'slap': 0,
+    'squish': 0
 };
 
 /** define the number of gifs available */
@@ -33,7 +34,8 @@ let count: stringKeyArray = {
     'hug': 47,
     'group-hug': 9,
     'boop': 15,
-    'slap': 9
+    'slap': 9,
+    'squish': 3 // Hey iwa, Hypie here. Tux sent three GIFs in the Github issues, so that's what I'm assuming here.
 };
 
 /**
@@ -84,8 +86,11 @@ export default async function actionsRun(bot: Client, msg: Message, args: string
                 embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
             }
         } else {
-            embed.setDescription(`**<@${msg.author.id}>** ${type}s you **<@${(msg.mentions.members.first()).id}>**!`)
-
+            if (type == 'squish') { // Because "squishs" doesn't make sense. - Hy~
+                embed.setDescription(`**<@${msg.author.id}>** squishes you **<@${(msg.mentions.members.first()).id}>**!`)
+            } else {
+                embed.setDescription(`**<@${msg.author.id}>** ${type}s you **<@${(msg.mentions.members.first()).id}>**!`)
+            }
             let n = utilities.randomInt(count[type])
             while (lastGif[type] == n)
                 n = utilities.randomInt(count[type]);
@@ -97,8 +102,11 @@ export default async function actionsRun(bot: Client, msg: Message, args: string
         let user = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
         await db.collection('user').updateOne({ '_id': { $eq: msg.author.id } }, { $inc: { [type]: msg.mentions.members.size } }, { upsert: true });
         await db.collection('user').updateOne({ '_id': { $eq: bot.user.id } }, { $inc: { [type]: msg.mentions.members.size } }, { upsert: true });
-
-        embed.setFooter(`You have given ${(user[type] ? user[type] : 0) + msg.mentions.members.size} ${type}s`)
+        if (type == 'squish') { // Again, because "squishs" don't make sense - Hy~
+            embed.setFooter(`You have given ${(user[type] ? user[type] : 0) + msg.mentions.members.size} squishes`)
+        } else {
+            embed.setFooter(`You have given ${(user[type] ? user[type] : 0) + msg.mentions.members.size} ${type}s`)
+        }
         return msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} sent by ${msg.author.tag}`);
