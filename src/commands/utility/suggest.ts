@@ -24,7 +24,8 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     await sent.edit(embed2);
 
     await sent.react('✅');
-    return sent.react('❌');
+    await sent.react('❌');
+    return sent.react('👀');
 };
 
 module.exports.help = {

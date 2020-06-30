@@ -1,4 +1,4 @@
-import { Client, Message, TextChannel } from 'discord.js';
+import { Client, Message, TextChannel, MessageEmbed } from 'discord.js';
 import utilities from '../utils/utilities';
 
 module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
@@ -16,6 +16,18 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
         args.shift()
         let req = args.join(' ');
         embed.addField(`Reason, by ${msg.author.username}`, req)
+    }
+
+    let reactions = suggestion.reactions.resolve('👀');
+    let users = await reactions.users.fetch();
+
+    let embedDM = new MessageEmbed();
+    embedDM.setTitle(`Suggestion "${embed.description.slice(0, 10)}..." has been updated!`);
+    embedDM.setDescription(`Check it out [here](${suggestion.url})`)
+
+    for(const user of users.array()) {
+        if(!user.bot)
+            await user.send(embedDM).catch(() => {return});
     }
 
     await suggestion.edit(embed);
