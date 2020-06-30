@@ -139,18 +139,36 @@ async function leaderboard(bot: Discord.Client, msg: Discord.Message, db: Db, ty
     const embed = new Discord.MessageEmbed();
     embed.setColor(16114507)
     embed.setTitle(`:trophy: **${title} Leaderboard**`)
+    let desc = "";
 
-    leaderboard.forEach(async elem => {
-        let user = await bot.users.fetch(elem._id)
-        n++;
-        embed.addField(`**${n}. ${user.username}**`, `${elem[type]} ${type}s`)
-    })
+    let bar = new Promise((resolve, reject) => {
+        leaderboard.forEach(async (elem, index) => {
+            let user = await bot.users.fetch(elem._id)
+            if(user) {
+                n++;
+                if(n === 1)
+                    desc = `${desc}:first_place: `
+                if(n === 2)
+                    desc = `${desc}:second_place: `
+                if(n === 3)
+                    desc = `${desc}:third_place: `
 
-    setTimeout(() => {
+                if(type == 'exp') {
+                    let level = utilities.levelInfo(elem.exp)
+                    desc = `${desc}**${n}. ${user.username}**\n**Level ${level.level}** (${elem.exp} exps)\n`
+                } else
+                    desc = `${desc}**${n}. ${user.username}**`, `${elem[type]} ${type}s`
+            }
+            if (index === leaderboard.length - 1) resolve();
+        })
+    });
+
+    bar.then(async () => {
+        embed.setDescription(desc)
         msg.channel.send(embed)
             .then(() => {
                 console.log(`info: ${type} leaderboard: ${msg.author.tag}`);
                 msg.channel.stopTyping()
             }).catch(console.error)
-    }, 1500)
+    });
 }
