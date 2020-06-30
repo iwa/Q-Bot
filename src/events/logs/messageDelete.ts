@@ -5,6 +5,7 @@
  * @category Events
  */
 import { Message, User, PartialMessage, Client, TextChannel, MessageEmbed } from 'discord.js';
+let lastTimestamp: number;
 
 export default async function messageDelete(msg: Message | PartialMessage, bot: Client) {
     if (!msg.guild) return;
@@ -19,6 +20,9 @@ export default async function messageDelete(msg: Message | PartialMessage, bot: 
 	if (!deletionLog) return;
 
     const { executor, target, createdTimestamp } = deletionLog;
+
+    if (lastTimestamp === createdTimestamp) return;
+    lastTimestamp = createdTimestamp;
 
 	if ((target as User).id === msg.author.id) {
         let channel = await bot.channels.fetch(process.env.LOGTC);
