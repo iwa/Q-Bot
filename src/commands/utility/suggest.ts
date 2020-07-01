@@ -8,6 +8,7 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 
     let embed = new MessageEmbed();
     if(msg.attachments.first()) {
+        await msg.react('🔄');
         await download(msg.attachments.first().proxyURL, `download/${msg.attachments.first().name}`);
         await uploadFile(`${msg.attachments.first().name}`).catch(console.error);
         embed.setThumbnail(`https://cdn.iwa.sh/attachment/${msg.attachments.first().name}`);
