@@ -18,6 +18,7 @@ const levels = require('../lib/levels.json');
 
 import cooldown from './events/messages/cooldown';
 import ready from './events/ready';
+import suggestion from './events/messages/suggestion';
 
 
 // Imports commands from the 'commands' folder
@@ -67,6 +68,9 @@ bot.on('message', async (msg: Discord.Message) => {
     let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
     let db = mongod.db(dbName);
     let date: string = new Date().toISOString().slice(0, 10)
+
+    if (msg.channel.id == process.env.SUGGESTIONTC)
+        return suggestion(bot, msg, mongod, db);
 
     if (!msg.content.startsWith(process.env.PREFIX))
         return cooldown.exp(msg, mongod, db, date);

@@ -14,15 +14,10 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 
     let embed = suggestion.embeds[0];
 
-    embed.setColor(14598460)
+    embed.setColor(4289797)
 
-    let req = "\n";
-    if(args.length >= 2) {
-        args.shift()
-        req = args.join(' ');
-    }
     let desc = embed.description;
-    embed.setDescription(`${desc}\n\n**🤔 Considered by ${msg.author.username}**\n${req}`);
+    embed.setDescription(`${desc}\n\n**✅ Implemented by ${msg.author.username}**\n\n`);
 
     let reactions = suggestion.reactions.resolve('👀');
     let users = await reactions.users.fetch();
@@ -32,8 +27,10 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
     embedDM.setDescription(`Check it out [here](${suggestion.url})`)
 
     for(const user of users.array()) {
-        if(!user.bot)
+        if(!user.bot) {
             await user.send(embedDM).catch(() => {return});
+            console.log('yo')
+        }
     }
 
     await suggestion.edit(embed);
@@ -41,6 +38,6 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 };
 
 module.exports.help = {
-    name: 'consider',
-    usage: "?consider (uid) [reason]",
+    name: 'implemented',
+    usage: "?implemented (id)",
 };
