@@ -1,27 +1,34 @@
-import { Client, Message, MessageEmbed, TextChannel } from 'discord.js'
+import { Client, Message, MessageEmbed, TextChannel, MessageAttachment } from 'discord.js'
+import { Db } from 'mongodb';
 
-module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
+module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) => {
     if (args.length < 1) return;
     let req = args.join(' ');
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
 
     let embed = new MessageEmbed();
-    embed.setTitle("Suggestion: Waiting...")
-    embed.setDescription(req);
     if(msg.attachments.first()) {
-        embed.setImage(msg.attachments.first().proxyURL);
-        embed.addField('attachment', `[link](${msg.attachments.first().proxyURL})`);
+        await msg.react('🔄');
+        await download(msg.attachments.first().proxyURL, `download/${msg.attachments.first().name}`);
+        await uploadFile(`${msg.attachments.first().name}`).catch(console.error);
+        embed.setThumbnail(`https://cdn.iwa.sh/attachment/${msg.attachments.first().name}`);
+        req = `${req}\n\n[📂attachment link](https://cdn.iwa.sh/attachment/${msg.attachments.first().name})`
     }
-    embed.setTimestamp(msg.createdTimestamp);
+    embed.setDescription(req);
     embed.setAuthor(msg.author.username, msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
+
+    let counter = await db.collection('suggestions').findOne({ _id: 'counter' });
+    if(!counter) {
+        await db.collection('suggestions').insertOne({ _id: 'counter', count: 0 });
+        counter = { _id: 'counter', count: 0 };
+    }
+
+    await db.collection('suggestions').updateOne({ _id: 'counter' }, { $inc: { count: 1 }});
+    embed.setFooter(`#${counter.count+1}`);
 
     await msg.delete();
     let sent = await (channel as TextChannel).send(embed);
-
-    let embed2 = sent.embeds[0];
-    embed2.setFooter(sent.id);
-
-    await sent.edit(embed2);
+    await db.collection('suggestions').insertOne({ _id: counter.count+1, msg: sent.id });
 
     await sent.react('✅');
     await sent.react('❌');
@@ -33,3 +40,25 @@ module.exports.help = {
     usage: "?suggest (suggestion)",
     desc: "Push a suggestion into the #suggestion-box"
 };
+
+const fs = require('fs');
+const request = require('request');
+
+async function download(uri: any, filename: any) {
+    let bar = new Promise((resolve, reject) => {
+        request.head(uri, function(err: any, res: { headers: { [x: string]: any; }; }, body: any) {
+            request(uri).pipe(fs.createWriteStream(filename)).on('close', () => { resolve() });
+        });
+    });
+    return bar;
+};
+
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage();
+
+async function uploadFile(filename: string) {
+    await storage.bucket('cdn.iwa.sh').upload(`download/${filename}`, {
+        gzip: false,
+        destination: `attachment/${filename}`,
+    });
+}
