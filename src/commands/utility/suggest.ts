@@ -1,6 +1,7 @@
 import { Client, Message, MessageEmbed, TextChannel, MessageAttachment } from 'discord.js'
+import { Db } from 'mongodb';
 
-module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
+module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) => {
     if (args.length < 1) return;
     let req = args.join(' ');
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
@@ -15,13 +16,18 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     embed.setDescription(req);
     embed.setAuthor(msg.author.username, msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
 
+    let counter = await db.collection('suggestions').findOne({ _id: 'counter' });
+    if(!counter) {
+        await db.collection('suggestions').insertOne({ _id: 'counter', count: 0 });
+        counter = { _id: 'counter', count: 0 };
+    }
+
+    await db.collection('suggestions').updateOne({ _id: 'counter' }, { $inc: { count: 1 }});
+    embed.setFooter(`#${counter.count+1}`);
+
     await msg.delete();
     let sent = await (channel as TextChannel).send(embed);
-
-    let embed2 = sent.embeds[0];
-    embed2.setFooter(sent.id);
-
-    await sent.edit(embed2);
+    await db.collection('suggestions').insertOne({ _id: counter.count+1, msg: sent.id });
 
     await sent.react('✅');
     await sent.react('❌');
