@@ -74,7 +74,7 @@ module.exports.help = {
 };
 
 async function sendHelp(msg: Message) {
-    if (utilities.isMod(msg) == true || msg.author.id == process.env.QUMU)
+    if (utilities.isMod(msg) == true || msg.author.id == process.env.QUMU || msg.author.id == process.env.IWA)
         try {
             await msg.author.send(member)
             await msg.author.send(mod)
