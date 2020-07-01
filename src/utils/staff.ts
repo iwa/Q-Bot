@@ -15,24 +15,20 @@ export default class staff {
      * @param msg - Message object
      * @param args - Arguments in the message
      */
-    static async bulk(msg: Message, args: string[]) {
-        if (utilities.isMod(msg) == false || msg.author.id != process.env.IWA || msg.author.id != process.env.QUMU) return;
+    static async bulk(msg: Message) {
+        if (msg.author.id != process.env.IWA) return;
 
-        if (args.length !== 0) {
-            let channel: any = msg.channel
-            if (msg.channel.type !== "dm") {
-                msg.delete().catch(console.error);
-                let nb = parseInt(args[0])
-                msg.channel.bulkDelete(nb)
-                    .then(() => {
-                        console.log(`info: bulk delete: ${nb} in #${channel.name} by ${msg.author.tag}`)
-                    })
-                    .catch(console.error);
-            }
+        if (msg.channel.type !== "dm") {
+            await msg.delete().catch(console.error);
+
+            let messages = await msg.channel.messages.fetch({ limit: 100 }, false)
+
+            for(const message of messages)
+                await message[1].delete()
+                    .catch(() => {return});;
+
+            console.log(`info: clearing #${(msg.channel as TextChannel).name} by ${msg.author.tag}`)
         }
-        else
-            return msg.channel.send({ "embed": { "title": ":x: > **Incomplete command.**", "color": 13632027 } });
-
     }
 
     /**
