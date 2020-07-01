@@ -1,9 +1,8 @@
 import { Client, Message, MessageEmbed, TextChannel, MessageAttachment } from 'discord.js'
-import { Db } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 
-module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) => {
-    if (args.length < 1) return;
-    let req = args.join(' ');
+export default async function suggestion (bot: Client, msg: Message, mongod:MongoClient, db: Db) {
+    let req = msg.cleanContent;
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
 
     let embed = new MessageEmbed();
@@ -30,15 +29,11 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
     let sent = await (channel as TextChannel).send(embed);
     await db.collection('suggestions').insertOne({ _id: counter.count+1, msg: sent.id });
 
+    await mongod.close();
+
     await sent.react('✅');
     await sent.react('❌');
     return sent.react('👀');
-};
-
-module.exports.help = {
-    name: 'suggest',
-    usage: "?suggest (suggestion)",
-    desc: "Push a suggestion into the #suggestion-box"
 };
 
 const fs = require('fs');
