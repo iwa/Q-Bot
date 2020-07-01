@@ -1327,10 +1327,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-popyt@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/popyt/-/popyt-3.0.0.tgz#e1a0f1ff0052f2334cef25775201d5e88fbba604"
-  integrity sha512-MQ+p0kLXxtTbHyQ77z1Dt3HOiTrzlEkTsTBQYtV5cur/Imt88aFHF6vEhDKLND17HxEUKPURnfqc3LD2JB2oQg==
+popyt@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/popyt/-/popyt-4.1.0.tgz#839423350ac384798bf5d48aedab1f31aff3bb36"
+  integrity sha512-YWpoPs6hK/ft3dkRyAA1EO9hV2gtZhmNDd4cV6vtcHQrFfEXr0djgee4nUG31/E4OWpkStliQ8OKMj5E31mZPg==
 
 prism-media@^1.2.0:
   version "1.2.1"
