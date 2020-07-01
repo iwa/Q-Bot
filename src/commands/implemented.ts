@@ -14,8 +14,10 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 
     let embed = suggestion.embeds[0];
 
-    embed.setTitle("✅ Implemented")
     embed.setColor(4289797)
+
+    let desc = embed.description;
+    embed.setDescription(`${desc}\n\n**✅ Implemented by ${msg.author.username}**\n\n`);
 
     let reactions = suggestion.reactions.resolve('👀');
     let users = await reactions.users.fetch();

@@ -14,14 +14,15 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 
     let embed = suggestion.embeds[0];
 
-    embed.setTitle("❌ Denied")
     embed.setColor(14956363)
 
+    let req = "\n";
     if(args.length >= 2) {
         args.shift()
-        let req = args.join(' ');
-        embed.addField(`Reason, by ${msg.author.username}`, req)
+        req = args.join(' ');
     }
+    let desc = embed.description;
+    embed.setDescription(`${desc}\n\n**❌ Denied by ${msg.author.username}**\n${req}`);
 
     let reactions = suggestion.reactions.resolve('👀');
     let users = await reactions.users.fetch();
