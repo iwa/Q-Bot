@@ -18,8 +18,22 @@ export default async function letmein(msg: Message, levels: any, db: Db) {
 
     let user: any = await db.collection('user').findOne({ '_id': { $eq: msg.author.id } });
     if (user) {
-        let lvl = await utilities.levelInfo(user.exp);
-        if (lvl.level != 0) await msg.member.roles.add(levels[lvl.level].id);
+        let lvl = utilities.levelInfo(user.exp);
+        if(lvl.level >= 2) {
+            await msg.member.roles.add('720723902212603935').catch(console.error);
+        } else if(lvl.level >= 5) {
+            await msg.member.roles.remove('720723902212603935').catch(console.error);
+            await msg.member.roles.add('720723905370783864').catch(console.error);
+        } else if(lvl.level >= 10) {
+            await msg.member.roles.remove('720723905370783864').catch(console.error);
+            await msg.member.roles.add('720723908436951101').catch(console.error);
+        } else if(lvl.level >= 15) {
+            await msg.member.roles.remove('720723908436951101').catch(console.error);
+            await msg.member.roles.add('720723911247003729').catch(console.error);
+        } else if(lvl.level >= 20) {
+            await msg.member.roles.remove('720723911247003729').catch(console.error);
+            await msg.member.roles.add('720723913444818974').catch(console.error);
+        }
         await db.collection('user').updateOne({ _id: msg.author.id }, { $set: { hidden: false } });
     }
 
