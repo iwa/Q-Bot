@@ -43,4 +43,5 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 module.exports.help = {
     name: 'consider',
     usage: "?consider (uid) [reason]",
+    staff: true
 };
