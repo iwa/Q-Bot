@@ -14,7 +14,7 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 
     let embed = suggestion.embeds[0];
 
-    embed.setTitle("Denied")
+    embed.setTitle("❌ Denied")
     embed.setColor(14956363)
 
     if(args.length >= 2) {
