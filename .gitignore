@@ -13,3 +13,5 @@ build/
 
 # npm lockfile
 package-lock.json
+
+gcs-key.json
