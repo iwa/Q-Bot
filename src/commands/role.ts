@@ -32,4 +32,5 @@ module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) =
 module.exports.help = {
     name: 'role',
     usage: "?role",
+    staff: true
 };

@@ -6,5 +6,6 @@ module.exports.run = (bot: Client, msg: Message, args: string[]) => {
 };
 
 module.exports.help = {
-    name: 'mute'
+    name: 'mute',
+    staff: true
 };
