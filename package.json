@@ -1,6 +1,6 @@
 {
   "name": "q-bot",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Discord Bot for Qumu's Discord Server",
   "main": "build/index.js",
   "scripts": {
