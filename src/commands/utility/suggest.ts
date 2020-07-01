@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed, TextChannel } from 'discord.js'
+import { Client, Message, MessageEmbed, TextChannel, MessageAttachment } from 'discord.js'
 
 module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     if (args.length < 1) return;
@@ -6,13 +6,13 @@ module.exports.run = async (bot: Client, msg: Message, args: string[]) => {
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
 
     let embed = new MessageEmbed();
-    embed.setTitle("Suggestion: Waiting...")
-    embed.setDescription(req);
     if(msg.attachments.first()) {
-        embed.setImage(msg.attachments.first().proxyURL);
-        embed.addField('attachment', `[link](${msg.attachments.first().proxyURL})`);
+        await download(msg.attachments.first().proxyURL, `download/${msg.attachments.first().name}`);
+        await uploadFile(`${msg.attachments.first().name}`).catch(console.error);
+        embed.setThumbnail(`https://cdn.iwa.sh/attachment/${msg.attachments.first().name}`);
+        req = `${req}\n\n[📂attachment link](https://cdn.iwa.sh/attachment/${msg.attachments.first().name})`
     }
-    embed.setTimestamp(msg.createdTimestamp);
+    embed.setDescription(req);
     embed.setAuthor(msg.author.username, msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
 
     await msg.delete();
@@ -33,3 +33,25 @@ module.exports.help = {
     usage: "?suggest (suggestion)",
     desc: "Push a suggestion into the #suggestion-box"
 };
+
+const fs = require('fs');
+const request = require('request');
+
+async function download(uri: any, filename: any) {
+    let bar = new Promise((resolve, reject) => {
+        request.head(uri, function(err: any, res: { headers: { [x: string]: any; }; }, body: any) {
+            request(uri).pipe(fs.createWriteStream(filename)).on('close', () => { resolve() });
+        });
+    });
+    return bar;
+};
+
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage();
+
+async function uploadFile(filename: string) {
+    await storage.bucket('cdn.iwa.sh').upload(`download/${filename}`, {
+        gzip: false,
+        destination: `attachment/${filename}`,
+    });
+}
