@@ -1,58 +1,47 @@
-import { Client, Message, Collection } from 'discord.js';
+import { Client, Message, Collection, MessageEmbed } from 'discord.js';
 import { Db } from 'mongodb';
 import utilities from '../../utils/utilities'
-let commands: stringKeyArray = [];
-let member = {};
-interface stringKeyArray {
-    [index: string]: any;
-}
+let commands = new Map();
+let member = new MessageEmbed();
+let mod: MessageEmbed;
 
 import * as fs from 'fs';
 
 readDirs()
 setTimeout(() => {
-    member = {
-        "embed": {
-            "title": "__**Commands**__",
-            "description": "Prefix : `?`\nUse `?help (command)` to have more info about a specific command",
-            "color": 3852663,
-            "fields": [
-                {
-                    "name": "**👤 Profile**",
-                    "value": commands["profile"]
-                },
-                {
-                    "name": "**💕 Actions**",
-                    "value": commands["actions"]
-                },
-                {
-                    "name": "**🕹 Games**",
-                    "value": commands["games"]
-                },
-                {
-                    "name": "**💩 Memes**",
-                    "value": commands["memes"]
-                },
-                {
-                    "name": "**🎶 Music** (only usable in #radio-lounge)",
-                    "value": commands["music"]
-                },
-                {
-                    "name": "**🛠 Utility**",
-                    "value": commands["utility"]
-                },
-            ]
-        }
-    }
-}, 5000)
+    member.setTitle("__**Commands**__")
+    member.setDescription("Prefix : `?`\nUse `?help (command)` to have more info about a specific command")
+    member.setColor(3852663)
+    member.addFields([
+        {
+            "name": "**👤 Profile**",
+            "value": commands.get("profile")
+        },
+        {
+            "name": "**💕 Actions**",
+            "value": commands.get("actions")
+        },
+        {
+            "name": "**🕹 Games**",
+            "value": commands.get("games")
+        },
+        {
+            "name": "**💩 Memes**",
+            "value": commands.get("memes")
+        },
+        {
+            "name": "**🎶 Music** (only usable in #radio-lounge)",
+            "value": commands.get("music")
+        },
+        {
+            "name": "**🛠 Utility**",
+            "value": commands.get("utility")
+        },
+    ])
 
-let mod = {
-    "embed": {
-        "title": "**⚔️ Mods**",
-        "description": "`?forceskip`\n`?mute (mention someone) (length, eg. '5d 1h 20m 35s')`\n?approve (suggestion ID) [reason]\n?implemented (suggestion ID)\n?consider (suggestion ID) [reason]\n?deny (suggestion ID) [reason]",
-        "color": 4886754
-    }
-}
+    mod = new MessageEmbed(member);
+    mod.addField("**⚔️ Staff**", "`?forceskip`\n`?mute (mention someone) (length, eg. '5d 1h 20m 35s')`\n`?approve (suggestion ID) [reason]`\n`?implemented (suggestion ID)`\n`?consider (suggestion ID) [reason]`\n`?deny (suggestion ID) [reason]`")
+}, 5000)
 
 module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db, commands: Collection<any, any>) => {
     if (args.length == 1) {
@@ -76,7 +65,6 @@ module.exports.help = {
 async function sendHelp(msg: Message) {
     if (utilities.isMod(msg) == true || msg.author.id == process.env.QUMU || msg.author.id == process.env.IWA)
         try {
-            await msg.author.send(member)
             await msg.author.send(mod)
         } catch (ex) {
             return msg.channel.send(":x: > **Please open your DMs, I can't reach you** <:sad_onigiri:610476938955456532>")
@@ -100,7 +88,7 @@ async function readDirs() {
                     fi.forEach(async (fi) => {
                         string = `${string}\`${fi.slice(0, -3)}\` `;
                     })
-                    commands[f.name] = string;
+                    commands.set(f.name, string);
                 })
             }
         });
