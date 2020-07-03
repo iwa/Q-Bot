@@ -6,7 +6,8 @@
   "scripts": {
     "update": "git fetch origin master && git pull origin master && rm -rf build/ && yarn && tsc",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "changelog": "github_changelog_generator -u iwa -p Q-Bot --exclude-labels \"duplicate\",\"question\",\"invalid\",\"wontfix\",\"Duplicate\",\"Question\",\"Invalid\",\"Wontfix\",\"Meta: Exclude From Changelog\",\"update\",\"question-discussion\",\"dependencies\" --add-sections '{\"features\":{\"prefix\":\"**New features:**\",\"labels\":[\"feature\", \"features\"]}}' --no-compare-link"
   },
   "repository": {
     "type": "git",
