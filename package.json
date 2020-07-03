@@ -4,7 +4,9 @@
   "description": "Discord Bot for Qumu's Discord Server",
   "main": "build/index.js",
   "scripts": {
-    "update": "git fetch origin master && git pull origin master && rm -rf build/ && yarn && tsc"
+    "update": "git fetch origin master && git pull origin master && rm -rf build/ && yarn && tsc",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -34,5 +36,8 @@
     "utf-8-validate": "^5.0.2",
     "ytdl-core": "^3.1.1",
     "zlib-sync": "^0.1.7"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0"
   }
 }
