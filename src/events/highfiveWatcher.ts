@@ -4,12 +4,8 @@
  * @module HighfiveWatcher
  * @category Events
  */
-import { MongoClient } from 'mongodb';
+import { Db } from 'mongodb';
 import { MessageReaction, User, MessageEmbed, Client } from 'discord.js';
-/**
- * @desc MongoDB constants
- */
-const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
 
 /**
  * Analyses if the highfive request exists
@@ -18,10 +14,8 @@ const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
  * @param author - User object of author
  * @param bot - Discord Client object
  */
-export default async function highfiveWatcher(reaction: MessageReaction, author: User, bot: Client) {
+export default async function highfiveWatcher(reaction: MessageReaction, author: User, bot: Client, db: Db) {
     if (reaction.emoji.name === '✋') {
-        let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
-        let db = mongod.db(dbName);
         let result = await db.collection('highfive').findOne({ '_id': { $eq: reaction.message.id }, 'target': { $eq: author.id } });
 
         if (result) {

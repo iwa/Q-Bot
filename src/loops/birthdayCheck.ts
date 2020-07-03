@@ -5,11 +5,7 @@
  * @category Loops
  */
 import { Client, GuildMember, MessageEmbed } from 'discord.js';
-import { MongoClient } from 'mongodb';
-/**
- * @desc MongoDB constants
- */
-const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
+import { Db } from 'mongodb';
 
 /**
  * At 7am UTC, it checks if it's someone birthday.
@@ -17,7 +13,7 @@ const url = process.env.MONGO_URL, dbName = process.env.MONGO_DBNAME;
  * the 'Happy Birthday' role is given to the people.
  * @param bot - Discord Client object
  */
-export default async function birthdayCheck(bot: Client) {
+export default async function birthdayCheck(bot: Client, db: Db) {
     let today = new Date();
     let hh = today.getUTCHours()
 
@@ -36,9 +32,6 @@ export default async function birthdayCheck(bot: Client) {
         let dd = String(today.getDate()).padStart(2, '0');
         let mm = String(today.getMonth() + 1).padStart(2, '0');
         let todayString = `${mm}/${dd}`;
-
-        let mongod = await MongoClient.connect(url, { 'useUnifiedTopology': true });
-        let db = mongod.db(dbName);
 
         let data = await db.collection('user').find({ 'birthday': { $eq: todayString } }).toArray();
 

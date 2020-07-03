@@ -1,7 +1,7 @@
 import { Client, Message, MessageEmbed, TextChannel, MessageAttachment } from 'discord.js'
 import { Db, MongoClient } from 'mongodb';
 
-export default async function suggestion (bot: Client, msg: Message, mongod:MongoClient, db: Db) {
+export default async function suggestion (bot: Client, msg: Message, db: Db) {
     let req = msg.cleanContent;
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
 
@@ -28,8 +28,6 @@ export default async function suggestion (bot: Client, msg: Message, mongod:Mong
     await msg.delete();
     let sent = await (channel as TextChannel).send(embed);
     await db.collection('suggestions').insertOne({ _id: counter.count+1, msg: sent.id });
-
-    await mongod.close();
 
     await sent.react('✅');
     await sent.react('❌');

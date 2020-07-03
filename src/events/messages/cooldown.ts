@@ -47,11 +47,10 @@ export default class cooldown {
      * - Experience cooldown (1exp earnable every 5sec)
      * - Keeps track of the number of message sent in the server with stats db
      * @param msg - Message object
-     * @param mongod - MongoDB Client
      * @param db - Database connection
      * @param date - Current date (used for the stats db)
      */
-    static async exp(msg: Message, mongod: MongoClient, db: Db, date: string) {
+    static async exp(msg: Message, db: Db, date: string) {
         await db.collection('stats').updateOne({ _id: date }, { $inc: { msg: 1 } }, { upsert: true })
         if (msg.channel.id == '608630294261530624') return;
 
@@ -62,8 +61,6 @@ export default class cooldown {
             cooldownXP.set(msg.author.id, 1);
             return setTimeout(async () => { cooldownXP.delete(msg.author.id) }, 5000)
         }
-
-        mongod.close();
     }
 }
 
