@@ -48,8 +48,24 @@ let count = new Map([
 export default async function actionsRun(bot: Client, msg: Message, args: string[], db: Db, type: string, verb: string, at: boolean) {
     if (args.length <= 4) {
         if (msg.mentions.everyone) return;
-        if (msg.mentions.members.has(msg.author.id))
-            return msg.channel.send({ "embed": { "title": `:x: > **You can't ${type} yourself!**`, "color": 13632027 } });
+        if (msg.mentions.members.has(msg.author.id)) {
+            if (type === 'slap')
+                return msg.channel.send({ "embed": { "title": `**Don't ${type} yourself! It's mean! :c**`, "color": 13632027 }});
+            msg.channel.send({ "embed": { "title": `Don't ${type}${at ? ' at' : ''} yourself! Lemme do it for you...`, "color": 14634852 }});
+            const embed = new MessageEmbed();
+            embed.setColor('#F2DEB0')
+            embed.setDescription(`<@${bot.user.id}> ${verb}${at ? ' at' : ''} you <@${msg.author.id}>!`)
+
+            let n = utilities.randomInt(count.get(type))
+            while (lastGif.get(type) === n)
+                n = utilities.randomInt(count.get(type));
+            lastGif.set(type, n);
+
+            embed.setImage(`https://${process.env.CDN_URL}/img/${type}/${n}.gif`)
+            return msg.channel.send(embed)
+                .then(() => { console.log(`info: ${type} sent by ${msg.author.tag}`); })
+                .catch(console.error);
+        }
 
         if (msg.mentions.members.has(bot.user.id) && type != 'slap') {
             let r = utilities.randomInt(reply.length)
@@ -63,7 +79,7 @@ export default async function actionsRun(bot: Client, msg: Message, args: string
         embed.setColor('#F2DEB0')
         if (msg.mentions.members.size >= 2) {
             let users = msg.mentions.members.array()
-            let title: string = `**<@${msg.author.id}>** ${verb} you **<@${users[0].id}>**`;
+            let title: string = `**<@${msg.author.id}>** ${verb}${at ? ' at' : ''} you **<@${users[0].id}>**`;
             for (let i = 1; i < (msg.mentions.members.size - 1); i++)
                 title = `${title}, **<@${users[i].id}>**`
             title = `${title} & **<@${(msg.mentions.members.last()).id}>**!`
