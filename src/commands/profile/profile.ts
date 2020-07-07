@@ -33,11 +33,6 @@ async function profileImg(bot: Client, msg: Message, db: Db, id: string) {
     let member = guild.members.cache.find(val => val.id == id)
 
     let leadXP = await db.collection('user').find({ hidden: { $ne: true } }).sort({ exp: -1 }).toArray();
-    let leadHug = await db.collection('user').find({ hidden: { $ne: true } }).sort({ hug: -1 }).toArray();
-    let leadPat = await db.collection('user').find({ hidden: { $ne: true } }).sort({ pat: -1 }).toArray();
-    let leadBoop = await db.collection('user').find({ hidden: { $ne: true } }).sort({ boop: -1 }).toArray();
-    let leadSlap = await db.collection('user').find({ hidden: { $ne: true } }).sort({ slap: -1 }).toArray();
-    let leadHighfive = await db.collection('user').find({ hidden: { $ne: true } }).sort({ highfive: -1 }).toArray();
 
     let lvlInfo = utilities.levelInfo(userDB.exp);
 
@@ -45,21 +40,12 @@ async function profileImg(bot: Client, msg: Message, db: Db, id: string) {
         avatar: userDiscord.avatarURL({ format: 'png', dynamic: false, size: 512 }),
         username: userDiscord.username,
         icon: "",
+        desc: userDB.desc || "?setdesc (description)",
         exp: userDB.exp,
-        pat: userDB.pat ? userDB.pat : 0,
-        hug: userDB.hug ? userDB.hug : 0,
-        boop: userDB.boop ? userDB.boop : 0,
-        slap: userDB.slap ? userDB.slap : 0,
-        highfive: userDB.highfive ? userDB.highfive : 0,
         positionXP: leadXP.findIndex(val => val._id == id),
-        positionPat: leadPat.findIndex(val => val._id == id),
-        positionHug: leadHug.findIndex(val => val._id == id),
-        positionBoop: leadBoop.findIndex(val => val._id == id),
-        positionSlap: leadSlap.findIndex(val => val._id == id),
-        positionHighfive: leadHighfive.findIndex(val => val._id == id),
-        birthday: userDB.birthday ? userDB.birthday : "--/--",
-        fc: userDB.fc ? userDB.fc : "not registered yet",
-        psn: userDB.psn ? userDB.psn : "not registered yet",
+        birthday: userDB.birthday || "--/--",
+        fc: userDB.fc || "not registered yet",
+        psn: userDB.psn || "not registered yet",
         level: lvlInfo.level,
         current: lvlInfo.current,
         max: lvlInfo.max
@@ -102,7 +88,7 @@ async function profileImg(bot: Client, msg: Message, db: Db, id: string) {
         file = await imGenerator(508, 358, html, userDiscord.id, 'prof')
     } else {
         html = await ejs.renderFile('views/profile.ejs', { user, firstColor, secondColor });
-        file = await imGenerator(508, 408, html, userDiscord.id, 'prof')
+        file = await imGenerator(508, 328, html, userDiscord.id, 'prof')
     }
 
     try {
