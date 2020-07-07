@@ -3,7 +3,6 @@ import { Db } from 'mongodb'
 import * as ejs from 'ejs';
 import imGenerator from '../../utils/img';
 import utilities from '../../utils/utilities'
-let lastComboColor: number;
 
 module.exports.run = (bot: Client, msg: Message, args: string[], db: Db) => {
     if (args.length == 1) {
