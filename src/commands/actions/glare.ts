@@ -3,11 +3,11 @@ import { Db } from 'mongodb'
 import actionsRun from '../../utils/actions';
 
 module.exports.run = (bot: Client, msg: Message, args: string[], db: Db) => {
-    actionsRun(bot, msg, args, db, 'slap', 'slaps', false);
+    actionsRun(bot, msg, args, db, 'glare', 'glares', true);
 };
 
 module.exports.help = {
-    name: 'slap',
-    usage: "?slap (mention someone) [someone else]",
-    desc: "Slap people by mentioning them"
+    name: 'glare',
+    usage: "?glare (mention someone) [someone else]",
+    desc: "Glare at people by mentioning them"
 };
