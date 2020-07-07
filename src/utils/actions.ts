@@ -31,7 +31,7 @@ let count = new Map([
     ['group-hug', 9],
     ['boop', 15],
     ['slap', 9],
-    ['squish', 3]
+    ['squish', 4]
 ]);
 
 /**
