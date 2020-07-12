@@ -1,5 +1,4 @@
-import { Client, Message, TextChannel, MessageEmbed } from 'discord.js';
-import utilities from '../utils/utilities';
+import { Client, Message, TextChannel } from 'discord.js';
 import { Db } from 'mongodb';
 
 module.exports.run = async (bot: Client, msg: Message, args: string[], db: Db) => {
