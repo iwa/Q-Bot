@@ -5,10 +5,14 @@
             "type": "node",
             "request": "launch",
             "name": "Debug Program",
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
+            "sourceMaps": true,
+            "smartStep": true,
             "skipFiles": [
-                "<node_internals>/**"
+                "<node_internals>/**/*.js"
             ],
-            "program": "${workspaceFolder}/build/index.js",
+            "program": "${workspaceFolder}/src/index.ts",
             "preLaunchTask": "tsc: build",
             "outFiles": [
                 "${workspaceFolder}/build/**/*.js"
