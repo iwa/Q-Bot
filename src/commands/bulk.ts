@@ -6,5 +6,6 @@ module.exports.run = (bot: Client, msg: Message) => {
 };
 
 module.exports.help = {
-    name: 'bulk'
+    name: 'bulk',
+    staff: true
 };

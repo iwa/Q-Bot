@@ -7,5 +7,6 @@ module.exports.run = (bot: Client, msg: Message, args: string[], db: Db) => {
 };
 
 module.exports.help = {
-    name: 'resetbd'
+    name: 'resetbd',
+    staff: true
 };

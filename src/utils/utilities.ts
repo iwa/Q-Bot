@@ -130,7 +130,7 @@ export default class utilities {
  * @param type - Type of leaderboard to calculate (exp, pat, ...)
  */
 async function leaderboard(bot: Discord.Client, msg: Discord.Message, db: Db, type: string) {
-    let leaderboard = await db.collection('user').find({ hidden: false }).sort({ [type]: -1 }).limit(10).toArray();
+    let leaderboard = await db.collection('user').find({ hidden: { $ne: true } }).sort({ [type]: -1 }).limit(10).toArray();
     let n = 0;
 
     msg.channel.startTyping()
@@ -152,12 +152,14 @@ async function leaderboard(bot: Discord.Client, msg: Discord.Message, db: Db, ty
                     desc = `${desc}:second_place: `
                 if(n === 3)
                     desc = `${desc}:third_place: `
+                if(n > 3)
+                    desc = `${desc}**${n}.** `
 
                 if(type == 'exp') {
                     let level = utilities.levelInfo(elem.exp)
-                    desc = `${desc}**${n}. ${user.username}**\n**Level ${level.level}** (${elem.exp} exps)\n`
+                    desc = `${desc}**${user.username}**\nLevel ${level.level} (${elem.exp} exps)\n`
                 } else
-                    desc = `${desc}**${n}. ${user.username}**`, `${elem[type]} ${type}s`
+                    desc = `${desc}**${user.username}**\n${elem[type]} ${type}s\n`
             }
             if (index === leaderboard.length - 1) resolve();
         })

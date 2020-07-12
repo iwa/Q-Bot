@@ -1,7 +1,7 @@
 import { Client, Message, MessageEmbed, TextChannel, MessageAttachment } from 'discord.js'
-import { Db, MongoClient } from 'mongodb';
+import { Db } from 'mongodb';
 
-export default async function suggestion (bot: Client, msg: Message, mongod:MongoClient, db: Db) {
+export default async function suggestion (bot: Client, msg: Message, db: Db) {
     let req = msg.cleanContent;
     let channel = await bot.channels.fetch(process.env.SUGGESTIONTC);
 
@@ -9,9 +9,9 @@ export default async function suggestion (bot: Client, msg: Message, mongod:Mong
     if(msg.attachments.first()) {
         await msg.react('🔄');
         await download(msg.attachments.first().proxyURL, `download/${msg.attachments.first().name}`);
-        await uploadFile(`${msg.attachments.first().name}`).catch(console.error);
-        embed.setThumbnail(`https://cdn.iwa.sh/attachment/${msg.attachments.first().name}`);
-        req = `${req}\n\n[📂attachment link](https://cdn.iwa.sh/attachment/${msg.attachments.first().name})`
+        let filename = await uploadFile(`${msg.attachments.first().name}`).catch(console.error);
+        embed.setThumbnail(`https://cdn.iwa.sh/attachment/${filename}`);
+        req = `${req}\n\n[📂attachment link](https://cdn.iwa.sh/attachment/${filename})`
     }
     embed.setDescription(req);
     embed.setAuthor(msg.author.username, msg.author.avatarURL({ format: 'png', dynamic: false, size: 128 }))
@@ -28,8 +28,6 @@ export default async function suggestion (bot: Client, msg: Message, mongod:Mong
     await msg.delete();
     let sent = await (channel as TextChannel).send(embed);
     await db.collection('suggestions').insertOne({ _id: counter.count+1, msg: sent.id });
-
-    await mongod.close();
 
     await sent.react('✅');
     await sent.react('❌');
@@ -50,10 +48,27 @@ async function download(uri: any, filename: any) {
 
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage();
+const bucket = storage.bucket('cdn.iwa.sh');
 
-async function uploadFile(filename: string) {
-    await storage.bucket('cdn.iwa.sh').upload(`download/${filename}`, {
+async function uploadFile(filename: string): Promise<string> {
+    let name = filename;
+    let done = false;
+    let n = 0;
+    while(!done) {
+        let file = await bucket.file(`attachment/${name}`);
+        let exists = await file.exists();
+        if(!exists[0])
+            done = true;
+        else {
+            n += 1;
+            let filenames = filename.split('.');
+            let ext = filenames.pop();
+            name = `${filenames.join('.')}-${n}.${ext}`;
+        }
+    }
+    await bucket.upload(`download/${filename}`, {
         gzip: false,
-        destination: `attachment/${filename}`,
+        destination: `attachment/${name}`,
     });
+    return name;
 }
