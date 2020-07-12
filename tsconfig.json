@@ -8,7 +8,8 @@
       "noImplicitAny": true,
       "resolveJsonModule": true,
       "typeRoots": ["./node_modules/@types"],
-      "removeComments": true
+      "removeComments": true,
+      "moduleResolution": "node"
     },
     "exclude": ["./build/*", "./node_modules/*"],
     "include": ["./src/**/*.ts"],
