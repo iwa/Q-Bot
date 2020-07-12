@@ -80,7 +80,7 @@ bot.on('message', async (msg: Discord.Message) => {
         return cooldown.exp(msg, db, date);
 
     let args = msg.content.slice(1).trim().split(/ +/g);
-    let req = args.shift();
+    let req = args.shift().toLowerCase();
     let cmd: any = commands.get(req);
 
     if (req === "letmein")
