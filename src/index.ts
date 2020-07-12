@@ -73,7 +73,7 @@ bot.on('message', async (msg: Discord.Message) => {
 
     let date: string = new Date().toISOString().slice(0, 10)
 
-    if (msg.channel.id == process.env.SUGGESTIONTC)
+    if (msg.channel.id === process.env.SUGGESTIONTC)
         return suggestion(bot, msg, db);
 
     if (!msg.content.startsWith(process.env.PREFIX))
@@ -83,7 +83,7 @@ bot.on('message', async (msg: Discord.Message) => {
     let req = args.shift();
     let cmd: any = commands.get(req);
 
-    if (req == "letmein")
+    if (req === "letmein")
         return letmein(msg, levels, db);
 
     if (process.env.SLEEP === '1' && msg.author.id != process.env.IWA) return;
