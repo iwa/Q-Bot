@@ -130,7 +130,7 @@ export default class utilities {
  * @param type - Type of leaderboard to calculate (exp, pat, ...)
  */
 async function leaderboard(bot: Discord.Client, msg: Discord.Message, db: Db, type: string) {
-    let leaderboard = await db.collection('user').find({ hidden: false }).sort({ [type]: -1 }).limit(10).toArray();
+    let leaderboard = await db.collection('user').find({ hidden: { $ne: true } }).sort({ [type]: -1 }).limit(10).toArray();
     let n = 0;
 
     msg.channel.startTyping()
