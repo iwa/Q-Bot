@@ -31,7 +31,7 @@
     "node-gyp": "^7.0.0",
     "node-pre-gyp": "^0.15.0",
     "popyt": "3.0.0",
-    "puppeteer": "^5.0.0",
+    "puppeteer": "^5.1.0",
     "sodium": "^3.0.2",
     "timespan-parser": "^1.0.2",
     "utf-8-validate": "^5.0.2",
