@@ -36,6 +36,6 @@
     "timespan-parser": "^1.0.2",
     "utf-8-validate": "^5.0.2",
     "ytdl-core": "^3.1.2",
-    "zlib-sync": "^0.1.7"
+    "zlib-sync": "^0.1.10"
   }
 }
